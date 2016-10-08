@@ -4,9 +4,54 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ref.Windows"
+        xmlns:vm="clr-namespace:Ref.Windows.ViewModels"
         mc:Ignorable="d"
         Title="Ref" Height="650" Width="900">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         
+        <TreeView x:Name="catalogueTreeView" Grid.Column="0" Grid.Row="0" 
+                  ItemsSource="{Binding Catalogue.Entries}"
+                  SelectedItemChanged="catalogueTreeView_SelectedItemChanged" >
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type vm:BookViewModel}">
+                    <StackPanel Orientation="Vertical" Margin="0,4">
+                        <TextBlock Text="{Binding Author}" FontSize="12" />
+                        <TextBlock Text="{Binding Title}" FontSize="16" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" Margin="8,8,4,4" Name="detailsPanel"
+                    DataContext="{Binding SelectedEntry}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Title" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Text="{Binding Title}" Grid.Row="0" Grid.Column="2" FontSize="16" Margin="4,0,0,4" />
+                <TextBlock Text="Author" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Text="{Binding Author}" Grid.Row="1" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                <TextBlock Text="Publisher" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Text="{Binding Publisher}" Grid.Row="2" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                <TextBlock Text="Year" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Text="{Binding Year}" Grid.Row="3" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+            </Grid>
+        </StackPanel>
+
     </Grid>
 </Window>

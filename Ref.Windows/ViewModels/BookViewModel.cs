@@ -55,7 +55,7 @@ namespace Ref.Windows.ViewModels
         }
         private bool _isReadOnly;
 
-        private Book _book;
+        internal Book _book;
 
         /// <summary>
         /// Constructs a new BookViewModel from the specified <see cref="Book"/>.

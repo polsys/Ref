@@ -15,9 +15,15 @@ namespace Ref.Windows
             InitializeComponent();
 
             _viewModel = new MainWindowViewModel();
+            _viewModel.DisruptingEdit += DisruptingEditHandler;
             _viewModel.Catalogue.Entries.Add(new BookViewModel(new Models.Book() { Author = "ads", Title="ADS" }));
             _viewModel.Catalogue.Entries.Add(new BookViewModel(new Models.Book() { Author = "dada", Title = "Dadaism" }));
             DataContext = _viewModel;
+        }
+
+        private MessageBoxResult DisruptingEditHandler()
+        {
+            return MessageBox.Show("Do you want to save the edit in progress?", "Ref", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
         }
 
         private void catalogueTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -25,19 +31,24 @@ namespace Ref.Windows
             _viewModel.SelectEntry((BookViewModel)e.NewValue);
         }
 
+        private void addEntryButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.CreateBook();
+        }
+
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.SelectedEntry.Cancel();
+            _viewModel.CancelEdit();
         }
 
         private void commitButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.SelectedEntry.Commit();
+            _viewModel.CommitEdit();
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.SelectedEntry.Edit();
+            _viewModel.EditSelected();
         }
     }
 }

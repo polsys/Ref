@@ -19,5 +19,18 @@ namespace Ref.Windows.Tests.ViewModels
             Assert.That(vm.Entries, Has.Exactly(1).With.Property("Title").EqualTo("Python Guido"));
             Assert.That(vm.Entries, Has.Exactly(1).With.Property("Title").EqualTo("Spam + Eggs"));
         }
+
+        [Test]
+        public void AddBook_AddsBook()
+        {
+            var catalogue = new Catalogue();
+            var catalogueVM = new CatalogueViewModel(catalogue);
+            var book = new BookViewModel(new Book());
+            catalogueVM.AddBook(book);
+
+            Assert.That(book, Is.InstanceOf<BookViewModel>());
+            Assert.That(catalogueVM.Entries, Has.Exactly(1).InstanceOf<BookViewModel>());
+            Assert.That(catalogue.Entries, Has.Exactly(1).InstanceOf<Book>());
+        }
     }
 }

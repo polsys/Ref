@@ -65,7 +65,6 @@ namespace Ref.Windows.ViewModels
         {
             _book = book;
             CopyPropertiesFromBook();
-
             _isReadOnly = true;
         }
 
@@ -125,6 +124,9 @@ namespace Ref.Windows.ViewModels
         {
             if (property != value)
             {
+                if (IsReadOnly)
+                    throw new InvalidOperationException("Not in edit mode.");
+
                 property = value;
                 NotifyPropertyChanged(propertyName);
             }

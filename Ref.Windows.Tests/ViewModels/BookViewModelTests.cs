@@ -96,6 +96,14 @@ namespace Ref.Windows.Tests.ViewModels
             Assert.That(() => vm.Edit(), Throws.Nothing);
             Assert.That(() => vm.Edit(), Throws.InvalidOperationException);
         }
+
+        [Test]
+        public void IsReadOnly_IsEnforced()
+        {
+            var vm = new BookViewModel(CreateCrackingMathematics());
+
+            Assert.That(() => { vm.Author = "@icecolbeveridge"; }, Throws.InvalidOperationException);
+        }
         
         private static Book CreateCrackingMathematics()
         {

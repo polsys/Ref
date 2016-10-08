@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Ref.Windows.ViewModels;
 
 namespace Ref.Windows.Tests.ViewModels
@@ -23,28 +21,8 @@ namespace Ref.Windows.Tests.ViewModels
             var entry = new BookViewModel(new Models.Book() { Title = "Test 1" });
             vm.Catalogue.Entries.Add(entry);
 
-            AssertRaisesPropertyChanged(vm, () => vm.SelectEntry(entry), "SelectedEntry");
+            TestUtility.AssertRaisesPropertyChanged(vm, () => vm.SelectEntry(entry), "SelectedEntry");
             Assert.That(vm.SelectedEntry, Is.SameAs(entry));
-        }
-
-        private void AssertRaisesPropertyChanged(MainWindowViewModel viewModel, TestDelegate func, string propertyName)
-        {
-            int propertyChangedCount = 0;
-            PropertyChangedEventHandler handler = (object sender, PropertyChangedEventArgs e) =>
-                   {
-                       propertyChangedCount++;
-                   };
-
-            try
-            {
-                viewModel.PropertyChanged += handler;
-                func.Invoke();
-                Assert.That(propertyChangedCount, Is.EqualTo(1), "The PropertyChanged event was not fired or was fired more than once.");
-            }
-            finally
-            {
-                viewModel.PropertyChanged -= handler;
-            }
         }
     }
 }

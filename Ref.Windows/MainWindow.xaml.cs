@@ -24,5 +24,20 @@ namespace Ref.Windows
         {
             _viewModel.SelectEntry((BookViewModel)e.NewValue);
         }
+
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SelectedEntry.Cancel();
+        }
+
+        private void commitButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SelectedEntry.Commit();
+        }
+
+        private void editButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SelectedEntry.Edit();
+        }
     }
 }

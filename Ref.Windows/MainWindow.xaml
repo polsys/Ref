@@ -30,27 +30,65 @@
         </TreeView>
         <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" Margin="8,8,4,4" Name="detailsPanel"
                     DataContext="{Binding SelectedEntry}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8" >
+                    <!-- The buttons -->
+                    <StackPanel Orientation="Horizontal">
+                        <!-- This panel is shown in the read only mode -->
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsReadOnly}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <Button Name="editButton" Content="Edit" Padding="4,1" Click="editButton_Click" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <!-- This panel is shown in the edit mode -->
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsReadOnly}" Value="False">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <Button Name="commitButton" Content="Save" Padding="4,1" Click="commitButton_Click" />
+                        <Button Name="cancelButton" Content="Cancel" Padding="4,1" Click="cancelButton_Click" />
+                    </StackPanel>
+                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-                <TextBlock Text="Title" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
-                <TextBox Text="{Binding Title}" Grid.Row="0" Grid.Column="2" FontSize="16" Margin="4,0,0,4" />
-                <TextBlock Text="Author" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
-                <TextBox Text="{Binding Author}" Grid.Row="1" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
-                <TextBlock Text="Publisher" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
-                <TextBox Text="{Binding Publisher}" Grid.Row="2" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
-                <TextBlock Text="Year" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
-                <TextBox Text="{Binding Year}" Grid.Row="3" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
-            </Grid>
+                    <TextBlock Text="Title" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding Title}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="0" Grid.Column="2" FontSize="16" Margin="4,0,0,4" />
+                    <TextBlock Text="Author" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding Author}" IsReadOnly="{Binding IsReadOnly}"
+                          Grid.Row="1" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                    <TextBlock Text="Publisher" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding Publisher}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="2" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                    <TextBlock Text="Year" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding Year}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="3" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                </Grid>
+            </StackPanel>
         </StackPanel>
 
     </Grid>

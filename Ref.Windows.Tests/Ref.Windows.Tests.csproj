@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestUtility.cs" />
     <Compile Include="ViewModels\MainWindowViewModelTests.cs" />
     <Compile Include="ViewModels\CatalogueViewModelTests.cs" />
     <Compile Include="ViewModels\BookViewModelTests.cs" />

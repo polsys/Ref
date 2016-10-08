@@ -1,12 +1,11 @@
-﻿using System.ComponentModel;
-using Ref.Windows.Models;
+﻿using Ref.Windows.Models;
 
 namespace Ref.Windows.ViewModels
 {
     /// <summary>
     /// The View Model for the main window.
     /// </summary>
-    internal class MainWindowViewModel : INotifyPropertyChanged
+    internal class MainWindowViewModel : ViewModelBase
     {
         public CatalogueViewModel Catalogue { get; }
         public BookViewModel SelectedEntry
@@ -23,8 +22,6 @@ namespace Ref.Windows.ViewModels
         }
         private BookViewModel _selectedEntry;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         /// <summary>
         /// Constructs a MainWindowViewModel with an empty catalogue.
         /// </summary>
@@ -40,11 +37,6 @@ namespace Ref.Windows.ViewModels
         public void SelectEntry(BookViewModel entry)
         {
             SelectedEntry = entry;
-        }
-
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

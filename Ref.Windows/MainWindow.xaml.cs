@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Ref.Windows.ViewModels;
 
 namespace Ref.Windows
@@ -28,7 +29,18 @@ namespace Ref.Windows
 
         private void catalogueTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            _viewModel.SelectEntry((BookViewModel)e.NewValue);
+            if (!_viewModel.SelectEntry((BookViewModel)e.NewValue))
+            {
+                // SelectEntry returned false so we must roll back
+                // Apparently this should be done in the LayoutUpdated event (http://stackoverflow.com/a/4029075)
+                EventHandler handler = null; // null because this must be initialized for the lambda
+                handler = (object s, EventArgs args) =>
+                {
+                    _viewModel.SelectedEntry.IsSelected = true;
+                    catalogueTreeView.LayoutUpdated -= handler;
+                };
+                catalogueTreeView.LayoutUpdated += handler;
+            }
         }
 
         private void addEntryButton_Click(object sender, RoutedEventArgs e)

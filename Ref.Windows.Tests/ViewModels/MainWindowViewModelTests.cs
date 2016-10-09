@@ -157,9 +157,8 @@ namespace Ref.Windows.Tests.ViewModels
             book1.Author = "@standupmaths";
 
             // Now select the other book
-            vm.SelectEntry(book2);
-
             // Since the handler returned Yes, the edit must be applied before switching
+            Assert.That(vm.SelectEntry(book2), Is.True);
             Assert.That(book1.IsReadOnly, Is.True);
             Assert.That(book1.Author, Is.EqualTo("@standupmaths"));
             Assert.That(vm.SelectedEntry, Is.SameAs(book2));
@@ -181,9 +180,8 @@ namespace Ref.Windows.Tests.ViewModels
             book1.Author = "@standupmaths";
 
             // Now select the other book
-            vm.SelectEntry(book2);
-
             // Since the handler returned No, the edit must be reverted before switching
+            Assert.That(vm.SelectEntry(book2), Is.True);
             Assert.That(book1.IsReadOnly, Is.True);
             Assert.That(book1.Author, Is.EqualTo("Parker, Matt"));
             Assert.That(vm.SelectedEntry, Is.SameAs(book2));
@@ -205,12 +203,29 @@ namespace Ref.Windows.Tests.ViewModels
             book1.Author = "@standupmaths";
 
             // Now select the other book
-            vm.SelectEntry(book2);
-
             // Since the handler returned Cancel, there must be no change
+            Assert.That(vm.SelectEntry(book2), Is.False);
             Assert.That(book1.IsReadOnly, Is.False);
             Assert.That(book1.Author, Is.EqualTo("@standupmaths"));
             Assert.That(vm.SelectedEntry, Is.SameAs(book1));
+        }
+
+        [Test]
+        public void SelectEntry_DoesNotSelectSame()
+        {
+            // The no-op behavior is checked by having an edit in progress.
+            // Selecting the selected item should not raise the disruption event.
+            var vm = new MainWindowViewModel();
+            vm.DisruptingEdit += () => { Assert.Fail(); return MessageBoxResult.No; };
+            var book = new BookViewModel(CreateCrackingMathematics());
+            vm.Catalogue.AddBook(book);
+
+            // Select the book and enter edit mode
+            vm.SelectEntry(book);
+            vm.EditSelected();
+
+            // This must return false and not raise the event
+            Assert.That(vm.SelectEntry(book), Is.False);
         }
 
         [Test]
@@ -220,7 +235,10 @@ namespace Ref.Windows.Tests.ViewModels
             var entry = new BookViewModel(new Book() { Title = "Test 1" });
             vm.Catalogue.Entries.Add(entry);
 
-            TestUtility.AssertRaisesPropertyChanged(vm, () => vm.SelectEntry(entry), "SelectedEntry");
+            // Simultaneously check that SelectEntry returns true and raises the event
+            TestUtility.AssertRaisesPropertyChanged(vm, () => {
+                Assert.That(vm.SelectEntry(entry), Is.True);
+                }, "SelectedEntry");
             Assert.That(vm.SelectedEntry, Is.SameAs(entry));
         }
 

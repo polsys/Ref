@@ -95,15 +95,26 @@ namespace Ref.Windows.ViewModels
         }
 
         /// <summary>
-        /// Selects the specified entry for detailed view.
+        /// Tries to select the specified entry for detailed view.
         /// </summary>
-        public void SelectEntry(BookViewModel entry)
+        /// <returns>
+        /// True if the selection was changed; false if it was not.
+        /// </returns>
+        public bool SelectEntry(BookViewModel entry)
         {
+            // If the selection did not change, return
+            if (entry == SelectedEntry)
+                return false;
+
             // If an edit is in progress, ask what to do
             if (ShouldCancelBecauseOfEdit())
-                return;
+            {
+                // Roll back the selection
+                return false;
+            }
             
             SelectedEntry = entry;
+            return true;
         }
 
         private bool ShouldCancelBecauseOfEdit()

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
-using Ref.Windows.ViewModels;
+using Polsys.Ref.ViewModels;
 
-namespace Ref.Windows
+namespace Polsys.Ref
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

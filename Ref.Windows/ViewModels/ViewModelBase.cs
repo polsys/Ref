@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Ref.Windows.ViewModels
+namespace Polsys.Ref.ViewModels
 {
     internal class ViewModelBase : INotifyPropertyChanged
     {

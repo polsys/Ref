@@ -1,4 +1,4 @@
-﻿namespace Ref.Windows.Models
+﻿namespace Polsys.Ref.Models
 {
     /// <summary>
     /// Represents a single book.

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using Ref.Windows.Models;
+using Polsys.Ref.Models;
 
-namespace Ref.Windows.ViewModels
+namespace Polsys.Ref.ViewModels
 {
     /// <summary>
     /// The View Model for the main window.

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using NUnit.Framework;
 
-namespace Ref.Windows.Tests
+namespace Polsys.Ref.Tests
 {
     static class TestUtility
     {

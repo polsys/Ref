@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Ref.Windows
+namespace Polsys.Ref
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using Ref.Windows.Models;
-using Ref.Windows.ViewModels;
+using Polsys.Ref.Models;
+using Polsys.Ref.ViewModels;
 
-namespace Ref.Windows.Tests.ViewModels
+namespace Polsys.Ref.Tests.ViewModels
 {
     class BookViewModelTests
     {

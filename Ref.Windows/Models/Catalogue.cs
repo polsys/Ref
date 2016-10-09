@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Ref.Windows.Models
+namespace Polsys.Ref.Models
 {
     /// <summary>
     /// Contains all the entries and handles operations related to them.

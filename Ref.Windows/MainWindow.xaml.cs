@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using Polsys.Ref.ViewModels;
 
@@ -19,6 +20,7 @@ namespace Polsys.Ref
             _viewModel.DisruptingEdit += DisruptingEditHandler;
             _viewModel.RemovingEntry += RemovingEntryHandler;
             DataContext = _viewModel;
+            catalogueTreeView.Items.SortDescriptions.Add(new SortDescription("Author", ListSortDirection.Ascending));
         }
 
         private MessageBoxResult DisruptingEditHandler()

@@ -41,6 +41,9 @@ namespace Ref.Windows.ViewModels
         private string _title;
         private string _year;
 
+        /// <summary>
+        /// Gets whether this entry is read-only or editable.
+        /// </summary>
         public bool IsReadOnly
         {
             get { return _isReadOnly; }
@@ -54,6 +57,23 @@ namespace Ref.Windows.ViewModels
             }
         }
         private bool _isReadOnly;
+
+        /// <summary>
+        /// Gets or sets whether this is the currently selected item.
+        /// </summary>
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    NotifyPropertyChanged(nameof(IsSelected));
+                }
+            }
+        }
+        private bool _isSelected;
 
         internal Book _book;
 

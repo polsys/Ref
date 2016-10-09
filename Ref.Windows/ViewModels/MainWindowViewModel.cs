@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Ref.Windows.Models;
 
 namespace Ref.Windows.ViewModels
@@ -51,7 +50,7 @@ namespace Ref.Windows.ViewModels
 
             // If the book was being added, cancel should result in the book getting destroyed
             if (!Catalogue.Entries.Contains(SelectedEntry))
-                SelectedEntry = null;
+                SelectEntry(null);
         }
 
         /// <summary>
@@ -64,7 +63,13 @@ namespace Ref.Windows.ViewModels
 
             // Adding the book
             if (!Catalogue.Entries.Contains(SelectedEntry))
+            {
                 Catalogue.AddBook(SelectedEntry);
+                // Change the selection to the new book
+                // WPF makes sure that the last entry gets deselected
+                // TODO: Do not actually depend on that
+                SelectedEntry.IsSelected = true;
+            }
         }
 
         /// <summary>
@@ -97,7 +102,7 @@ namespace Ref.Windows.ViewModels
             // If an edit is in progress, ask what to do
             if (ShouldCancelBecauseOfEdit())
                 return;
-
+            
             SelectedEntry = entry;
         }
 

@@ -21,6 +21,7 @@ namespace Polsys.Ref
             _viewModel.RemovingEntry += RemovingEntryHandler;
             DataContext = _viewModel;
             catalogueTreeView.Items.SortDescriptions.Add(new SortDescription("Author", ListSortDirection.Ascending));
+            catalogueTreeView.Items.SortDescriptions.Add(new SortDescription("Title", ListSortDirection.Ascending));
         }
 
         private MessageBoxResult DisruptingEditHandler()

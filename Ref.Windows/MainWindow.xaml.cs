@@ -17,6 +17,7 @@ namespace Ref.Windows
 
             _viewModel = new MainWindowViewModel();
             _viewModel.DisruptingEdit += DisruptingEditHandler;
+            _viewModel.RemovingEntry += RemovingEntryHandler;
             _viewModel.Catalogue.Entries.Add(new BookViewModel(new Models.Book() { Author = "ads", Title="ADS" }));
             _viewModel.Catalogue.Entries.Add(new BookViewModel(new Models.Book() { Author = "dada", Title = "Dadaism" }));
             DataContext = _viewModel;
@@ -25,6 +26,11 @@ namespace Ref.Windows
         private MessageBoxResult DisruptingEditHandler()
         {
             return MessageBox.Show("Do you want to save the edit in progress?", "Ref", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+        }
+
+        private MessageBoxResult RemovingEntryHandler()
+        {
+            return MessageBox.Show("Permanently remove \"" + _viewModel.SelectedEntry.Title + "\"?", "Ref", MessageBoxButton.YesNo, MessageBoxImage.Question);
         }
 
         private void catalogueTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -36,7 +42,8 @@ namespace Ref.Windows
                 EventHandler handler = null; // null because this must be initialized for the lambda
                 handler = (object s, EventArgs args) =>
                 {
-                    _viewModel.SelectedEntry.IsSelected = true;
+                    if (_viewModel.SelectedEntry != null)
+                        _viewModel.SelectedEntry.IsSelected = true;
                     catalogueTreeView.LayoutUpdated -= handler;
                 };
                 catalogueTreeView.LayoutUpdated += handler;
@@ -61,6 +68,11 @@ namespace Ref.Windows
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.EditSelected();
+        }
+
+        private void removeEntryButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.RemoveSelected();
         }
     }
 }

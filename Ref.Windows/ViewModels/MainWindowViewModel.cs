@@ -23,13 +23,21 @@ namespace Ref.Windows.ViewModels
         }
         private BookViewModel _selectedEntry;
 
-        // TODO: Replace with platform-neutral enum
+        // TODO: Replace with platform-neutral enums
+        public delegate MessageBoxResult YesNoCallback();
         public delegate MessageBoxResult YesNoCancelCallback();
 
         /// <summary>
         /// Raised when another action is initiated while edit is in progress.
+        /// The callback should ask the user whether to apply the edit.
         /// </summary>
         public event YesNoCancelCallback DisruptingEdit;
+
+        /// <summary>
+        /// Raised before removing an entry.
+        /// The callback should confirm that the removal is intentional.
+        /// </summary>
+        public event YesNoCallback RemovingEntry;
 
         /// <summary>
         /// Constructs a MainWindowViewModel with an empty catalogue.
@@ -92,6 +100,24 @@ namespace Ref.Windows.ViewModels
         public void EditSelected()
         {
             SelectedEntry.Edit();
+        }
+
+        /// <summary>
+        /// Permanently removes the selected entry from the catalogue.
+        /// </summary>
+        public void RemoveSelected()
+        {
+            if (ShouldCancelBecauseOfEdit())
+                return;
+
+            // This crashes if there is no handler associated
+            if (RemovingEntry() == MessageBoxResult.Yes)
+            {
+                // Null out SelectedEntry first since WPF will react instantly to RemoveBook
+                var entry = SelectedEntry;
+                SelectedEntry = null;
+                Catalogue.RemoveBook(entry);
+            }
         }
 
         /// <summary>

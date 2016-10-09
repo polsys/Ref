@@ -32,5 +32,19 @@ namespace Ref.Windows.Tests.ViewModels
             Assert.That(catalogueVM.Entries, Has.Exactly(1).InstanceOf<BookViewModel>());
             Assert.That(catalogue.Entries, Has.Exactly(1).InstanceOf<Book>());
         }
+
+        [Test]
+        public void RemoveBook_RemovesBook()
+        {
+            var catalogue = new Catalogue();
+            var catalogueVM = new CatalogueViewModel(catalogue);
+            var book = new BookViewModel(new Book());
+            catalogueVM.AddBook(book);
+
+            catalogueVM.RemoveBook(book);
+
+            Assert.That(catalogueVM.Entries, Is.Empty);
+            Assert.That(catalogue.Entries, Is.Empty);
+        }
     }
 }

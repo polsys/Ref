@@ -20,7 +20,7 @@
         <!-- Button related to the tree view -->
         <StackPanel Orientation="Horizontal">
             <Button Name="addEntryButton" Content="Add" Click="addEntryButton_Click" />
-            <Button Name="removeEntryButton" Content="Remove" />
+            <Button Name="removeEntryButton" Content="Remove" Click="removeEntryButton_Click" />
         </StackPanel>
         
         <!-- The tree view -->

@@ -142,6 +142,48 @@ namespace Ref.Windows.Tests.ViewModels
         }
 
         [Test]
+        public void RemoveSelected_AsksIfEditing()
+        {
+            var vm = new MainWindowViewModel();
+            vm.DisruptingEdit += () => { return MessageBoxResult.Cancel; };
+            var bookVM = new BookViewModel(CreateCrackingMathematics());
+            vm.Catalogue.AddBook(bookVM);
+            vm.SelectEntry(bookVM);
+            vm.EditSelected();
+
+            // The remove operation must be canceled
+            vm.RemoveSelected();
+            Assert.That(vm.Catalogue.Entries, Has.Exactly(1).InstanceOf<BookViewModel>());
+        }
+
+        [Test]
+        public void RemoveSelected_CancelsRemove()
+        {
+            var vm = new MainWindowViewModel();
+            var bookVM = new BookViewModel(CreateMakeAndDo());
+            vm.Catalogue.AddBook(bookVM);
+            vm.SelectEntry(bookVM);
+
+            vm.RemovingEntry += () => { return MessageBoxResult.No; };
+            vm.RemoveSelected();
+            Assert.That(vm.Catalogue.Entries, Has.Exactly(1).InstanceOf<BookViewModel>());
+        }
+
+        [Test]
+        public void RemoveSelected_RemovesFromCatalogue()
+        {
+            var vm = new MainWindowViewModel();
+            var bookVM = new BookViewModel(CreateMakeAndDo());
+            vm.Catalogue.AddBook(bookVM);
+            vm.SelectEntry(bookVM);
+
+            vm.RemovingEntry += () => { return MessageBoxResult.Yes; };
+            vm.RemoveSelected();
+            Assert.That(vm.Catalogue.Entries, Is.Empty);
+            Assert.That(vm.SelectedEntry, Is.Null);
+        }
+
+        [Test]
         public void SelectEntry_AsksAndAppliesPendingEdit()
         {
             var vm = new MainWindowViewModel();

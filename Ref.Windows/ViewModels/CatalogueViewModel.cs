@@ -35,5 +35,15 @@ namespace Ref.Windows.ViewModels
             _catalogue.Entries.Add(book._book);
             Entries.Add(book);
         }
+
+        /// <summary>
+        /// Removes the specified book from the catalogue.
+        /// </summary>
+        /// <param name="book">The book to remove.</param>
+        public void RemoveBook(BookViewModel book)
+        {
+            _catalogue.Entries.Remove(book._book);
+            Entries.Remove(book);
+        }
     }
 }

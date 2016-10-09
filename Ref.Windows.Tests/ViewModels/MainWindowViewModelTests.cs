@@ -21,7 +21,7 @@ namespace Ref.Windows.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(new Book() { Title = "Nice Name" });
-            vm.Catalogue.Entries.Add(bookVM);
+            vm.Catalogue.AddBook(bookVM);
 
             vm.SelectEntry(bookVM);
             vm.EditSelected();
@@ -37,7 +37,7 @@ namespace Ref.Windows.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(new Book() { Title = "Nice Name" });
-            vm.Catalogue.Entries.Add(bookVM);
+            vm.Catalogue.AddBook(bookVM);
 
             vm.SelectEntry(bookVM);
             vm.EditSelected();
@@ -53,7 +53,7 @@ namespace Ref.Windows.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(CreateMakeAndDo());
-            vm.Catalogue.Entries.Add(bookVM);
+            vm.Catalogue.AddBook(bookVM);
             vm.SelectEntry(bookVM);
             vm.EditSelected();
 
@@ -105,7 +105,7 @@ namespace Ref.Windows.Tests.ViewModels
 
             var vm = new MainWindowViewModel();
             var book1 = new BookViewModel(CreateMakeAndDo());
-            vm.Catalogue.Entries.Add(book1);
+            vm.Catalogue.AddBook(book1);
             vm.SelectEntry(book1);
 
             vm.CreateBook();
@@ -132,7 +132,7 @@ namespace Ref.Windows.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(new Book() { Title = "Nice Name" });
-            vm.Catalogue.Entries.Add(bookVM);
+            vm.Catalogue.AddBook(bookVM);
 
             vm.SelectEntry(bookVM);
             Assert.That(bookVM.IsReadOnly, Is.True);
@@ -149,9 +149,9 @@ namespace Ref.Windows.Tests.ViewModels
 
             // Set up: have two books and edit one of them
             var book1 = new BookViewModel(CreateMakeAndDo());
-            vm.Catalogue.Entries.Add(book1);
+            vm.Catalogue.AddBook(book1);
             var book2 = new BookViewModel(CreateCrackingMathematics());
-            vm.Catalogue.Entries.Add(book2);
+            vm.Catalogue.AddBook(book2);
             vm.SelectEntry(book1);
             vm.EditSelected();
             book1.Author = "@standupmaths";
@@ -172,9 +172,9 @@ namespace Ref.Windows.Tests.ViewModels
 
             // Set up: have two books and edit one of them
             var book1 = new BookViewModel(CreateMakeAndDo());
-            vm.Catalogue.Entries.Add(book1);
+            vm.Catalogue.AddBook(book1);
             var book2 = new BookViewModel(CreateCrackingMathematics());
-            vm.Catalogue.Entries.Add(book2);
+            vm.Catalogue.AddBook(book2);
             vm.SelectEntry(book1);
             vm.EditSelected();
             book1.Author = "@standupmaths";
@@ -195,9 +195,9 @@ namespace Ref.Windows.Tests.ViewModels
 
             // Set up: have two books and edit one of them
             var book1 = new BookViewModel(CreateMakeAndDo());
-            vm.Catalogue.Entries.Add(book1);
+            vm.Catalogue.AddBook(book1);
             var book2 = new BookViewModel(CreateCrackingMathematics());
-            vm.Catalogue.Entries.Add(book2);
+            vm.Catalogue.AddBook(book2);
             vm.SelectEntry(book1);
             vm.EditSelected();
             book1.Author = "@standupmaths";
@@ -233,7 +233,7 @@ namespace Ref.Windows.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var entry = new BookViewModel(new Book() { Title = "Test 1" });
-            vm.Catalogue.Entries.Add(entry);
+            vm.Catalogue.AddBook(entry);
 
             // Simultaneously check that SelectEntry returns true and raises the event
             TestUtility.AssertRaisesPropertyChanged(vm, () => {

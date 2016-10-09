@@ -18,8 +18,6 @@ namespace Ref.Windows
             _viewModel = new MainWindowViewModel();
             _viewModel.DisruptingEdit += DisruptingEditHandler;
             _viewModel.RemovingEntry += RemovingEntryHandler;
-            _viewModel.Catalogue.Entries.Add(new BookViewModel(new Models.Book() { Author = "ads", Title="ADS" }));
-            _viewModel.Catalogue.Entries.Add(new BookViewModel(new Models.Book() { Author = "dada", Title = "Dadaism" }));
             DataContext = _viewModel;
         }
 

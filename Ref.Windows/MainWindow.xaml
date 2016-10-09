@@ -20,7 +20,30 @@
         <!-- Button related to the tree view -->
         <StackPanel Orientation="Horizontal">
             <Button Name="addEntryButton" Content="Add" Click="addEntryButton_Click" />
-            <Button Name="removeEntryButton" Content="Remove" Click="removeEntryButton_Click" />
+            <Button Name="removeEntryButton" Content="Remove" Click="removeEntryButton_Click">
+                <!-- Disable the Remove button if there is nothing selected -->
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedEntry}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <!-- Disable this panel entirely if the edit mode is enabled -->
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="IsEnabled" Value="True" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedEntry.IsReadOnly}" Value="False">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
         </StackPanel>
         
         <!-- The tree view -->
@@ -49,9 +72,13 @@
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Visibility" Value="Visible" />
+                        <Setter Property="IsEnabled" Value="True" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding SelectedEntry.IsReadOnly}" Value="False">
                                 <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedEntry}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

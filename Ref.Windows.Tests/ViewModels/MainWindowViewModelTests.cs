@@ -428,7 +428,7 @@ namespace Polsys.Ref.Tests.ViewModels
             return new Page()
             {
                 Notes = "Technically, the unknot is not not a knot, it's a trivial knot.",
-                Pages = "165",
+                PageRange = "165",
                 Title = "On knots"
             };
         }

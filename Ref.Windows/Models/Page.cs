@@ -13,7 +13,7 @@
         /// <summary>
         /// Gets or sets the page range containing this snippet.
         /// </summary>
-        public string Pages { get; set; }
+        public string PageRange { get; set; }
 
         /// <summary>
         /// Gets or sets the title of this snippet.

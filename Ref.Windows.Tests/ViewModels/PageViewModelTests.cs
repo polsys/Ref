@@ -13,7 +13,7 @@ namespace Polsys.Ref.Tests.ViewModels
             var vm = new PageViewModel(page);
 
             Assert.That(vm.Notes, Is.EqualTo(page.Notes));
-            Assert.That(vm.Pages, Is.EqualTo(page.Pages));
+            Assert.That(vm.PageRange, Is.EqualTo(page.PageRange));
             Assert.That(vm.Title, Is.EqualTo(page.Title));
         }
 
@@ -22,13 +22,13 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new PageViewModel(CreateOnElements());
             vm.Edit();
-            vm.Pages = "34--37";
+            vm.PageRange = "34--37";
 
             TestUtility.AssertRaisesPropertyChanged(vm, () => vm.Cancel(), "Pages");
 
             Assert.That(vm.IsReadOnly, Is.True);
-            Assert.That(vm.Pages, Is.EqualTo("34"));
-            Assert.That(vm._page.Pages, Is.EqualTo("34"));
+            Assert.That(vm.PageRange, Is.EqualTo("34"));
+            Assert.That(vm._page.PageRange, Is.EqualTo("34"));
         }
 
         [Test]
@@ -36,12 +36,12 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new PageViewModel(CreateOnElements());
             vm.Edit();
-            vm.Pages = "34--37";
+            vm.PageRange = "34--37";
             vm.Commit();
 
             Assert.That(vm.IsReadOnly, Is.True);
-            Assert.That(vm.Pages, Is.EqualTo("34--37"));
-            Assert.That(vm._page.Pages, Is.EqualTo("34--37"));
+            Assert.That(vm.PageRange, Is.EqualTo("34--37"));
+            Assert.That(vm._page.PageRange, Is.EqualTo("34--37"));
         }
 
         private static Page CreateOnElements()
@@ -49,7 +49,7 @@ namespace Polsys.Ref.Tests.ViewModels
             return new Page()
             {
                 Notes = "[Euclid's Elements] was the Basic Maths For Dummies of its day[...]",
-                Pages = "34",
+                PageRange = "34",
                 Title = "On Elements"
             };
         }

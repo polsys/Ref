@@ -187,7 +187,7 @@ namespace Polsys.Ref.Tests.ViewModels
             {
                 Notes = @"'Good, he didn't have enough imagination to become a mathematician.'
 -- [David] Hilbert, on hearing a student had dropped out to become a poet.",
-                Pages = "207",
+                PageRange = "207",
                 Title = "Hilbert Quote"
             };
         }
@@ -198,7 +198,7 @@ namespace Polsys.Ref.Tests.ViewModels
             {
                 Notes = "There's a joke in maths that everything is named after the second person to discover it, " + 
                 "or else nearly everything would be named after Leonard Euler.",
-                Pages = "164",
+                PageRange = "164",
                 Title = "On Euler"
             };
         }

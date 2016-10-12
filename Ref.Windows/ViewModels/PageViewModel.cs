@@ -12,13 +12,13 @@ namespace Polsys.Ref.ViewModels
             get { return _notes; }
             set { SetProperty(ref _notes, value, nameof(Notes)); }
         }
-        public string Pages
+        public string PageRange
         {
-            get { return _pages; }
-            set { SetProperty(ref _pages, value, nameof(Pages)); }
+            get { return _pageRange; }
+            set { SetProperty(ref _pageRange, value, nameof(PageRange)); }
         }
         private string _notes;
-        private string _pages;
+        private string _pageRange;
 
         internal Page _page;
         internal BookViewModel _parent;
@@ -49,7 +49,7 @@ namespace Polsys.Ref.ViewModels
         public override void Commit()
         {
             _page.Notes = Notes;
-            _page.Pages = Pages;
+            _page.PageRange = PageRange;
             _page.Title = Title;
             IsReadOnly = true;
         }
@@ -57,7 +57,7 @@ namespace Polsys.Ref.ViewModels
         private void CopyPropertiesFromModel()
         {
             Notes = _page.Notes;
-            Pages = _page.Pages;
+            PageRange = _page.PageRange;
             Title = _page.Title;
         }
     }

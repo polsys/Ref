@@ -9,7 +9,7 @@ namespace Polsys.Ref.ViewModels
     internal class MainWindowViewModel : ViewModelBase
     {
         public CatalogueViewModel Catalogue { get; }
-        public BookViewModel SelectedEntry
+        public EntryViewModelBase SelectedEntry
         {
             get { return _selectedEntry; }
             set
@@ -21,7 +21,7 @@ namespace Polsys.Ref.ViewModels
                 }
             }
         }
-        private BookViewModel _selectedEntry;
+        private EntryViewModelBase _selectedEntry;
 
         // TODO: Replace with platform-neutral enums
         public delegate MessageBoxResult YesNoCallback();
@@ -49,6 +49,22 @@ namespace Polsys.Ref.ViewModels
         }
 
         /// <summary>
+        /// Adds a new page to the selected entry and selects it for editing.
+        /// If a page is currently selected, the page is added to its parent.
+        /// </summary>
+        public void AddPage()
+        {
+            if (ShouldCancelBecauseOfEdit())
+                return;
+
+            BookViewModel parent = SelectedEntry as BookViewModel;
+            if (SelectedEntry is PageViewModel)
+                parent = ((PageViewModel)SelectedEntry)._parent;
+            SelectedEntry = new PageViewModel(new Page(), parent);
+            SelectedEntry.Edit();
+        }
+
+        /// <summary>
         /// Cancels the current edit and stops editing.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if not editing.</exception>
@@ -56,9 +72,21 @@ namespace Polsys.Ref.ViewModels
         {
             SelectedEntry.Cancel();
 
-            // If the book was being added, cancel should result in the book getting destroyed
-            if (!Catalogue.Entries.Contains(SelectedEntry))
-                SelectEntry(null);
+            // If an entry was being added, cancel should result in it getting destroyed
+            // This is done by dropping the reference
+            if (SelectedEntry is BookViewModel)
+            {
+                var entryAsBook = SelectedEntry as BookViewModel;
+                if (!Catalogue.Entries.Contains(entryAsBook))
+                    SelectEntry(null);
+            }
+            else if (SelectedEntry is PageViewModel)
+            {
+                var entryAsPage = SelectedEntry as PageViewModel;
+                // Select the parent entry
+                if (!entryAsPage._parent.Pages.Contains(entryAsPage))
+                    SelectEntry(entryAsPage._parent);
+            }
         }
 
         /// <summary>
@@ -70,13 +98,27 @@ namespace Polsys.Ref.ViewModels
             SelectedEntry.Commit();
 
             // Adding the book
-            if (!Catalogue.Entries.Contains(SelectedEntry))
+            if (SelectedEntry is BookViewModel)
             {
-                Catalogue.AddBook(SelectedEntry);
-                // Change the selection to the new book
-                // WPF makes sure that the last entry gets deselected
-                // TODO: Do not actually depend on that
-                SelectedEntry.IsSelected = true;
+                var entryAsBook = SelectedEntry as BookViewModel;
+                if (!Catalogue.Entries.Contains(entryAsBook))
+                {
+                    Catalogue.AddBook(entryAsBook);
+                    // Change the selection to the new book
+                    // WPF makes sure that the last entry gets deselected
+                    // TODO: Do not actually depend on that
+                    SelectedEntry.IsSelected = true;
+                }
+            }
+            else if (SelectedEntry is PageViewModel)
+            {
+                var entryAsPage = SelectedEntry as PageViewModel;
+                if (!entryAsPage._parent.Pages.Contains(entryAsPage))
+                {
+                    entryAsPage._parent.AddPage(entryAsPage);
+                    // See above comment
+                    SelectedEntry.IsSelected = true;
+                }
             }
         }
 
@@ -114,9 +156,18 @@ namespace Polsys.Ref.ViewModels
             if (RemovingEntry() == MessageBoxResult.Yes)
             {
                 // Null out SelectedEntry first since WPF will react instantly to RemoveBook
-                var entry = SelectedEntry;
-                SelectedEntry = null;
-                Catalogue.RemoveBook(entry);
+                if (SelectedEntry is BookViewModel)
+                {
+                    var entry = SelectedEntry as BookViewModel;
+                    SelectedEntry = null;
+                    Catalogue.RemoveBook(entry);
+                }
+                else if (SelectedEntry is PageViewModel)
+                {
+                    var entry = SelectedEntry as PageViewModel;
+                    SelectedEntry = entry._parent;
+                    entry._parent.RemovePage(entry);
+                }
             }
         }
 
@@ -126,7 +177,7 @@ namespace Polsys.Ref.ViewModels
         /// <returns>
         /// True if the selection was changed; false if it was not.
         /// </returns>
-        public bool SelectEntry(BookViewModel entry)
+        public bool SelectEntry(EntryViewModelBase entry)
         {
             // If the selection did not change, return
             if (entry == SelectedEntry)

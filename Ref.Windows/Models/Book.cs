@@ -1,4 +1,6 @@
-﻿namespace Polsys.Ref.Models
+﻿using System.Collections.Generic;
+
+namespace Polsys.Ref.Models
 {
     /// <summary>
     /// Represents a single book.
@@ -29,5 +31,15 @@
         /// The year this book was published in.
         /// </summary>
         public string Year { get; set; }
+
+        /// <summary>
+        /// The list of pages in this book.
+        /// </summary>
+        public IList<Page> Pages { get; set; }
+
+        public Book()
+        {
+            Pages = new List<Page>();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Polsys.Ref.Models;
 
 namespace Polsys.Ref.ViewModels
@@ -6,7 +7,7 @@ namespace Polsys.Ref.ViewModels
     /// <summary>
     /// The View Model for <see cref="Book"/>.
     /// </summary>
-    internal class BookViewModel : ViewModelBase
+    internal class BookViewModel : EntryViewModelBase
     {
         // When adding properties, remember to add them to
         // the reset and commit routines as well!
@@ -25,11 +26,6 @@ namespace Polsys.Ref.ViewModels
             get { return _publisher; }
             set { SetProperty(ref _publisher, value, nameof(Publisher)); }
         }
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value, nameof(Title)); }
-        }
         public string Year
         {
             get { return _year; }
@@ -38,42 +34,9 @@ namespace Polsys.Ref.ViewModels
         private string _author;
         private string _key;
         private string _publisher;
-        private string _title;
         private string _year;
 
-        /// <summary>
-        /// Gets whether this entry is read-only or editable.
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get { return _isReadOnly; }
-            private set
-            {
-                if (_isReadOnly != value)
-                {
-                    _isReadOnly = value;
-                    NotifyPropertyChanged(nameof(IsReadOnly));
-                }
-            }
-        }
-        private bool _isReadOnly;
-
-        /// <summary>
-        /// Gets or sets whether this is the currently selected item.
-        /// </summary>
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-            set
-            {
-                if (_isSelected != value)
-                {
-                    _isSelected = value;
-                    NotifyPropertyChanged(nameof(IsSelected));
-                }
-            }
-        }
-        private bool _isSelected;
+        public ObservableCollection<PageViewModel> Pages { get; private set; }
 
         internal Book _book;
 
@@ -84,15 +47,30 @@ namespace Polsys.Ref.ViewModels
         public BookViewModel(Book book)
         {
             _book = book;
+
+            // Copy the properties and pages
             CopyPropertiesFromBook();
-            _isReadOnly = true;
+            Pages = new ObservableCollection<PageViewModel>();
+            foreach (var page in _book.Pages)
+                Pages.Add(new PageViewModel(page));
+            IsReadOnly = true;
         }
 
         /// <summary>
-        /// Cancels the pending changes and resets the properties to original values.
+        /// Adds the specified page to the book.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown if <see cref="IsReadOnly"/> is true.</exception>
-        public void Cancel()
+        /// <param name="pageViewModel">The view model of the page to add.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="pageViewModel"/> is null.</exception>
+        public void AddPage(PageViewModel pageViewModel)
+        {
+            if (pageViewModel == null)
+                throw new ArgumentNullException(nameof(pageViewModel));
+
+            _book.Pages.Add(pageViewModel._page);
+            Pages.Add(pageViewModel);
+        }
+        
+        public override void Cancel()
         {
             if (IsReadOnly)
                 throw new InvalidOperationException("Not in edit mode.");
@@ -101,11 +79,7 @@ namespace Polsys.Ref.ViewModels
             IsReadOnly = true;
         }
 
-        /// <summary>
-        /// Commits the changed properties to the <see cref="Book"/> model.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown if <see cref="IsReadOnly"/> is true.</exception>
-        public void Commit()
+        public override void Commit()
         {
             if (IsReadOnly)
                 throw new InvalidOperationException("Not in edit mode.");
@@ -120,15 +94,13 @@ namespace Polsys.Ref.ViewModels
         }
 
         /// <summary>
-        /// Makes this book editable.
+        /// Removes the specified page from the book.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown if <see cref="IsReadOnly"/> is already false.</exception>
-        public void Edit()
+        /// <param name="pageViewModel">The view model of the page to remove.</param>
+        public void RemovePage(PageViewModel pageViewModel)
         {
-            if (!IsReadOnly)
-                throw new InvalidOperationException("Already in edit mode.");
-
-            IsReadOnly = false;
+            Pages.Remove(pageViewModel);
+            _book.Pages.Remove(pageViewModel._page);
         }
 
         private void CopyPropertiesFromBook()
@@ -138,18 +110,6 @@ namespace Polsys.Ref.ViewModels
             Publisher = _book.Publisher;
             Title = _book.Title;
             Year = _book.Year;
-        }
-
-        private void SetProperty(ref string property, string value, string propertyName)
-        {
-            if (property != value)
-            {
-                if (IsReadOnly)
-                    throw new InvalidOperationException("Not in edit mode.");
-
-                property = value;
-                NotifyPropertyChanged(propertyName);
-            }
         }
     }
 }

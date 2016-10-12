@@ -22,6 +22,58 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
+        public void Ctor_CopiesPages()
+        {
+            var book = CreateCrackingMathematics();
+            book.Pages.Add(CreateOnEuler());
+            book.Pages.Add(CreateHilbertQuote());
+
+            var vm = new BookViewModel(book);
+            Assert.That(vm.Pages.Count, Is.EqualTo(2));
+            Assert.That(vm.Pages[0].Title, Is.EqualTo("On Euler"));
+            Assert.That(vm.Pages[1].Title, Is.EqualTo("Hilbert Quote"));
+        }
+
+        [Test]
+        public void AddPage_AddsPage()
+        {
+            var book = CreateCrackingMathematics();
+            var vm = new BookViewModel(book);
+            var page = new PageViewModel(CreateHilbertQuote());
+
+            Assert.That(() => vm.AddPage(page), Throws.Nothing);
+            Assert.That(vm.Pages, Has.Exactly(1).InstanceOf<PageViewModel>());
+            Assert.That(vm.Pages[0].Title, Is.EqualTo("Hilbert Quote"));
+            Assert.That(book.Pages, Has.Exactly(1).InstanceOf<Page>());
+            Assert.That(book.Pages[0].Title, Is.EqualTo("Hilbert Quote"));
+        }
+
+        [Test]
+        public void AddPage_NotAffectedByCancel()
+        {
+            // Editing properties and adding pages are separate operations,
+            // and must not affect each other
+
+            var book = CreateCrackingMathematics();
+            var vm = new BookViewModel(book);
+            var page = new PageViewModel(CreateHilbertQuote());
+
+            vm.Edit();
+            vm.AddPage(page);
+            vm.Cancel();
+
+            Assert.That(vm.Pages, Has.Exactly(1).InstanceOf<PageViewModel>());
+            Assert.That(vm.Pages[0].Title, Is.EqualTo("Hilbert Quote"));
+        }
+
+        [Test]
+        public void AddPage_ThrowsIfNull()
+        {
+            var vm = new BookViewModel(CreateCrackingMathematics());
+            Assert.That(() => vm.AddPage(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
         public void Cancel_ResetsProperties()
         {
             var vm = new BookViewModel(CreateCrackingMathematics());
@@ -104,6 +156,18 @@ namespace Polsys.Ref.Tests.ViewModels
 
             Assert.That(() => { vm.Author = "@icecolbeveridge"; }, Throws.InvalidOperationException);
         }
+
+        [Test]
+        public void RemovePage_RemovesPage()
+        {
+            var vm = new BookViewModel(CreateCrackingMathematics());
+            var page = new PageViewModel(CreateHilbertQuote());
+            vm.AddPage(page);
+
+            Assert.That(() => vm.RemovePage(page), Throws.Nothing);
+            Assert.That(vm.Pages, Is.Empty);
+            Assert.That(vm._book.Pages, Is.Empty);
+        }
         
         private static Book CreateCrackingMathematics()
         {
@@ -114,6 +178,28 @@ namespace Polsys.Ref.Tests.ViewModels
                 Publisher = "Octopus Books",
                 Title = "Cracking Mathematics",
                 Year = "2016"
+            };
+        }
+
+        private static Page CreateHilbertQuote()
+        {
+            return new Page()
+            {
+                Notes = @"'Good, he didn't have enough imagination to become a mathematician.'
+-- [David] Hilbert, on hearing a student had dropped out to become a poet.",
+                Pages = "207",
+                Title = "Hilbert Quote"
+            };
+        }
+
+        private static Page CreateOnEuler()
+        {
+            return new Page()
+            {
+                Notes = "There's a joke in maths that everything is named after the second person to discover it, " + 
+                "or else nearly everything would be named after Leonard Euler.",
+                Pages = "164",
+                Title = "On Euler"
             };
         }
     }

@@ -36,7 +36,7 @@ namespace Polsys.Ref
 
         private void catalogueTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (!_viewModel.SelectEntry((BookViewModel)e.NewValue))
+            if (!_viewModel.SelectEntry((EntryViewModelBase)e.NewValue))
             {
                 // SelectEntry returned false so we must roll back
                 // Apparently this should be done in the LayoutUpdated event (http://stackoverflow.com/a/4029075)
@@ -54,6 +54,11 @@ namespace Polsys.Ref
         private void addEntryButton_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.CreateBook();
+        }
+
+        private void addPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddPage();
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

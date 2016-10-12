@@ -17,6 +17,91 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
+        public void AddPage_AddsPageToSelectedPagesParent()
+        {
+            var vm = new MainWindowViewModel();
+            var book = new BookViewModel(CreateMakeAndDo());
+            var page = new PageViewModel(CreateOnKnotsPage());
+            page._parent = book;
+            book.AddPage(page);
+            vm.Catalogue.AddBook(book);
+
+            // Select the existing page and then add a new page
+            vm.SelectEntry(page);
+            Assert.That(() => vm.AddPage(), Throws.Nothing);
+            Assert.That(vm.SelectedEntry, Is.InstanceOf<PageViewModel>().And.Not.EqualTo(page));
+            Assert.That(((PageViewModel)vm.SelectedEntry)._parent, Is.SameAs(book));
+        }
+
+        [Test]
+        public void AddPage_AsksIfEditing()
+        {
+            var vm = new MainWindowViewModel();
+            bool eventFired = false;
+            vm.DisruptingEdit += () => {
+
+                eventFired = true;
+                return MessageBoxResult.Cancel;
+            };
+            var bookVM = new BookViewModel(CreateMakeAndDo());
+            vm.Catalogue.AddBook(bookVM);
+            vm.SelectEntry(bookVM);
+            vm.EditSelected();
+
+            Assert.That(() => vm.AddPage(), Throws.Nothing);
+            Assert.That(eventFired, Is.True);
+            Assert.That(vm.SelectedEntry, Is.SameAs(bookVM));
+            Assert.That(bookVM.IsReadOnly, Is.False);
+        }
+
+        [Test]
+        public void AddPage_CancelDiscardsPage()
+        {
+            var vm = new MainWindowViewModel();
+            var bookVM = new BookViewModel(CreateMakeAndDo());
+            vm.Catalogue.AddBook(bookVM);
+            vm.SelectEntry(bookVM);
+
+            vm.AddPage();
+            vm.CancelEdit();
+
+            Assert.That(bookVM.Pages, Is.Empty);
+            Assert.That(vm.SelectedEntry, Is.SameAs(bookVM));
+        }
+
+        [Test]
+        public void AddPage_CommitAddsPage()
+        {
+            var vm = new MainWindowViewModel();
+            var bookVM = new BookViewModel(CreateMakeAndDo());
+            vm.Catalogue.AddBook(bookVM);
+            vm.SelectEntry(bookVM);
+
+            vm.AddPage();
+            vm.SelectedEntry.Title = "Nice Quote";
+            vm.CommitEdit();
+
+            Assert.That(bookVM.Pages, Has.Exactly(1).InstanceOf<PageViewModel>());
+            Assert.That(bookVM.Pages[0].Title, Is.EqualTo("Nice Quote"));
+            Assert.That(vm.SelectedEntry, Is.InstanceOf<PageViewModel>());
+            Assert.That(((PageViewModel)vm.SelectedEntry)._parent, Is.SameAs(bookVM));
+        }
+
+        [Test]
+        public void AddPage_CreatesAndEditsPage()
+        {
+            var vm = new MainWindowViewModel();
+            var bookVM = new BookViewModel(CreateMakeAndDo());
+            vm.Catalogue.AddBook(bookVM);
+            vm.SelectEntry(bookVM);
+
+            vm.AddPage();
+            Assert.That(vm.SelectedEntry, Is.InstanceOf<PageViewModel>());
+            Assert.That(vm.SelectedEntry.IsReadOnly, Is.False);
+            Assert.That(((PageViewModel)vm.SelectedEntry)._parent, Is.SameAs(bookVM));
+        }
+
+        [Test]
         public void CancelEdit_DiscardsChanges()
         {
             var vm = new MainWindowViewModel();
@@ -184,6 +269,23 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
+        public void RemoveSelected_RemovesPage()
+        {
+            var vm = new MainWindowViewModel();
+            vm.RemovingEntry += () => { return MessageBoxResult.Yes; };
+            var book = new BookViewModel(CreateMakeAndDo());
+            var page = new PageViewModel(CreateOnKnotsPage());
+            page._parent = book;
+            book.AddPage(page);
+            vm.Catalogue.AddBook(book);
+
+            vm.SelectEntry(page);
+            Assert.That(() => vm.RemoveSelected(), Throws.Nothing);
+            Assert.That(book.Pages, Is.Empty);
+            Assert.That(vm.SelectedEntry, Is.SameAs(book));
+        }
+
+        [Test]
         public void SelectEntry_AsksAndAppliesPendingEdit()
         {
             var vm = new MainWindowViewModel();
@@ -284,6 +386,19 @@ namespace Polsys.Ref.Tests.ViewModels
             Assert.That(vm.SelectedEntry, Is.SameAs(entry));
         }
 
+        [Test]
+        public void SelectEntry_SelectsPage()
+        {
+            var vm = new MainWindowViewModel();
+            var book = new BookViewModel(CreateMakeAndDo());
+            var page = new PageViewModel(CreateOnKnotsPage());
+            book.AddPage(page);
+            vm.Catalogue.AddBook(book);
+
+            Assert.That(() => vm.SelectEntry(page), Throws.Nothing);
+            Assert.That(vm.SelectedEntry, Is.SameAs(page));
+        }
+
         private static Book CreateCrackingMathematics()
         {
             return new Book()
@@ -305,6 +420,16 @@ namespace Polsys.Ref.Tests.ViewModels
                 Publisher = "Particular Books",
                 Title = "Things to Make and Do in the Fourth Dimension",
                 Year = "2014"
+            };
+        }
+
+        private static Page CreateOnKnotsPage()
+        {
+            return new Page()
+            {
+                Notes = "Technically, the unknot is not not a knot, it's a trivial knot.",
+                Pages = "165",
+                Title = "On knots"
             };
         }
     }

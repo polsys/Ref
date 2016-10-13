@@ -24,7 +24,7 @@ namespace Polsys.Ref.Tests.ViewModels
             vm.Edit();
             vm.PageRange = "34--37";
 
-            TestUtility.AssertRaisesPropertyChanged(vm, () => vm.Cancel(), "Pages");
+            TestUtility.AssertRaisesPropertyChanged(vm, () => vm.Cancel(), "PageRange");
 
             Assert.That(vm.IsReadOnly, Is.True);
             Assert.That(vm.PageRange, Is.EqualTo("34"));

@@ -14,12 +14,22 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+
+        <!-- Main toolbar -->
+        <ToolBar Grid.Row="0" Grid.ColumnSpan="2" ToolBarTray.IsLocked="True">
+            <Button Content="New" Name="newProjectButton" VerticalAlignment="Bottom" Click="newProjectButton_Click" />
+            <Button Content="Open" Name="openProjectButton" Click="openProjectButton_Click" />
+            <Button Content="Save" Name="saveProjectButton" Click="saveProjectButton_Click" />
+            <Button Content="Save as" Name="saveProjectAsButton" Click="saveProjectAsButton_Click" />
+            <Button Content="Export" Name="exportProjectButton" />
+        </ToolBar>
+
         <!-- Button related to the tree view -->
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button Name="addEntryButton" Content="Add" Click="addEntryButton_Click" />
             <Button Name="removeEntryButton" Content="Remove" Click="removeEntryButton_Click">
                 <!-- Disable the Remove button if there is nothing selected -->
@@ -59,9 +69,9 @@
                 </Style>
             </StackPanel.Style>
         </StackPanel>
-        
+
         <!-- The tree view -->
-        <TreeView x:Name="catalogueTreeView" Grid.Column="0" Grid.Row="1" 
+        <TreeView x:Name="catalogueTreeView" Grid.Column="0" Grid.Row="2" 
                   ItemsSource="{Binding Catalogue.Entries}"
                   SelectedItemChanged="catalogueTreeView_SelectedItemChanged" >
             <TreeView.Resources>
@@ -84,9 +94,9 @@
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
-        
+
         <!-- Buttons related to the details panel -->
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
             <!-- This panel is shown in the read only mode -->
             <StackPanel Orientation="Horizontal">
                 <StackPanel.Style>
@@ -105,7 +115,7 @@
                 </StackPanel.Style>
                 <Button Name="editButton" Content="Edit" Padding="4,1" Click="editButton_Click" />
             </StackPanel>
-            
+
             <!-- This panel is shown in the edit mode -->
             <StackPanel Orientation="Horizontal">
                 <StackPanel.Style>
@@ -124,7 +134,7 @@
         </StackPanel>
 
         <!-- The details panel -->
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical" Margin="8,8,4,4" Name="detailsPanel"
+        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical" Margin="8,8,4,4" Name="detailsPanel"
                     DataContext="{Binding SelectedEntry}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -172,7 +182,7 @@
                 <TextBox Visibility="{Binding PageRange, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding PageRange}" IsReadOnly="{Binding IsReadOnly}"
                          Grid.Row="4" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
-                
+
                 <!-- Notes - this is a multiline box -->
                 <TextBlock Text="Notes" Visibility="{Binding Notes, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                            Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
@@ -182,6 +192,5 @@
                          Grid.Row="5" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
             </Grid>
         </StackPanel>
-
     </Grid>
 </Window>

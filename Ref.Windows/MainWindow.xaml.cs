@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using Microsoft.Win32;
 using Polsys.Ref.ViewModels;
 
 namespace Polsys.Ref
@@ -15,13 +16,34 @@ namespace Polsys.Ref
         public MainWindow()
         {
             InitializeComponent();
+            Title = "Untitled - Ref";
 
             _viewModel = new MainWindowViewModel();
+            _viewModel.PropertyChanged += TitleChangeHandler;
             _viewModel.DisruptingEdit += DisruptingEditHandler;
+            _viewModel.DiscardingUnsavedChanges += DiscardingChangesHandler;
             _viewModel.RemovingEntry += RemovingEntryHandler;
+            _viewModel.SelectingOpenFilename += OpenFileHandler;
+            _viewModel.SelectingSaveFilename += SaveFileHandler;
             DataContext = _viewModel;
             catalogueTreeView.Items.SortDescriptions.Add(new SortDescription("Author", ListSortDirection.Ascending));
             catalogueTreeView.Items.SortDescriptions.Add(new SortDescription("Title", ListSortDirection.Ascending));
+        }
+
+        private void TitleChangeHandler(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MainWindowViewModel.ProjectName) || 
+                e.PropertyName == nameof(MainWindowViewModel.IsModified))
+            {
+                var name = _viewModel.ProjectName;
+                if (string.IsNullOrEmpty(name))
+                    name = "Untitled";
+
+                if (_viewModel.IsModified)
+                    name += "*";
+
+                Title = name + " - Ref";
+            }
         }
 
         private MessageBoxResult DisruptingEditHandler()
@@ -29,9 +51,44 @@ namespace Polsys.Ref
             return MessageBox.Show("Do you want to save the edit in progress?", "Ref", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
         }
 
+        private MessageBoxResult DiscardingChangesHandler()
+        {
+            return MessageBox.Show("There are unsaved changes. Do you want to save the project?", "Ref", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+        }
+
         private MessageBoxResult RemovingEntryHandler()
         {
             return MessageBox.Show("Permanently remove \"" + _viewModel.SelectedEntry.Title + "\"?", "Ref", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        }
+
+        private string OpenFileHandler()
+        {
+            var dialog = new OpenFileDialog();
+            dialog.AddExtension = true;
+            dialog.CheckFileExists = true;
+            dialog.ValidateNames = true;
+            dialog.Filter = "Ref Projects|*.refproject";
+
+            var result = dialog.ShowDialog();
+            if (result == true)
+                return dialog.FileName;
+            else
+                return null;
+        }
+
+        private string SaveFileHandler()
+        {
+            var dialog = new SaveFileDialog();
+            dialog.AddExtension = true;
+            dialog.OverwritePrompt = true;
+            dialog.ValidateNames = true;
+            dialog.Filter = "Ref Projects|*.refproject";
+
+            var result = dialog.ShowDialog();
+            if (result == true)
+                return dialog.FileName;
+            else
+                return null;
         }
 
         private void catalogueTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -76,9 +133,40 @@ namespace Polsys.Ref
             _viewModel.EditSelected();
         }
 
+        private void newProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.NewProject();
+        }
+
+        private void openProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_viewModel.OpenProject())
+            {
+                MessageBox.Show("Could not open the project.", "Ref", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
         private void removeEntryButton_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.RemoveSelected();
+        }
+
+        private void saveProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            TrySave(false);
+        }
+
+        private void saveProjectAsButton_Click(object sender, RoutedEventArgs e)
+        {
+            TrySave(true);
+        }
+
+        private void TrySave(bool saveAs)
+        {
+            if (!_viewModel.SaveProject(saveAs))
+            {
+                MessageBox.Show("Could not save project.", "Ref", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Polsys.Ref.ViewModels
     {
         public ObservableCollection<BookViewModel> Entries { get; }
 
-        private Catalogue _catalogue;
+        internal Catalogue _catalogue;
 
         /// <summary>
         /// Constructs a new CatalogueViewModel from the specified <see cref="Catalogue"/>.

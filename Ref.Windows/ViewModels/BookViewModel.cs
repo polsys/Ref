@@ -52,7 +52,7 @@ namespace Polsys.Ref.ViewModels
             CopyPropertiesFromBook();
             Pages = new ObservableCollection<PageViewModel>();
             foreach (var page in _book.Pages)
-                Pages.Add(new PageViewModel(page));
+                Pages.Add(new PageViewModel(page, this));
             IsReadOnly = true;
         }
 

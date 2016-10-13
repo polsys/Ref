@@ -5,7 +5,7 @@ using Polsys.Ref.ViewModels;
 
 namespace Polsys.Ref.Tests.ViewModels
 {
-    class MainWindowViewModelTests
+    partial class MainWindowViewModelTests
     {
         [Test]
         public void Ctor_InitializesProperties()
@@ -13,6 +13,7 @@ namespace Polsys.Ref.Tests.ViewModels
             var vm = new MainWindowViewModel();
 
             Assert.That(vm.Catalogue, Is.Not.Null);
+            Assert.That(vm.ProjectName, Is.Empty);
             Assert.That(vm.SelectedEntry, Is.Null);
         }
 
@@ -85,6 +86,7 @@ namespace Polsys.Ref.Tests.ViewModels
             Assert.That(bookVM.Pages[0].Title, Is.EqualTo("Nice Quote"));
             Assert.That(vm.SelectedEntry, Is.InstanceOf<PageViewModel>());
             Assert.That(((PageViewModel)vm.SelectedEntry)._parent, Is.SameAs(bookVM));
+            Assert.That(vm.IsModified, Is.True);
         }
 
         [Test]
@@ -131,6 +133,7 @@ namespace Polsys.Ref.Tests.ViewModels
 
             Assert.That(bookVM.Title, Is.EqualTo("Great Name"));
             Assert.That(bookVM.IsReadOnly, Is.True);
+            Assert.That(vm.IsModified, Is.True);
         }
 
         [Test]
@@ -177,6 +180,7 @@ namespace Polsys.Ref.Tests.ViewModels
             vm.CommitEdit();
 
             Assert.That(vm.Catalogue.Entries, Has.Exactly(1).With.Property("Title").EqualTo("Nice Book"));
+            Assert.That(vm.IsModified, Is.True);
         }
 
         [Test]
@@ -266,6 +270,7 @@ namespace Polsys.Ref.Tests.ViewModels
             vm.RemoveSelected();
             Assert.That(vm.Catalogue.Entries, Is.Empty);
             Assert.That(vm.SelectedEntry, Is.Null);
+            Assert.That(vm.IsModified, Is.True);
         }
 
         [Test]
@@ -283,6 +288,7 @@ namespace Polsys.Ref.Tests.ViewModels
             Assert.That(() => vm.RemoveSelected(), Throws.Nothing);
             Assert.That(book.Pages, Is.Empty);
             Assert.That(vm.SelectedEntry, Is.SameAs(book));
+            Assert.That(vm.IsModified, Is.True);
         }
 
         [Test]

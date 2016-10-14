@@ -318,7 +318,7 @@ namespace Polsys.Ref.Tests.ViewModels
 
             // Now select the other book
             // Since the handler returned Yes, the edit must be applied before switching
-            Assert.That(vm.SelectEntry(book2), Is.True);
+            Assert.That(vm.SelectEntry(book2), Is.EqualTo(OperationResult.Succeeded));
             Assert.That(book1.IsReadOnly, Is.True);
             Assert.That(book1.Author, Is.EqualTo("@standupmaths"));
             Assert.That(vm.SelectedEntry, Is.SameAs(book2));
@@ -341,7 +341,7 @@ namespace Polsys.Ref.Tests.ViewModels
 
             // Now select the other book
             // Since the handler returned No, the edit must be reverted before switching
-            Assert.That(vm.SelectEntry(book2), Is.True);
+            Assert.That(vm.SelectEntry(book2), Is.EqualTo(OperationResult.Succeeded));
             Assert.That(book1.IsReadOnly, Is.True);
             Assert.That(book1.Author, Is.EqualTo("Parker, Matt"));
             Assert.That(vm.SelectedEntry, Is.SameAs(book2));
@@ -364,7 +364,7 @@ namespace Polsys.Ref.Tests.ViewModels
 
             // Now select the other book
             // Since the handler returned Cancel, there must be no change
-            Assert.That(vm.SelectEntry(book2), Is.False);
+            Assert.That(vm.SelectEntry(book2), Is.EqualTo(OperationResult.Canceled));
             Assert.That(book1.IsReadOnly, Is.False);
             Assert.That(book1.Author, Is.EqualTo("@standupmaths"));
             Assert.That(vm.SelectedEntry, Is.SameAs(book1));
@@ -384,8 +384,9 @@ namespace Polsys.Ref.Tests.ViewModels
             vm.SelectEntry(book);
             vm.EditSelected();
 
-            // This must return false and not raise the event
-            Assert.That(vm.SelectEntry(book), Is.False);
+            // This must not raise the event
+            // The result must be Canceled, since the selection was not applied
+            Assert.That(vm.SelectEntry(book), Is.EqualTo(OperationResult.Canceled));
         }
 
         [Test]
@@ -395,9 +396,9 @@ namespace Polsys.Ref.Tests.ViewModels
             var entry = new BookViewModel(new Book() { Title = "Test 1" });
             vm.Catalogue.AddBook(entry);
 
-            // Simultaneously check that SelectEntry returns true and raises the event
+            // Simultaneously check that SelectEntry succeeds and raises the event
             TestUtility.AssertRaisesPropertyChanged(vm, () => {
-                Assert.That(vm.SelectEntry(entry), Is.True);
+                Assert.That(vm.SelectEntry(entry), Is.EqualTo(OperationResult.Succeeded));
                 }, "SelectedEntry");
             Assert.That(vm.SelectedEntry, Is.SameAs(entry));
         }
@@ -411,7 +412,7 @@ namespace Polsys.Ref.Tests.ViewModels
             book.AddPage(page);
             vm.Catalogue.AddBook(book);
 
-            Assert.That(() => vm.SelectEntry(page), Throws.Nothing);
+            Assert.That(vm.SelectEntry(page), Is.EqualTo(OperationResult.Succeeded));
             Assert.That(vm.SelectedEntry, Is.SameAs(page));
         }
 

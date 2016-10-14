@@ -255,17 +255,17 @@ namespace Polsys.Ref.ViewModels
         /// Exports the catalogue.
         /// </summary>
         /// <returns>True if successful, false if canceled or failed.</returns>
-        public bool ExportCatalogue()
+        public OperationResult ExportCatalogue()
         {
             if (ShouldCancelBecauseOfEdit())
-                return false;
+                return OperationResult.Canceled;
 
             // Crashes if the event is not assigned
             var filename = SelectingExportFilename();
             if (filename == null)
-                return false;
+                return OperationResult.Canceled;
 
-            return SelectedExporter.Export(filename, Catalogue._catalogue);
+            return SelectedExporter.Export(filename, Catalogue._catalogue) ? OperationResult.Succeeded : OperationResult.Failed;
         }
 
         /// <summary>
@@ -288,12 +288,12 @@ namespace Polsys.Ref.ViewModels
         /// Opens a project from the disk.
         /// </summary>
         /// <returns>True if the project was opened, false if canceled or failed.</returns>
-        public bool OpenProject()
+        public OperationResult OpenProject()
         {
             if (ShouldCancelBecauseOfEdit())
-                return false;
+                return OperationResult.Canceled;
             if (ShouldCancelBecauseOfUnsavedChanges())
-                return false;
+                return OperationResult.Canceled;
             
             var filename = SelectingOpenFilename();
             try
@@ -302,20 +302,20 @@ namespace Polsys.Ref.ViewModels
                 {
                     var catalogue = Project.Deserialize(stream);
                     if (catalogue == null)
-                        return false;
+                        return OperationResult.Failed;
 
                     Catalogue = new CatalogueViewModel(catalogue);
                 }
             }
-            catch (ArgumentException) { return false; }
-            catch (IOException) { return false; }
+            catch (ArgumentException) { return OperationResult.Failed; }
+            catch (IOException) { return OperationResult.Failed; }
 
             Filename = filename;
             ProjectName = Path.GetFileNameWithoutExtension(filename);
             IsModified = false;
             SelectedEntry = null;
 
-            return true;
+            return OperationResult.Succeeded;
         }
 
         /// <summary>
@@ -352,17 +352,17 @@ namespace Polsys.Ref.ViewModels
         /// </summary>
         /// <param name="saveAs">If true, a new file name is asked.</param>
         /// <returns>True if the project was saved, false if the save was canceled or failed.</returns>
-        public bool SaveProject(bool saveAs)
+        public OperationResult SaveProject(bool saveAs)
         {
             if (ShouldCancelBecauseOfEdit())
-                return false;
+                return OperationResult.Canceled;
 
             // This crashes if the event is not hooked
             var filename = Filename;
             if (saveAs || string.IsNullOrEmpty(filename))
                 filename = SelectingSaveFilename();
             if (filename == null)
-                return false;
+                return OperationResult.Canceled;
 
             // Open the file stream and serialize
             try
@@ -372,15 +372,15 @@ namespace Polsys.Ref.ViewModels
                     Project.Serialize(stream, Catalogue._catalogue);
                 }
             }
-            catch (ArgumentException) { return false; }
-            catch (IOException) { return false; }
+            catch (ArgumentException) { return OperationResult.Failed; }
+            catch (IOException) { return OperationResult.Failed; }
 
             // After a successful save the filename may be saved for later
             Filename = filename;
             ProjectName = Path.GetFileNameWithoutExtension(filename);
             IsModified = false;
 
-            return true;
+            return OperationResult.Succeeded;
         }
 
         /// <summary>
@@ -389,21 +389,21 @@ namespace Polsys.Ref.ViewModels
         /// <returns>
         /// True if the selection was changed; false if it was not.
         /// </returns>
-        public bool SelectEntry(EntryViewModelBase entry)
+        public OperationResult SelectEntry(EntryViewModelBase entry)
         {
             // If the selection did not change, return
             if (entry == SelectedEntry)
-                return false;
+                return OperationResult.Canceled;
 
             // If an edit is in progress, ask what to do
             if (ShouldCancelBecauseOfEdit())
             {
                 // Roll back the selection
-                return false;
+                return OperationResult.Canceled;
             }
             
             SelectedEntry = entry;
-            return true;
+            return OperationResult.Succeeded;
         }
 
         private bool ShouldCancelBecauseOfEdit()
@@ -438,7 +438,7 @@ namespace Polsys.Ref.ViewModels
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
-                        return !SaveProject(false);
+                        return SaveProject(false) != OperationResult.Succeeded;
                     case MessageBoxResult.No:
                         return false;
                     default:

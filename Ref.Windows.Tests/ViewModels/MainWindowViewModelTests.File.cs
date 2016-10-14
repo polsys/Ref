@@ -40,7 +40,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 };
                 vm.CreateBook();
 
-                Assert.That(vm.ExportCatalogue(), Is.False);
+                Assert.That(vm.ExportCatalogue(), Is.EqualTo(OperationResult.Canceled));
             }
 
             [Test]
@@ -52,7 +52,7 @@ namespace Polsys.Ref.Tests.ViewModels
                     return null;
                 };
 
-                Assert.That(vm.ExportCatalogue(), Is.False);
+                Assert.That(vm.ExportCatalogue(), Is.EqualTo(OperationResult.Canceled));
             }
 
             [Test]
@@ -71,7 +71,7 @@ namespace Polsys.Ref.Tests.ViewModels
                     return filename;
                 };
 
-                Assert.That(vm.ExportCatalogue(), Is.True);
+                Assert.That(vm.ExportCatalogue(), Is.EqualTo(OperationResult.Succeeded));
                 Assert.That(File.Exists(filename));
             }
 
@@ -84,7 +84,7 @@ namespace Polsys.Ref.Tests.ViewModels
                     return "C:\\*.bib";
                 };
 
-                Assert.That(vm.ExportCatalogue(), Is.False);
+                Assert.That(vm.ExportCatalogue(), Is.EqualTo(OperationResult.Failed));
             }
 
             [Test]
@@ -152,7 +152,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 };
                 vm.CreateBook();
 
-                vm.OpenProject();
+                Assert.That(vm.OpenProject(), Is.EqualTo(OperationResult.Canceled));
                 Assert.Fail();
             }
 
@@ -168,7 +168,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 vm.CreateBook();
                 vm.CommitEdit();
 
-                vm.OpenProject();
+                Assert.That(vm.OpenProject(), Is.EqualTo(OperationResult.Canceled));
                 Assert.Fail();
             }
 
@@ -187,8 +187,8 @@ namespace Polsys.Ref.Tests.ViewModels
                 {
                     return filename;
                 };
-                vm.OpenProject();
 
+                Assert.That(vm.OpenProject(), Is.EqualTo(OperationResult.Succeeded));
                 Assert.That(vm.SelectedEntry, Is.Null);
             }
 
@@ -201,7 +201,7 @@ namespace Polsys.Ref.Tests.ViewModels
                     return Path.Combine(ExistingDataFolder, "NewerVersion.refproject");
                 };
 
-                Assert.That(vm.OpenProject(), Is.False);
+                Assert.That(vm.OpenProject(), Is.EqualTo(OperationResult.Failed));
             }
 
             [Test]
@@ -213,7 +213,7 @@ namespace Polsys.Ref.Tests.ViewModels
                     return Path.Combine(ExistingDataFolder, "HighlyNonexistentFile.refproject");
                 };
 
-                Assert.That(vm.OpenProject(), Is.False);
+                Assert.That(vm.OpenProject(), Is.EqualTo(OperationResult.Failed));
             }
 
             [Test]
@@ -228,7 +228,7 @@ namespace Polsys.Ref.Tests.ViewModels
 
                 using (var file = File.Open(filename, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None))
                 {
-                    Assert.That(vm.OpenProject(), Is.False);
+                    Assert.That(vm.OpenProject(), Is.EqualTo(OperationResult.Failed));
                 }
             }
 
@@ -242,7 +242,7 @@ namespace Polsys.Ref.Tests.ViewModels
                     return filename;
                 };
 
-                Assert.That(vm.OpenProject(), Is.True);
+                Assert.That(vm.OpenProject(), Is.EqualTo(OperationResult.Succeeded));
                 Assert.That(vm.Filename, Is.EqualTo(filename));
                 Assert.That(vm.ProjectName, Is.EqualTo("BookWithPage"));
                 Assert.That(vm.IsModified, Is.False);
@@ -281,7 +281,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 };
                 vm.CreateBook();
 
-                vm.SaveProject(false);
+                Assert.That(vm.SaveProject(false), Is.EqualTo(OperationResult.Canceled));
                 Assert.Fail();
             }
 
@@ -294,7 +294,7 @@ namespace Polsys.Ref.Tests.ViewModels
                     return null;
                 };
 
-                Assert.That(vm.SaveProject(false), Is.False);
+                Assert.That(vm.SaveProject(false), Is.EqualTo(OperationResult.Canceled));
             }
 
             [Test]
@@ -306,7 +306,7 @@ namespace Polsys.Ref.Tests.ViewModels
                     return "C:\\**ERROR**";
                 };
 
-                Assert.That(vm.SaveProject(false), Is.False);
+                Assert.That(vm.SaveProject(false), Is.EqualTo(OperationResult.Failed));
             }
 
             [Test]
@@ -321,7 +321,7 @@ namespace Polsys.Ref.Tests.ViewModels
                         return filename;
                     };
 
-                    Assert.That(vm.SaveProject(false), Is.False);
+                    Assert.That(vm.SaveProject(false), Is.EqualTo(OperationResult.Failed));
                 }
             }
 
@@ -350,9 +350,9 @@ namespace Polsys.Ref.Tests.ViewModels
                     return Path.Combine(TempFolder, "SaveRemembersFilename.refproject");
                 };
 
-                vm.SaveProject(false);
+                Assert.That(vm.SaveProject(false), Is.EqualTo(OperationResult.Succeeded));
                 Assert.That(numRaised, Is.EqualTo(1));
-                vm.SaveProject(false);
+                Assert.That(vm.SaveProject(false), Is.EqualTo(OperationResult.Succeeded));
                 Assert.That(numRaised, Is.EqualTo(1));
             }
 
@@ -367,9 +367,9 @@ namespace Polsys.Ref.Tests.ViewModels
                     return Path.Combine(TempFolder, "SaveAsAsksForFilename.refproject");
                 };
 
-                vm.SaveProject(false);
+                Assert.That(vm.SaveProject(false), Is.EqualTo(OperationResult.Succeeded));
                 Assert.That(numRaised, Is.EqualTo(1));
-                vm.SaveProject(true);
+                Assert.That(vm.SaveProject(true), Is.EqualTo(OperationResult.Succeeded));
                 Assert.That(numRaised, Is.EqualTo(2));
             }
 
@@ -389,7 +389,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 vm.CommitEdit(); // Force IsModified to be true
 
                 // ViewModel properties
-                Assert.That(vm.SaveProject(false), Is.True);
+                Assert.That(vm.SaveProject(false), Is.EqualTo(OperationResult.Succeeded));
                 Assert.That(vm.Filename, Is.EqualTo(filename));
                 Assert.That(vm.ProjectName, Is.EqualTo("SavesProject"));
                 Assert.That(vm.IsModified, Is.False);

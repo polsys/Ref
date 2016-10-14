@@ -120,7 +120,7 @@ namespace Polsys.Ref
 
         private void catalogueTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (!_viewModel.SelectEntry((EntryViewModelBase)e.NewValue))
+            if (_viewModel.SelectEntry((EntryViewModelBase)e.NewValue) != OperationResult.Succeeded)
             {
                 // SelectEntry returned false so we must roll back
                 // Apparently this should be done in the LayoutUpdated event (http://stackoverflow.com/a/4029075)
@@ -162,7 +162,7 @@ namespace Polsys.Ref
 
         private void exportProjectButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!_viewModel.ExportCatalogue())
+            if (_viewModel.ExportCatalogue() == OperationResult.Failed)
             {
                 MessageBox.Show("Could not export the project.", "Ref", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -175,7 +175,7 @@ namespace Polsys.Ref
 
         private void openProjectButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!_viewModel.OpenProject())
+            if (_viewModel.OpenProject() == OperationResult.Failed)
             {
                 MessageBox.Show("Could not open the project.", "Ref", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -198,7 +198,7 @@ namespace Polsys.Ref
 
         private void TrySave(bool saveAs)
         {
-            if (!_viewModel.SaveProject(saveAs))
+            if (_viewModel.SaveProject(saveAs) == OperationResult.Failed)
             {
                 MessageBox.Show("Could not save project.", "Ref", MessageBoxButton.OK, MessageBoxImage.Warning);
             }

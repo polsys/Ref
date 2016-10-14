@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows;
 using NUnit.Framework;
+using Polsys.Ref.Export;
 using Polsys.Ref.Models;
 using Polsys.Ref.ViewModels;
 
@@ -27,6 +28,63 @@ namespace Polsys.Ref.Tests.ViewModels
             public void Teardown()
             {
                 Directory.Delete(TempFolder, true);
+            }
+
+            [Test]
+            public void ExportCatalogue_AsksIfEditing()
+            {
+                var vm = new MainWindowViewModel();
+                vm.DisruptingEdit += () =>
+                {
+                    return MessageBoxResult.Cancel;
+                };
+                vm.CreateBook();
+
+                Assert.That(vm.ExportCatalogue(), Is.False);
+            }
+
+            [Test]
+            public void ExportCatalogue_CancelsIfNoFileSelected()
+            {
+                var vm = new MainWindowViewModel();
+                vm.SelectingExportFilename += () =>
+                {
+                    return null;
+                };
+
+                Assert.That(vm.ExportCatalogue(), Is.False);
+            }
+
+            [Test]
+            public void ExportCatalogue_ExportsBibTex()
+            {
+                var filename = Path.Combine(TempFolder, "Export_ExportsBibTex.bib");
+                var vm = new MainWindowViewModel();
+                vm.SelectingExportFilename += () =>
+                {
+                    // Select the BibTeX exporter
+                    foreach (var exporter in vm.Exporters)
+                    {
+                        if (exporter is BibTexExporter)
+                            vm.SelectedExporter = exporter;
+                    }
+                    return filename;
+                };
+
+                Assert.That(vm.ExportCatalogue(), Is.True);
+                Assert.That(File.Exists(filename));
+            }
+
+            [Test]
+            public void ExportCatalogue_FailsIfExporterFails()
+            {
+                var vm = new MainWindowViewModel();
+                vm.SelectingExportFilename += () =>
+                {
+                    return "C:\\*.bib";
+                };
+
+                Assert.That(vm.ExportCatalogue(), Is.False);
             }
 
             [Test]
@@ -72,7 +130,7 @@ namespace Polsys.Ref.Tests.ViewModels
             {
                 var vm = new MainWindowViewModel();
                 vm.ProjectName = "Proj";
-                var book = new BookViewModel(CreateMakeAndDo());
+                var book = new BookViewModel(TestUtility.CreateMakeAndDo());
                 vm.Catalogue.AddBook(book); // This does not set the modified flag
                 vm.SelectEntry(book);
 
@@ -324,7 +382,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 {
                     return filename;
                 };
-                var book = new BookViewModel(CreateMakeAndDo());
+                var book = new BookViewModel(TestUtility.CreateMakeAndDo());
                 book.AddPage(new PageViewModel(CreateOnKnotsPage()));
                 vm.Catalogue.AddBook(book);
                 vm.CreateBook();

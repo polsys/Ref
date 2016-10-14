@@ -23,6 +23,7 @@ namespace Polsys.Ref
             _viewModel.DisruptingEdit += DisruptingEditHandler;
             _viewModel.DiscardingUnsavedChanges += DiscardingChangesHandler;
             _viewModel.RemovingEntry += RemovingEntryHandler;
+            _viewModel.SelectingExportFilename += ExportFileHandler;
             _viewModel.SelectingOpenFilename += OpenFileHandler;
             _viewModel.SelectingSaveFilename += SaveFileHandler;
             DataContext = _viewModel;
@@ -59,6 +60,32 @@ namespace Polsys.Ref
         private MessageBoxResult RemovingEntryHandler()
         {
             return MessageBox.Show("Permanently remove \"" + _viewModel.SelectedEntry.Title + "\"?", "Ref", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        }
+
+        private string ExportFileHandler()
+        {
+            var dialog = new SaveFileDialog();
+            dialog.AddExtension = true;
+            dialog.OverwritePrompt = true;
+            dialog.ValidateNames = true;
+
+            // Add available exporters as filters
+            var filter = "";
+            foreach (var exporter in _viewModel.Exporters)
+            {
+                filter += $"{exporter.Name}|*.{exporter.FileExtension}|";
+            }
+            dialog.Filter = filter.Substring(0, filter.Length - 1); // Remove trailing |
+            dialog.FilterIndex = _viewModel.Exporters.IndexOf(_viewModel.SelectedExporter);
+
+            var result = dialog.ShowDialog();
+            if (result == true)
+            {
+                _viewModel.SelectedExporter = _viewModel.Exporters[dialog.FilterIndex - 1];
+                return dialog.FileName;
+            }
+            else
+                return null;
         }
 
         private string OpenFileHandler()
@@ -131,6 +158,14 @@ namespace Polsys.Ref
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.EditSelected();
+        }
+
+        private void exportProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_viewModel.ExportCatalogue())
+            {
+                MessageBox.Show("Could not export the project.", "Ref", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void newProjectButton_Click(object sender, RoutedEventArgs e)

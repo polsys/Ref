@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using NUnit.Framework;
+using Polsys.Ref.Export;
 using Polsys.Ref.Models;
 using Polsys.Ref.ViewModels;
 
@@ -18,10 +19,19 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
+        public void Ctor_InitializesExporters()
+        {
+            var vm = new MainWindowViewModel();
+
+            Assert.That(vm.Exporters, Has.Exactly(1).InstanceOf<BibTexExporter>());
+            Assert.That(vm.SelectedExporter, Is.InstanceOf<BibTexExporter>());
+        }
+
+        [Test]
         public void AddPage_AddsPageToSelectedPagesParent()
         {
             var vm = new MainWindowViewModel();
-            var book = new BookViewModel(CreateMakeAndDo());
+            var book = new BookViewModel(TestUtility.CreateMakeAndDo());
             var page = new PageViewModel(CreateOnKnotsPage());
             page._parent = book;
             book.AddPage(page);
@@ -44,7 +54,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 eventFired = true;
                 return MessageBoxResult.Cancel;
             };
-            var bookVM = new BookViewModel(CreateMakeAndDo());
+            var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(bookVM);
             vm.SelectEntry(bookVM);
             vm.EditSelected();
@@ -59,7 +69,7 @@ namespace Polsys.Ref.Tests.ViewModels
         public void AddPage_CancelDiscardsPage()
         {
             var vm = new MainWindowViewModel();
-            var bookVM = new BookViewModel(CreateMakeAndDo());
+            var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(bookVM);
             vm.SelectEntry(bookVM);
 
@@ -74,7 +84,7 @@ namespace Polsys.Ref.Tests.ViewModels
         public void AddPage_CommitAddsPage()
         {
             var vm = new MainWindowViewModel();
-            var bookVM = new BookViewModel(CreateMakeAndDo());
+            var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(bookVM);
             vm.SelectEntry(bookVM);
 
@@ -93,7 +103,7 @@ namespace Polsys.Ref.Tests.ViewModels
         public void AddPage_CreatesAndEditsPage()
         {
             var vm = new MainWindowViewModel();
-            var bookVM = new BookViewModel(CreateMakeAndDo());
+            var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(bookVM);
             vm.SelectEntry(bookVM);
 
@@ -140,7 +150,7 @@ namespace Polsys.Ref.Tests.ViewModels
         public void CreateBook_AsksIfEditing()
         {
             var vm = new MainWindowViewModel();
-            var bookVM = new BookViewModel(CreateMakeAndDo());
+            var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(bookVM);
             vm.SelectEntry(bookVM);
             vm.EditSelected();
@@ -193,7 +203,7 @@ namespace Polsys.Ref.Tests.ViewModels
             // At least the "book2.IsSelected == true" assert is correct.
 
             var vm = new MainWindowViewModel();
-            var book1 = new BookViewModel(CreateMakeAndDo());
+            var book1 = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(book1);
             vm.SelectEntry(book1);
 
@@ -235,7 +245,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             vm.DisruptingEdit += () => { return MessageBoxResult.Cancel; };
-            var bookVM = new BookViewModel(CreateCrackingMathematics());
+            var bookVM = new BookViewModel(TestUtility.CreateCrackingMathematics());
             vm.Catalogue.AddBook(bookVM);
             vm.SelectEntry(bookVM);
             vm.EditSelected();
@@ -249,7 +259,7 @@ namespace Polsys.Ref.Tests.ViewModels
         public void RemoveSelected_CancelsRemove()
         {
             var vm = new MainWindowViewModel();
-            var bookVM = new BookViewModel(CreateMakeAndDo());
+            var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(bookVM);
             vm.SelectEntry(bookVM);
 
@@ -262,7 +272,7 @@ namespace Polsys.Ref.Tests.ViewModels
         public void RemoveSelected_RemovesFromCatalogue()
         {
             var vm = new MainWindowViewModel();
-            var bookVM = new BookViewModel(CreateMakeAndDo());
+            var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(bookVM);
             vm.SelectEntry(bookVM);
 
@@ -278,7 +288,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             vm.RemovingEntry += () => { return MessageBoxResult.Yes; };
-            var book = new BookViewModel(CreateMakeAndDo());
+            var book = new BookViewModel(TestUtility.CreateMakeAndDo());
             var page = new PageViewModel(CreateOnKnotsPage());
             page._parent = book;
             book.AddPage(page);
@@ -298,9 +308,9 @@ namespace Polsys.Ref.Tests.ViewModels
             vm.DisruptingEdit += () => { return MessageBoxResult.Yes; };
 
             // Set up: have two books and edit one of them
-            var book1 = new BookViewModel(CreateMakeAndDo());
+            var book1 = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(book1);
-            var book2 = new BookViewModel(CreateCrackingMathematics());
+            var book2 = new BookViewModel(TestUtility.CreateCrackingMathematics());
             vm.Catalogue.AddBook(book2);
             vm.SelectEntry(book1);
             vm.EditSelected();
@@ -321,9 +331,9 @@ namespace Polsys.Ref.Tests.ViewModels
             vm.DisruptingEdit += () => { return MessageBoxResult.No; };
 
             // Set up: have two books and edit one of them
-            var book1 = new BookViewModel(CreateMakeAndDo());
+            var book1 = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(book1);
-            var book2 = new BookViewModel(CreateCrackingMathematics());
+            var book2 = new BookViewModel(TestUtility.CreateCrackingMathematics());
             vm.Catalogue.AddBook(book2);
             vm.SelectEntry(book1);
             vm.EditSelected();
@@ -344,9 +354,9 @@ namespace Polsys.Ref.Tests.ViewModels
             vm.DisruptingEdit += () => { return MessageBoxResult.Cancel; };
 
             // Set up: have two books and edit one of them
-            var book1 = new BookViewModel(CreateMakeAndDo());
+            var book1 = new BookViewModel(TestUtility.CreateMakeAndDo());
             vm.Catalogue.AddBook(book1);
-            var book2 = new BookViewModel(CreateCrackingMathematics());
+            var book2 = new BookViewModel(TestUtility.CreateCrackingMathematics());
             vm.Catalogue.AddBook(book2);
             vm.SelectEntry(book1);
             vm.EditSelected();
@@ -367,7 +377,7 @@ namespace Polsys.Ref.Tests.ViewModels
             // Selecting the selected item should not raise the disruption event.
             var vm = new MainWindowViewModel();
             vm.DisruptingEdit += () => { Assert.Fail(); return MessageBoxResult.No; };
-            var book = new BookViewModel(CreateCrackingMathematics());
+            var book = new BookViewModel(TestUtility.CreateCrackingMathematics());
             vm.Catalogue.AddBook(book);
 
             // Select the book and enter edit mode
@@ -396,37 +406,13 @@ namespace Polsys.Ref.Tests.ViewModels
         public void SelectEntry_SelectsPage()
         {
             var vm = new MainWindowViewModel();
-            var book = new BookViewModel(CreateMakeAndDo());
+            var book = new BookViewModel(TestUtility.CreateMakeAndDo());
             var page = new PageViewModel(CreateOnKnotsPage());
             book.AddPage(page);
             vm.Catalogue.AddBook(book);
 
             Assert.That(() => vm.SelectEntry(page), Throws.Nothing);
             Assert.That(vm.SelectedEntry, Is.SameAs(page));
-        }
-
-        private static Book CreateCrackingMathematics()
-        {
-            return new Book()
-            {
-                Author = "Beveridge, Colin",
-                Key = "Beveridge2016",
-                Publisher = "Octopus Books",
-                Title = "Cracking Mathematics",
-                Year = "2016"
-            };
-        }
-
-        private static Book CreateMakeAndDo()
-        {
-            return new Book()
-            {
-                Author = "Parker, Matt",
-                Key = "Parker2014",
-                Publisher = "Particular Books",
-                Title = "Things to Make and Do in the Fourth Dimension",
-                Year = "2014"
-            };
         }
 
         private static Page CreateOnKnotsPage()

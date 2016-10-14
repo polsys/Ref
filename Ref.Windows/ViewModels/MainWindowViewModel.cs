@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using Polsys.Ref.Export;
 using Polsys.Ref.Models;
 
 namespace Polsys.Ref.ViewModels
@@ -23,6 +25,12 @@ namespace Polsys.Ref.ViewModels
             }
         }
         private CatalogueViewModel _catalogue;
+
+        public List<CatalogueExporter> Exporters
+        {
+            get;
+            private set;
+        }
 
         public string Filename
         {
@@ -79,6 +87,12 @@ namespace Polsys.Ref.ViewModels
             }
         }
         private EntryViewModelBase _selectedEntry;
+
+        public CatalogueExporter SelectedExporter
+        {
+            get;
+            set;
+        }
         
         public delegate string StringCallback();
         // TODO: Replace with platform-neutral enums
@@ -105,6 +119,14 @@ namespace Polsys.Ref.ViewModels
 
         /// <summary>
         /// Raised when a file name is required for an open operation.
+        /// The callback should open a file save dialog, with the default filter matching <see cref="SelectedExporter"/>.
+        /// If the filter is changed, <see cref="SelectedExporter"/> must be updated.
+        /// If the operation is canceled, null must be returned.
+        /// </summary>
+        public event StringCallback SelectingExportFilename;
+
+        /// <summary>
+        /// Raised when a file name is required for an open operation.
         /// The callback should open a file open dialog.
         /// If the operation is canceled, null must be returned.
         /// </summary>
@@ -125,6 +147,11 @@ namespace Polsys.Ref.ViewModels
             // Initialize to an empty catalogue
             Catalogue = new CatalogueViewModel(new Catalogue());
             ProjectName = string.Empty;
+
+            // Initialize the exporters
+            Exporters = new List<CatalogueExporter>();
+            Exporters.Add(new BibTexExporter());
+            SelectedExporter = Exporters[0];
         }
 
         /// <summary>
@@ -222,6 +249,23 @@ namespace Polsys.Ref.ViewModels
         public void EditSelected()
         {
             SelectedEntry.Edit();
+        }
+
+        /// <summary>
+        /// Exports the catalogue.
+        /// </summary>
+        /// <returns>True if successful, false if canceled or failed.</returns>
+        public bool ExportCatalogue()
+        {
+            if (ShouldCancelBecauseOfEdit())
+                return false;
+
+            // Crashes if the event is not assigned
+            var filename = SelectingExportFilename();
+            if (filename == null)
+                return false;
+
+            return SelectedExporter.Export(filename, Catalogue._catalogue);
         }
 
         /// <summary>

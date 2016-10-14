@@ -9,7 +9,7 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void Ctor_InitializesProperties()
         {
-            var book = CreateCrackingMathematics();
+            var book = TestUtility.CreateCrackingMathematics();
             var vm = new BookViewModel(book);
 
             Assert.That(vm.Author, Is.EqualTo(book.Author));
@@ -24,7 +24,7 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void Ctor_CopiesPages()
         {
-            var book = CreateCrackingMathematics();
+            var book = TestUtility.CreateCrackingMathematics();
             book.Pages.Add(CreateOnEuler());
             book.Pages.Add(CreateHilbertQuote());
 
@@ -37,7 +37,7 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void AddPage_AddsPage()
         {
-            var book = CreateCrackingMathematics();
+            var book = TestUtility.CreateCrackingMathematics();
             var vm = new BookViewModel(book);
             var page = new PageViewModel(CreateHilbertQuote());
 
@@ -54,7 +54,7 @@ namespace Polsys.Ref.Tests.ViewModels
             // Editing properties and adding pages are separate operations,
             // and must not affect each other
 
-            var book = CreateCrackingMathematics();
+            var book = TestUtility.CreateCrackingMathematics();
             var vm = new BookViewModel(book);
             var page = new PageViewModel(CreateHilbertQuote());
 
@@ -69,14 +69,14 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void AddPage_ThrowsIfNull()
         {
-            var vm = new BookViewModel(CreateCrackingMathematics());
+            var vm = new BookViewModel(TestUtility.CreateCrackingMathematics());
             Assert.That(() => vm.AddPage(null), Throws.ArgumentNullException);
         }
 
         [Test]
         public void Cancel_ResetsProperties()
         {
-            var vm = new BookViewModel(CreateCrackingMathematics());
+            var vm = new BookViewModel(TestUtility.CreateCrackingMathematics());
             vm.Edit();
             vm.Author = "@icecolbeveridge";
 
@@ -87,7 +87,7 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void Cancel_SetsReadOnly()
         {
-            var vm = new BookViewModel(CreateCrackingMathematics());
+            var vm = new BookViewModel(TestUtility.CreateCrackingMathematics());
             vm.Edit();
             
             TestUtility.AssertRaisesPropertyChanged(vm, () => vm.Cancel(), "IsReadOnly");
@@ -97,14 +97,14 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void Cancel_ThrowsIfReadOnly()
         {
-            var vm = new BookViewModel(CreateCrackingMathematics());
+            var vm = new BookViewModel(TestUtility.CreateCrackingMathematics());
             Assert.That(() => vm.Cancel(), Throws.InvalidOperationException);
         }
 
         [Test]
         public void Commit_CommitsChanges()
         {
-            var book = CreateCrackingMathematics();
+            var book = TestUtility.CreateCrackingMathematics();
             var vm = new BookViewModel(book);
             vm.Edit();
             vm.Author = "@icecolbeveridge";
@@ -117,7 +117,7 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void Commit_SetsReadOnly()
         {
-            var vm = new BookViewModel(CreateCrackingMathematics());
+            var vm = new BookViewModel(TestUtility.CreateCrackingMathematics());
             vm.Edit();
 
             TestUtility.AssertRaisesPropertyChanged(vm, () => vm.Commit(), "IsReadOnly");
@@ -127,14 +127,14 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void Commit_ThrowsIfReadOnly()
         {
-            var vm = new BookViewModel(CreateCrackingMathematics());
+            var vm = new BookViewModel(TestUtility.CreateCrackingMathematics());
             Assert.That(() => vm.Commit(), Throws.InvalidOperationException);
         }
 
         [Test]
         public void Edit_SetsReadOnly()
         {
-            var vm = new BookViewModel(CreateCrackingMathematics());
+            var vm = new BookViewModel(TestUtility.CreateCrackingMathematics());
 
             TestUtility.AssertRaisesPropertyChanged(vm, () => vm.Edit(), "IsReadOnly");
             Assert.That(vm.IsReadOnly, Is.False);
@@ -143,7 +143,7 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void Edit_ThrowsIfCalledTwice()
         {
-            var vm = new BookViewModel(CreateCrackingMathematics());
+            var vm = new BookViewModel(TestUtility.CreateCrackingMathematics());
 
             Assert.That(() => vm.Edit(), Throws.Nothing);
             Assert.That(() => vm.Edit(), Throws.InvalidOperationException);
@@ -152,7 +152,7 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void IsReadOnly_IsEnforced()
         {
-            var vm = new BookViewModel(CreateCrackingMathematics());
+            var vm = new BookViewModel(TestUtility.CreateCrackingMathematics());
 
             Assert.That(() => { vm.Author = "@icecolbeveridge"; }, Throws.InvalidOperationException);
         }
@@ -160,25 +160,13 @@ namespace Polsys.Ref.Tests.ViewModels
         [Test]
         public void RemovePage_RemovesPage()
         {
-            var vm = new BookViewModel(CreateCrackingMathematics());
+            var vm = new BookViewModel(TestUtility.CreateCrackingMathematics());
             var page = new PageViewModel(CreateHilbertQuote());
             vm.AddPage(page);
 
             Assert.That(() => vm.RemovePage(page), Throws.Nothing);
             Assert.That(vm.Pages, Is.Empty);
             Assert.That(vm._book.Pages, Is.Empty);
-        }
-        
-        private static Book CreateCrackingMathematics()
-        {
-            return new Book()
-            {
-                Author = "Beveridge, Colin",
-                Key = "Beveridge2016",
-                Publisher = "Octopus Books",
-                Title = "Cracking Mathematics",
-                Year = "2016"
-            };
         }
 
         private static Page CreateHilbertQuote()
@@ -196,7 +184,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             return new Page()
             {
-                Notes = "There's a joke in maths that everything is named after the second person to discover it, " + 
+                Notes = "There's a joke in maths that everything is named after the second person to discover it, " +
                 "or else nearly everything would be named after Leonard Euler.",
                 PageRange = "164",
                 Title = "On Euler"

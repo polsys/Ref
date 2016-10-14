@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using NUnit.Framework;
+using Polsys.Ref.Models;
 
 namespace Polsys.Ref.Tests
 {
@@ -32,6 +33,31 @@ namespace Polsys.Ref.Tests
             {
                 viewModel.PropertyChanged -= handler;
             }
+        }
+
+        // Example data
+        public static Book CreateCrackingMathematics()
+        {
+            return new Book()
+            {
+                Author = "Beveridge, Colin",
+                Key = "Beveridge2016",
+                Publisher = "Octopus Books",
+                Title = "Cracking Mathematics",
+                Year = "2016"
+            };
+        }
+        
+        public static Book CreateMakeAndDo()
+        {
+            return new Book()
+            {
+                Author = "Parker, Matt",
+                Key = "Parker2014",
+                Publisher = "Particular Books",
+                Title = "Things to Make and Do in the Fourth Dimension",
+                Year = "2014"
+            };
         }
     }
 }

@@ -25,7 +25,7 @@
             <Button Content="Open" Name="openProjectButton" Click="openProjectButton_Click" />
             <Button Content="Save" Name="saveProjectButton" Click="saveProjectButton_Click" />
             <Button Content="Save as" Name="saveProjectAsButton" Click="saveProjectAsButton_Click" />
-            <Button Content="Export" Name="exportProjectButton" />
+            <Button Content="Export" Name="exportProjectButton" Click="exportProjectButton_Click" />
         </ToolBar>
 
         <!-- Button related to the tree view -->
@@ -148,6 +148,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.Resources>
                     <xaml:AlwaysVisibleConverter x:Key="MakeVisible" />
@@ -158,38 +159,44 @@
                 <TextBlock Text="Title" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Text="{Binding Title}" IsReadOnly="{Binding IsReadOnly}"
                          Grid.Row="0" Grid.Column="2" FontSize="16" Margin="4,0,0,4" />
+                <!-- Key -->
+                <TextBlock Text="Key" Visibility="{Binding Key, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                           Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Visibility="{Binding Key, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                         Text="{Binding Key}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="1" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- Author -->
                 <TextBlock Text="Author" Visibility="{Binding Author, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Author, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Author}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="1" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="2" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- Publisher -->
                 <TextBlock Text="Publisher" Visibility="{Binding Publisher, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Publisher, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Publisher}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="2" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="3" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- Year -->
                 <TextBlock Text="Year" Visibility="{Binding Year, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Year, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Year}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="3" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="4" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- Pages -->
                 <TextBlock Text="Pages" Visibility="{Binding PageRange, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding PageRange, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding PageRange}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="4" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="5" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
 
                 <!-- Notes - this is a multiline box -->
                 <TextBlock Text="Notes" Visibility="{Binding Notes, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Notes, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Notes}" IsReadOnly="{Binding IsReadOnly}"
                          AcceptsReturn="True" Height="200" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"
-                         Grid.Row="5" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="6" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
             </Grid>
         </StackPanel>
     </Grid>

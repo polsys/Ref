@@ -196,6 +196,20 @@ namespace Polsys.Ref.ViewModels
         }
 
         /// <summary>
+        /// Checks that the window can be closed and closes the view model.
+        /// </summary>
+        /// <returns><see cref="OperationResult.Succeeded"/> if the window may be closed.</returns>
+        public OperationResult Close()
+        {
+            if (ShouldCancelBecauseOfEdit())
+                return OperationResult.Canceled;
+            if (ShouldCancelBecauseOfUnsavedChanges())
+                return OperationResult.Canceled;
+
+            return OperationResult.Succeeded;
+        }
+
+        /// <summary>
         /// Commits the current edit and stops editing.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if not editing.</exception>

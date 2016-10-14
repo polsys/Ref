@@ -203,5 +203,11 @@ namespace Polsys.Ref
                 MessageBox.Show("Could not save project.", "Ref", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (_viewModel.Close() != OperationResult.Succeeded)
+                e.Cancel = true;
+        }
     }
 }

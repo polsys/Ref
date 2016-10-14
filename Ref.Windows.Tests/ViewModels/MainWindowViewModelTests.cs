@@ -130,6 +130,34 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
+        public void Close_AsksIfEditing()
+        {
+            var vm = new MainWindowViewModel();
+            vm.DisruptingEdit += () => { return MessageBoxResult.Cancel; };
+            vm.CreateBook();
+
+            Assert.That(vm.Close(), Is.EqualTo(OperationResult.Canceled));
+        }
+
+        [Test]
+        public void Close_AsksIfUnsavedChanges()
+        {
+            var vm = new MainWindowViewModel();
+            vm.DiscardingUnsavedChanges += () => { return MessageBoxResult.Cancel; };
+            vm.CreateBook();
+            vm.CommitEdit();
+
+            Assert.That(vm.Close(), Is.EqualTo(OperationResult.Canceled));
+        }
+
+        [Test]
+        public void Close_Succeeds()
+        {
+            var vm = new MainWindowViewModel();
+            Assert.That(vm.Close(), Is.EqualTo(OperationResult.Succeeded));
+        }
+
+        [Test]
         public void CommitEdit_AppliesChanges()
         {
             var vm = new MainWindowViewModel();

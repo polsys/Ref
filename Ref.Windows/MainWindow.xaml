@@ -7,11 +7,11 @@
         xmlns:vm="clr-namespace:Polsys.Ref.ViewModels"
         xmlns:xaml="clr-namespace:Polsys.Ref.Xaml"
         mc:Ignorable="d"
-        Title="Ref" Height="650" Width="900" Closing="Window_Closing">
+        Title="Ref" Height="650" Width="900" Closing="Window_Closing" MinWidth="650" MinHeight="400">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*" MinWidth="200" />
+            <ColumnDefinition Width="6*" MinWidth="200" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -29,7 +29,7 @@
         </ToolBar>
 
         <!-- Button related to the tree view -->
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
             <Button Name="addEntryButton" Content="Add" Click="addEntryButton_Click" />
             <Button Name="removeEntryButton" Content="Remove" Click="removeEntryButton_Click">
                 <!-- Disable the Remove button if there is nothing selected -->
@@ -94,6 +94,9 @@
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
+        
+        <!-- The grid splitter -->
+        <GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Width="3" ShowsPreview="True" />
 
         <!-- Buttons related to the details panel -->
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">

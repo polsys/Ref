@@ -60,12 +60,24 @@ namespace Polsys.Ref.Export
 
             // Skip undefined fields
             var fields = new List<string>();
+            if (!string.IsNullOrEmpty(book.Address))
+                fields.Add("address = \"" + book.Address + "\"");
             if (!string.IsNullOrEmpty(book.Author))
                 fields.Add("author = \"" + book.Author + "\"");
+            if (!string.IsNullOrEmpty(book.Edition))
+                fields.Add("edition = \"" + book.Edition + "\"");
+            if (!string.IsNullOrEmpty(book.Editor))
+                fields.Add("editor = \"" + book.Editor + "\"");
+            if (!string.IsNullOrEmpty(book.Number))
+                fields.Add("number = \"" + book.Number + "\"");
             if (!string.IsNullOrEmpty(book.Publisher))
                 fields.Add("publisher = \"" + book.Publisher + "\"");
+            if (!string.IsNullOrEmpty(book.Series))
+                fields.Add("series = \"" + book.Series + "\"");
             if (!string.IsNullOrEmpty(book.Title))
                 fields.Add("title = \"" + book.Title + "\"");
+            if (!string.IsNullOrEmpty(book.Volume))
+                fields.Add("volume = \"" + book.Volume + "\"");
             if (!string.IsNullOrEmpty(book.Year))
                 fields.Add("year = \"" + book.Year + "\"");
 

@@ -12,10 +12,16 @@ namespace Polsys.Ref.Tests.ViewModels
             var book = TestUtility.CreateCrackingMathematics();
             var vm = new BookViewModel(book);
 
+            Assert.That(vm.Address, Is.EqualTo(book.Address));
             Assert.That(vm.Author, Is.EqualTo(book.Author));
+            Assert.That(vm.Edition, Is.EqualTo(book.Edition));
+            Assert.That(vm.Editor, Is.EqualTo(book.Editor));
             Assert.That(vm.Key, Is.EqualTo(book.Key));
+            Assert.That(vm.Number, Is.EqualTo(book.Number));
             Assert.That(vm.Publisher, Is.EqualTo(book.Publisher));
+            Assert.That(vm.Series, Is.EqualTo(book.Series));
             Assert.That(vm.Title, Is.EqualTo(book.Title));
+            Assert.That(vm.Volume, Is.EqualTo(book.Volume));
             Assert.That(vm.Year, Is.EqualTo(book.Year));
 
             Assert.That(vm.IsReadOnly, Is.True);

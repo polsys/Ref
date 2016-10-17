@@ -11,29 +11,65 @@ namespace Polsys.Ref.ViewModels
     {
         // When adding properties, remember to add them to
         // the reset and commit routines as well!
+        public string Address
+        {
+            get { return _address; }
+            set { SetProperty(ref _address, value, nameof(Address)); }
+        }
         public string Author
         {
             get { return _author; }
             set { SetProperty(ref _author, value, nameof(Author)); }
+        }
+        public string Edition
+        {
+            get { return _edition; }
+            set { SetProperty(ref _edition, value, nameof(Edition)); }
+        }
+        public string Editor
+        {
+            get { return _editor; }
+            set { SetProperty(ref _editor, value, nameof(Editor)); }
         }
         public string Key
         {
             get { return _key; }
             set { SetProperty(ref _key, value, nameof(Key)); }
         }
+        public string Number
+        {
+            get { return _number; }
+            set { SetProperty(ref _number, value, nameof(Number)); }
+        }
         public string Publisher
         {
             get { return _publisher; }
             set { SetProperty(ref _publisher, value, nameof(Publisher)); }
+        }
+        public string Series
+        {
+            get { return _series; }
+            set { SetProperty(ref _series, value, nameof(Series)); }
+        }
+        public string Volume
+        {
+            get { return _volume; }
+            set { SetProperty(ref _volume, value, nameof(Volume)); }
         }
         public string Year
         {
             get { return _year; }
             set { SetProperty(ref _year, value, nameof(Year)); }
         }
+        private string _address;
         private string _author;
+        private string _edition;
+        private string _editor;
         private string _key;
+        private string _number;
         private string _publisher;
+        private string _series;
+        private string _volume;
         private string _year;
 
         public ObservableCollection<PageViewModel> Pages { get; private set; }
@@ -84,10 +120,16 @@ namespace Polsys.Ref.ViewModels
             if (IsReadOnly)
                 throw new InvalidOperationException("Not in edit mode.");
 
+            _book.Address = Address;
             _book.Author = Author;
+            _book.Edition = Edition;
+            _book.Editor = Editor;
             _book.Key = Key;
+            _book.Number = Number;
             _book.Publisher = Publisher;
+            _book.Series = Series;
             _book.Title = Title;
+            _book.Volume = Volume;
             _book.Year = Year;
 
             IsReadOnly = true;
@@ -105,10 +147,16 @@ namespace Polsys.Ref.ViewModels
 
         private void CopyPropertiesFromBook()
         {
+            Address = _book.Address;
             Author = _book.Author;
+            Edition = _book.Edition;
+            Editor = _book.Editor;
             Key = _book.Key;
+            Number = _book.Number;
             Publisher = _book.Publisher;
+            Series = _book.Series;
             Title = _book.Title;
+            Volume = _book.Volume;
             Year = _book.Year;
         }
     }

@@ -38,21 +38,33 @@ namespace Polsys.Ref.Tests
         // Example data
         public static Book CreateCrackingMathematics()
         {
+            // This book contains all possible book fields
+            // (In addition to containing great content!)
             return new Book()
             {
+                Address = "London",
                 Author = "Beveridge, Colin",
+                Edition = "1st",
+                Editor = "Poulter, Pollyanna",
                 Key = "Beveridge2016",
+                Number = "1",
                 Publisher = "Octopus Books",
+                Series = "Musings of the Mathematical Ninja", // Not really, at least yet.
                 Title = "Cracking Mathematics",
+                Volume = "1", // No Volume II yet.
                 Year = "2016"
             };
         }
         
         public static Book CreateMakeAndDo()
         {
+            // This does not contain all the fields, but is useful as a second distinct book
+            // (And a great read as well!)
             return new Book()
             {
+                Address = "London",
                 Author = "Parker, Matt",
+                Edition = "First",
                 Key = "Parker2014",
                 Publisher = "Particular Books",
                 Title = "Things to Make and Do in the Fourth Dimension",

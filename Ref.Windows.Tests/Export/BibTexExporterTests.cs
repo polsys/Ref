@@ -117,6 +117,7 @@ namespace Polsys.Ref.Tests.Export
                 var exporter = new BibTexExporter();
                 var book = TestUtility.CreateCrackingMathematics();
                 book.Publisher = "";
+                book.Volume = null;
                 book.Year = null;
                 exporter.WriteBook(writer, book);
 
@@ -160,9 +161,15 @@ namespace Polsys.Ref.Tests.Export
                 // Verify the contents
                 var contents = writer.ToString();
                 Assert.That(contents, Does.StartWith("@book{Beveridge2016,"));
+                Assert.That(contents, Does.Contain("address = \"London\","));
                 Assert.That(contents, Does.Contain("author = \"Beveridge, Colin\","));
+                Assert.That(contents, Does.Contain("edition = \"1st\","));
+                Assert.That(contents, Does.Contain("editor = \"Poulter, Pollyanna\","));
+                Assert.That(contents, Does.Contain("number = \"1\","));
                 Assert.That(contents, Does.Contain("publisher = \"Octopus Books\","));
+                Assert.That(contents, Does.Contain("series = \"Musings of the Mathematical Ninja\","));
                 Assert.That(contents, Does.Contain("title = \"Cracking Mathematics\","));
+                Assert.That(contents, Does.Contain("volume = \"1\","));
                 Assert.That(contents, Does.Contain("year = \"2016\""));
                 Assert.That(contents.TrimEnd(), Does.EndWith("}"));
             }

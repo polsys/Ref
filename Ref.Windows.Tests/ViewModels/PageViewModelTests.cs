@@ -44,6 +44,21 @@ namespace Polsys.Ref.Tests.ViewModels
             Assert.That(vm._page.PageRange, Is.EqualTo("34--37"));
         }
 
+        [TestCase("1-2", 1)]
+        [TestCase("13--16", 13)]
+        [TestCase("128", 128)]
+        [TestCase("aaaaa", int.MaxValue)]
+        [TestCase("-13", int.MaxValue)]
+        [TestCase("2147483648", int.MaxValue)]
+        [TestCase("", int.MaxValue)]
+        [TestCase(null, int.MaxValue)]
+        public void FirstPage_ReturnsCorrectFirstPage(string pages, int expectedFirstPage)
+        {
+            var vm = new PageViewModel(new Page() { PageRange = pages });
+
+            Assert.That(vm.FirstPage, Is.EqualTo(expectedFirstPage));
+        }
+
         private static Page CreateOnElements()
         {
             return new Page()

@@ -1,4 +1,5 @@
-﻿using Polsys.Ref.Models;
+﻿using System;
+using Polsys.Ref.Models;
 
 namespace Polsys.Ref.ViewModels
 {
@@ -7,6 +8,34 @@ namespace Polsys.Ref.ViewModels
     /// </summary>
     internal class PageViewModel : EntryViewModelBase
     {
+        /// <summary>
+        /// Gets the first page in the page range, or <see cref="int.MaxValue"/> if unspecified.
+        /// </summary>
+        /// <remarks>
+        /// This property exists since WPF sort implementation does not understand numbers.
+        /// </remarks>
+        public int FirstPage
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(PageRange))
+                    return int.MaxValue;
+
+                // Read the string until a non-digit is found
+                int i = 0;
+                for (; i < PageRange.Length; i++)
+                {
+                    if (!char.IsDigit(PageRange[i]))
+                        break;
+                }
+
+                // No digits or too many of them for a 32-bit integer
+                if (i == 0 || i > 9)
+                    return int.MaxValue;
+                else
+                    return Convert.ToInt32(PageRange.Substring(0, i));
+            }
+        }
         public string Notes
         {
             get { return _notes; }

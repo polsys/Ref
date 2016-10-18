@@ -167,7 +167,7 @@
                 <!-- Title -->
                 <TextBlock Text="Title" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Text="{Binding Title}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="0" Grid.Column="2" FontSize="16" Margin="4,0,0,4" />
+                         Grid.Row="0" Grid.Column="2" FontSize="16" Margin="4,0,0,4" Name="titleTextBox" />
                 <!-- Key -->
                 <TextBlock Text="Key" Visibility="{Binding Key, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                            Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />

@@ -138,11 +138,13 @@ namespace Polsys.Ref
         private void addEntryButton_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.CreateBook();
+            titleTextBox.Focus();
         }
 
         private void addPageButton_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.AddPage();
+            titleTextBox.Focus();
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

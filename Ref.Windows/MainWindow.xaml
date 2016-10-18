@@ -107,13 +107,12 @@
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Visibility" Value="Visible" />
-                        <Setter Property="IsEnabled" Value="True" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding SelectedEntry.IsReadOnly}" Value="False">
                                 <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding SelectedEntry}" Value="{x:Null}">
-                                <Setter Property="IsEnabled" Value="False" />
+                                <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -167,8 +166,10 @@
 
                 <!-- Only some of these are visible, depending on whether the property is available. -->
                 <!-- Title -->
-                <TextBlock Text="Title" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
-                <TextBox Text="{Binding Title}" IsReadOnly="{Binding IsReadOnly}"
+                <TextBlock Text="Title" Visibility="{Binding Title, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                           Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Visibility="{Binding Title, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                         Text="{Binding Title}" IsReadOnly="{Binding IsReadOnly}"
                          Grid.Row="0" Grid.Column="2" FontSize="16" Margin="4,0,0,4" Name="titleTextBox" />
                 <!-- Key -->
                 <TextBlock Text="Key" Visibility="{Binding Key, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"

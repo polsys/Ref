@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <!-- Main toolbar -->
-        <ToolBar Grid.Row="0" Grid.ColumnSpan="2" ToolBarTray.IsLocked="True">
+        <ToolBar Grid.Row="0" Grid.ColumnSpan="2" ToolBarTray.IsLocked="True" >
             <Button Content="New" Name="newProjectButton" VerticalAlignment="Bottom" Click="newProjectButton_Click" />
             <Button Content="Open" Name="openProjectButton" Click="openProjectButton_Click" />
             <Button Content="Save" Name="saveProjectButton" Click="saveProjectButton_Click" />
@@ -30,8 +30,8 @@
 
         <!-- Button related to the tree view -->
         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
-            <Button Name="addEntryButton" Content="Add" Click="addEntryButton_Click" />
-            <Button Name="removeEntryButton" Content="Remove" Click="removeEntryButton_Click">
+            <Button Name="addEntryButton" Content="Add" Click="addEntryButton_Click" Margin="4,4,2,4" Padding="6,2" />
+            <Button Name="removeEntryButton" Content="Remove" Click="removeEntryButton_Click" Margin="2,4" Padding="6,2">
                 <!-- Disable the Remove button if there is nothing selected -->
                 <Button.Style>
                     <Style TargetType="Button">
@@ -44,7 +44,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Name="addPageButton" Content="Add page" Click="addPageButton_Click">
+            <Button Name="addPageButton" Content="Add page" Click="addPageButton_Click" Margin="2,4" Padding="6,2">
                 <!-- Disable the Add Page button if there is nothing selected -->
                 <Button.Style>
                     <Style TargetType="Button">
@@ -118,7 +118,7 @@
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
-                <Button Name="editButton" Content="Edit" Padding="4,1" Click="editButton_Click" />
+                <Button Name="editButton" Content="Edit" Click="editButton_Click" Margin="4,4,2,4" Padding="6,2" />
             </StackPanel>
 
             <!-- This panel is shown in the edit mode -->
@@ -133,8 +133,8 @@
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
-                <Button Name="commitButton" Content="Save" Padding="4,1" Click="commitButton_Click" />
-                <Button Name="cancelButton" Content="Cancel" Padding="4,1" Click="cancelButton_Click" />
+                <Button Name="commitButton" Content="Save" Click="commitButton_Click" Margin="4,4,2,4" Padding="6,2" />
+                <Button Name="cancelButton" Content="Cancel" Click="cancelButton_Click" Margin="2,4" Padding="6,2" />
             </StackPanel>
         </StackPanel>
 

@@ -173,6 +173,18 @@ namespace Polsys.Ref.Tests.ViewModels
             }
 
             [Test]
+            public void OpenProject_Cancellable()
+            {
+                var vm = new MainWindowViewModel();
+                vm.SelectingOpenFilename += () =>
+                {
+                    return null;
+                };
+
+                Assert.That(vm.OpenProject(), Is.EqualTo(OperationResult.Canceled));
+            }
+
+            [Test]
             public void OpenProject_ClearsWorkspace()
             {
                 // Make sure that SelectedEntry is nulled

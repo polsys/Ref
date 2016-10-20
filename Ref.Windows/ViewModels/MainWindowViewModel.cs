@@ -310,6 +310,8 @@ namespace Polsys.Ref.ViewModels
                 return OperationResult.Canceled;
             
             var filename = SelectingOpenFilename();
+            if (filename == null)
+                return OperationResult.Canceled;
             try
             {
                 using (var stream = File.OpenRead(filename))

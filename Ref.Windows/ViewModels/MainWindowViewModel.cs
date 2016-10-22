@@ -41,6 +41,7 @@ namespace Polsys.Ref.ViewModels
                 {
                     _filename = value;
                     NotifyPropertyChanged(nameof(Filename));
+                    NotifyPropertyChanged(nameof(ProjectName));
                 }
             }
         }

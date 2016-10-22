@@ -50,7 +50,7 @@ namespace Polsys.Ref.ViewModels
         private string _pageRange;
 
         internal Page _page;
-        internal BookViewModel _parent;
+        internal PublicationViewModelBase _parent;
 
         /// <summary>
         /// Constructs a new PageViewModel from the specified <see cref="Page"/>.
@@ -63,7 +63,7 @@ namespace Polsys.Ref.ViewModels
             IsReadOnly = true;
         }
 
-        internal PageViewModel(Page page, BookViewModel parent)
+        internal PageViewModel(Page page, PublicationViewModelBase parent)
             : this(page)
         {
             _parent = parent;

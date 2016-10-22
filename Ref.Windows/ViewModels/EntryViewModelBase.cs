@@ -53,21 +53,13 @@ namespace Polsys.Ref.ViewModels
         /// Cancels the pending changes and resets the properties to original values.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if <see cref="IsReadOnly"/> is true.</exception>
-        public virtual void Cancel()
-        {
-            // Implemented by derived classes
-            throw new NotImplementedException();
-        }
+        public abstract void Cancel();
 
         /// <summary>
         /// Commits the changed properties to the model.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if <see cref="IsReadOnly"/> is true.</exception>
-        public virtual void Commit()
-        {
-            // Implemented by derived classes
-            throw new NotImplementedException();
-        }
+        public abstract void Commit();
 
         /// <summary>
         /// Makes this entry editable.

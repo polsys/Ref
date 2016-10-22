@@ -158,7 +158,7 @@ namespace Polsys.Ref.ViewModels
             if (ShouldCancelBecauseOfEdit())
                 return;
 
-            BookViewModel parent = SelectedEntry as BookViewModel;
+            PublicationViewModelBase parent = SelectedEntry as PublicationViewModelBase;
             if (SelectedEntry is PageViewModel)
                 parent = ((PageViewModel)SelectedEntry)._parent;
             SelectedEntry = new PageViewModel(new Page(), parent);

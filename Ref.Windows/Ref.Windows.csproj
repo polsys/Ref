@@ -54,13 +54,16 @@
     </ApplicationDefinition>
     <Compile Include="Export\BibTexExporter.cs" />
     <Compile Include="Export\CatalogueExporter.cs" />
+    <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Page.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\ICatalogueEntry.cs" />
+    <Compile Include="ViewModels\ArticleViewModel.cs" />
     <Compile Include="ViewModels\EntryViewModelBase.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\OperationResult.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="ViewModels\PublicationViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Xaml\PageSortConverter.cs" />
     <Compile Include="Xaml\AlwaysVisibleConverter.cs" />

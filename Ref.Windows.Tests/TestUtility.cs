@@ -36,6 +36,23 @@ namespace Polsys.Ref.Tests
         }
 
         // Example data
+        public static Article CreateCounterexample()
+        {
+            // This article contains all possible article fields, despite its length!
+            return new Article()
+            {
+                Author = "Lander, L.J.; Parkin, T.R.",
+                Doi = "10.1090/S0002-9904-1966-11654-3",
+                Journal = "Bull. Amer. Math. Soc.",
+                Key = "Lander1966",
+                Number = "6",
+                PageRange = "1079",
+                Title = "Counterexample to Euler's conjecture on sums of like powers",
+                Volume = "72",
+                Year = "1966"
+            };
+        }
+
         public static Book CreateCrackingMathematics()
         {
             // This book contains all possible book fields

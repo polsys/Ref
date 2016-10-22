@@ -62,17 +62,11 @@ namespace Polsys.Ref.ViewModels
 
         public string ProjectName
         {
-            get { return _projectName; }
-            set
+            get
             {
-                if (_projectName != value)
-                {
-                    _projectName = value;
-                    NotifyPropertyChanged(nameof(ProjectName));
-                }
+                return Path.GetFileNameWithoutExtension(Filename);
             }
         }
-        private string _projectName;
 
         public EntryViewModelBase SelectedEntry
         {
@@ -146,7 +140,7 @@ namespace Polsys.Ref.ViewModels
         {
             // Initialize to an empty catalogue
             Catalogue = new CatalogueViewModel(new Catalogue());
-            ProjectName = string.Empty;
+            Filename = string.Empty;
 
             // Initialize the exporters
             Exporters = new List<CatalogueExporter>();
@@ -295,7 +289,7 @@ namespace Polsys.Ref.ViewModels
             // Clear the selected item and the catalogue
             SelectedEntry = null;
             Catalogue = new CatalogueViewModel(new Catalogue());
-            ProjectName = string.Empty;
+            Filename = string.Empty;
         }
 
         /// <summary>
@@ -327,7 +321,6 @@ namespace Polsys.Ref.ViewModels
             catch (IOException) { return OperationResult.Failed; }
 
             Filename = filename;
-            ProjectName = Path.GetFileNameWithoutExtension(filename);
             IsModified = false;
             SelectedEntry = null;
 
@@ -391,9 +384,8 @@ namespace Polsys.Ref.ViewModels
             catch (ArgumentException) { return OperationResult.Failed; }
             catch (IOException) { return OperationResult.Failed; }
 
-            // After a successful save the filename may be saved for later
+            // Save the file name for subsequent save operations
             Filename = filename;
-            ProjectName = Path.GetFileNameWithoutExtension(filename);
             IsModified = false;
 
             return OperationResult.Succeeded;

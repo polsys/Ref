@@ -126,10 +126,22 @@ namespace Polsys.Ref.Tests.ViewModels
             }
 
             [Test]
+            public void NewProject_ClearsFilename()
+            {
+                var vm = new MainWindowViewModel();
+                var filename = Path.Combine(TempFolder, "New_ClearsFilename.refproject");
+                vm.SelectingSaveFilename += () => { return filename; };
+
+                vm.SaveProject(false);
+                vm.NewProject();
+
+                Assert.That(vm.Filename, Is.Empty);
+            }
+
+            [Test]
             public void NewProject_ResetsEverything()
             {
                 var vm = new MainWindowViewModel();
-                vm.ProjectName = "Proj";
                 var book = new BookViewModel(TestUtility.CreateMakeAndDo());
                 vm.Catalogue.AddBook(book); // This does not set the modified flag
                 vm.SelectEntry(book);

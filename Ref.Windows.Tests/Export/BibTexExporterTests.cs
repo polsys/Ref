@@ -142,6 +142,24 @@ namespace Polsys.Ref.Tests.Export
         }
 
         [Test]
+        public void WriteArticle_ReplacesSemicolonsInAuthors()
+        {
+            // Since it is just a naïve replacement, the double space is expected
+            var original = "Boyer, Carl; Merzbach, Uta;Pietiläinen, Kimmo";
+            var expected = "Boyer, Carl and  Merzbach, Uta and Pietiläinen, Kimmo";
+
+            using (var writer = new StringWriter())
+            {
+                var exporter = new BibTexExporter();
+                var article = new Article() { Key = "Boyer", Author = original };
+                exporter.WriteArticle(writer, article);
+
+                var contents = writer.ToString();
+                Assert.That(contents, Does.Contain(expected));
+            }
+        }
+
+        [Test]
         public void WriteArticle_SkipsUnKeyed()
         {
             using (var writer = new StringWriter())
@@ -167,7 +185,7 @@ namespace Polsys.Ref.Tests.Export
                 // Verify the contents
                 var contents = writer.ToString();
                 Assert.That(contents, Does.StartWith("@article{Lander1966,"));
-                Assert.That(contents, Does.Contain("author = \"Lander, L.J.; Parkin, T.R.\","));
+                Assert.That(contents, Does.Contain("author = \"Lander, L.J. and  Parkin, T.R.\","));
                 Assert.That(contents, Does.Contain("doi = \"10.1090/S0002-9904-1966-11654-3\","));
                 Assert.That(contents, Does.Contain("journal = \"Bull. Amer. Math. Soc.\","));
                 Assert.That(contents, Does.Contain("number = \"6\","));
@@ -201,6 +219,24 @@ namespace Polsys.Ref.Tests.Export
                 // No trailing comma!
                 Assert.That(contents, Does.Not.Contain("title = \"{Cracking Mathematics}\","));
                 Assert.That(contents.TrimEnd(), Does.EndWith("}"));
+            }
+        }
+
+        [Test]
+        public void WriteBook_ReplacesSemicolonsInAuthors()
+        {
+            // Since it is just a naïve replacement, the double space is expected
+            var original = "Boyer, Carl; Merzbach, Uta;Pietiläinen, Kimmo";
+            var expected = "Boyer, Carl and  Merzbach, Uta and Pietiläinen, Kimmo";
+
+            using (var writer = new StringWriter())
+            {
+                var exporter = new BibTexExporter();
+                var book = new Book() { Key = "Boyer", Author = original };
+                exporter.WriteBook(writer, book);
+
+                var contents = writer.ToString();
+                Assert.That(contents, Does.Contain(expected));
             }
         }
 

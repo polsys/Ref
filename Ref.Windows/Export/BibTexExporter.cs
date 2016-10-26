@@ -59,7 +59,7 @@ namespace Polsys.Ref.Export
                 return;
 
             var fields = new List<string>();
-            AddField(fields, article.Author, "author");
+            AddField(fields, ReplaceSemicolonsWithAnd(article.Author), "author");
             AddField(fields, article.Doi, "doi");
             AddField(fields, article.Journal, "journal");
             AddField(fields, article.Number, "number");
@@ -79,7 +79,7 @@ namespace Polsys.Ref.Export
             // Only write the fields with a value
             var fields = new List<string>();
             AddField(fields, book.Address, "address");
-            AddField(fields, book.Author, "author");
+            AddField(fields, ReplaceSemicolonsWithAnd(book.Author), "author");
             AddField(fields, book.Edition, "edition");
             AddField(fields, book.Editor, "editor");
             AddField(fields, book.Number, "number");
@@ -112,6 +112,14 @@ namespace Polsys.Ref.Export
                 return true;
             }
             return false;
+        }
+
+        private static string ReplaceSemicolonsWithAnd(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+            else
+                return value.Replace(";", " and ");
         }
 
         private static void WriteEntry(TextWriter writer, string entryType, string key, List<string> fields)

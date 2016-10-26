@@ -64,7 +64,7 @@ namespace Polsys.Ref.Export
             AddField(fields, article.Journal, "journal");
             AddField(fields, article.Number, "number");
             AddField(fields, article.PageRange, "pages");
-            AddField(fields, article.Title, "title");
+            AddField(fields, EncloseInBraces(article.Title), "title");
             AddField(fields, article.Volume, "volume");
             AddField(fields, article.Year, "year");
 
@@ -85,7 +85,7 @@ namespace Polsys.Ref.Export
             AddField(fields, book.Number, "number");
             AddField(fields, book.Publisher, "publisher");
             AddField(fields, book.Series, "series");
-            AddField(fields, book.Title, "title");
+            AddField(fields, EncloseInBraces(book.Title), "title");
             AddField(fields, book.Volume, "volume");
             AddField(fields, book.Year, "year");
 
@@ -97,6 +97,11 @@ namespace Polsys.Ref.Export
         {
             if (!string.IsNullOrEmpty(value))
                 fields.Add(fieldName + " = \"" + value + "\"");
+        }
+
+        private static string EncloseInBraces(string value)
+        {
+            return "{" + value + "}";
         }
 
         private static bool IsUnkeyed(string key, string title, TextWriter writer)

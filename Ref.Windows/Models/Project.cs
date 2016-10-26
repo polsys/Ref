@@ -73,13 +73,7 @@ namespace Polsys.Ref.Models
         {
             if (_serializer == null)
             {
-                // These types are available in polymorphic contexts
-                var knownTypes = new List<Type>();
-                knownTypes.Add(typeof(Catalogue));
-                knownTypes.Add(typeof(Book));
-                knownTypes.Add(typeof(Page));
-
-                _serializer = new DataContractSerializer(typeof(Project), knownTypes);
+                _serializer = new DataContractSerializer(typeof(Project));
             }
 
             return _serializer;

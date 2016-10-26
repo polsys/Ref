@@ -11,7 +11,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var catalogue = new Catalogue();
             catalogue.Entries.Add(new Book() { Title = "Python Guido" });
-            catalogue.Entries.Add(new Book() { Title = "Spam + Eggs" });
+            catalogue.Entries.Add(new Article() { Title = "Spam + Eggs" });
 
             var vm = new CatalogueViewModel(catalogue);
 
@@ -21,27 +21,52 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
-        public void AddBook_AddsBook()
+        public void AddEntry_AddsArticle()
+        {
+            var catalogue = new Catalogue();
+            var catalogueVM = new CatalogueViewModel(catalogue);
+            var article = new ArticleViewModel(new Article());
+            catalogueVM.AddEntry(article);
+
+            Assert.That(catalogueVM.Entries, Has.Exactly(1).InstanceOf<ArticleViewModel>());
+            Assert.That(catalogue.Entries, Has.Exactly(1).InstanceOf<Article>());
+        }
+
+        [Test]
+        public void AddEntry_AddsBook()
         {
             var catalogue = new Catalogue();
             var catalogueVM = new CatalogueViewModel(catalogue);
             var book = new BookViewModel(new Book());
-            catalogueVM.AddBook(book);
-
-            Assert.That(book, Is.InstanceOf<BookViewModel>());
+            catalogueVM.AddEntry(book);
+            
             Assert.That(catalogueVM.Entries, Has.Exactly(1).InstanceOf<BookViewModel>());
             Assert.That(catalogue.Entries, Has.Exactly(1).InstanceOf<Book>());
         }
 
         [Test]
-        public void RemoveBook_RemovesBook()
+        public void RemoveEntry_RemovesArticle()
+        {
+            var catalogue = new Catalogue();
+            var catalogueVM = new CatalogueViewModel(catalogue);
+            var article = new ArticleViewModel(new Article());
+            catalogueVM.AddEntry(article);
+
+            catalogueVM.RemoveEntry(article);
+
+            Assert.That(catalogueVM.Entries, Is.Empty);
+            Assert.That(catalogue.Entries, Is.Empty);
+        }
+
+        [Test]
+        public void RemoveEntry_RemovesBook()
         {
             var catalogue = new Catalogue();
             var catalogueVM = new CatalogueViewModel(catalogue);
             var book = new BookViewModel(new Book());
-            catalogueVM.AddBook(book);
+            catalogueVM.AddEntry(book);
 
-            catalogueVM.RemoveBook(book);
+            catalogueVM.RemoveEntry(book);
 
             Assert.That(catalogueVM.Entries, Is.Empty);
             Assert.That(catalogue.Entries, Is.Empty);

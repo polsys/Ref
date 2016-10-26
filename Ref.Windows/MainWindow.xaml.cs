@@ -135,6 +135,12 @@ namespace Polsys.Ref
             }
         }
 
+        private void addArticleButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.CreateArticle();
+            titleTextBox.Focus();
+        }
+
         private void addEntryButton_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.CreateBook();

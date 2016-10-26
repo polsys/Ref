@@ -35,7 +35,7 @@ namespace Polsys.Ref.Tests.ViewModels
             var page = new PageViewModel(CreateOnKnotsPage());
             page._parent = book;
             book.AddPage(page);
-            vm.Catalogue.AddBook(book);
+            vm.Catalogue.AddEntry(book);
 
             // Select the existing page and then add a new page
             vm.SelectEntry(page);
@@ -55,7 +55,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 return MessageBoxResult.Cancel;
             };
             var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
             vm.SelectEntry(bookVM);
             vm.EditSelected();
 
@@ -70,7 +70,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
             vm.SelectEntry(bookVM);
 
             vm.AddPage();
@@ -85,7 +85,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
             vm.SelectEntry(bookVM);
 
             vm.AddPage();
@@ -104,7 +104,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
             vm.SelectEntry(bookVM);
 
             vm.AddPage();
@@ -118,7 +118,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(new Book() { Title = "Nice Name" });
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
 
             vm.SelectEntry(bookVM);
             vm.EditSelected();
@@ -162,7 +162,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(new Book() { Title = "Nice Name" });
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
 
             vm.SelectEntry(bookVM);
             vm.EditSelected();
@@ -175,11 +175,63 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
+        public void CreateArticle_AsksIfEditing()
+        {
+            var vm = new MainWindowViewModel();
+            vm.CreateBook(); // Starts editing a book
+
+            bool wasAsked = false;
+            vm.DisruptingEdit += () =>
+            {
+                wasAsked = true;
+                return MessageBoxResult.Cancel;
+            };
+
+            // Since the handler returned Cancel, the article must not be created
+            vm.CreateArticle();
+            Assert.That(wasAsked, Is.True);
+            Assert.That(vm.SelectedEntry, Is.InstanceOf<BookViewModel>());
+        }
+        [Test]
+        public void CreateArticle_CancelDoesNotAddArticle()
+        {
+            var vm = new MainWindowViewModel();
+
+            vm.CreateArticle();
+            vm.CancelEdit();
+
+            Assert.That(vm.Catalogue.Entries, Is.Empty);
+            Assert.That(vm.SelectedEntry, Is.Null);
+        }
+
+        [Test]
+        public void CreateArticle_CommitAddsArticle()
+        {
+            var vm = new MainWindowViewModel();
+            vm.CreateArticle();
+            vm.SelectedEntry.Title = "Modular elliptic curves and Fermat's last theorem";
+            vm.CommitEdit();
+
+            Assert.That(vm.Catalogue.Entries, Has.Exactly(1).InstanceOf<ArticleViewModel>());
+            Assert.That(vm.Catalogue.Entries[0].Title, Does.Contain("Fermat"));
+        }
+
+        [Test]
+        public void CreateArticle_CreatesAndEditsArticle()
+        {
+            var vm = new MainWindowViewModel();
+            vm.CreateArticle();
+
+            Assert.That(vm.SelectedEntry, Is.InstanceOf<ArticleViewModel>());
+            Assert.That(vm.SelectedEntry.IsReadOnly, Is.False);
+        }
+
+        [Test]
         public void CreateBook_AsksIfEditing()
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
             vm.SelectEntry(bookVM);
             vm.EditSelected();
 
@@ -232,7 +284,7 @@ namespace Polsys.Ref.Tests.ViewModels
 
             var vm = new MainWindowViewModel();
             var book1 = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(book1);
+            vm.Catalogue.AddEntry(book1);
             vm.SelectEntry(book1);
 
             vm.CreateBook();
@@ -259,7 +311,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(new Book() { Title = "Nice Name" });
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
 
             vm.SelectEntry(bookVM);
             Assert.That(bookVM.IsReadOnly, Is.True);
@@ -274,7 +326,7 @@ namespace Polsys.Ref.Tests.ViewModels
             var vm = new MainWindowViewModel();
             vm.DisruptingEdit += () => { return MessageBoxResult.Cancel; };
             var bookVM = new BookViewModel(TestUtility.CreateCrackingMathematics());
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
             vm.SelectEntry(bookVM);
             vm.EditSelected();
 
@@ -288,7 +340,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
             vm.SelectEntry(bookVM);
 
             vm.RemovingEntry += () => { return MessageBoxResult.No; };
@@ -301,7 +353,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(bookVM);
+            vm.Catalogue.AddEntry(bookVM);
             vm.SelectEntry(bookVM);
 
             vm.RemovingEntry += () => { return MessageBoxResult.Yes; };
@@ -320,7 +372,7 @@ namespace Polsys.Ref.Tests.ViewModels
             var page = new PageViewModel(CreateOnKnotsPage());
             page._parent = book;
             book.AddPage(page);
-            vm.Catalogue.AddBook(book);
+            vm.Catalogue.AddEntry(book);
 
             vm.SelectEntry(page);
             Assert.That(() => vm.RemoveSelected(), Throws.Nothing);
@@ -337,9 +389,9 @@ namespace Polsys.Ref.Tests.ViewModels
 
             // Set up: have two books and edit one of them
             var book1 = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(book1);
+            vm.Catalogue.AddEntry(book1);
             var book2 = new BookViewModel(TestUtility.CreateCrackingMathematics());
-            vm.Catalogue.AddBook(book2);
+            vm.Catalogue.AddEntry(book2);
             vm.SelectEntry(book1);
             vm.EditSelected();
             book1.Author = "@standupmaths";
@@ -360,9 +412,9 @@ namespace Polsys.Ref.Tests.ViewModels
 
             // Set up: have two books and edit one of them
             var book1 = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(book1);
+            vm.Catalogue.AddEntry(book1);
             var book2 = new BookViewModel(TestUtility.CreateCrackingMathematics());
-            vm.Catalogue.AddBook(book2);
+            vm.Catalogue.AddEntry(book2);
             vm.SelectEntry(book1);
             vm.EditSelected();
             book1.Author = "@standupmaths";
@@ -383,9 +435,9 @@ namespace Polsys.Ref.Tests.ViewModels
 
             // Set up: have two books and edit one of them
             var book1 = new BookViewModel(TestUtility.CreateMakeAndDo());
-            vm.Catalogue.AddBook(book1);
+            vm.Catalogue.AddEntry(book1);
             var book2 = new BookViewModel(TestUtility.CreateCrackingMathematics());
-            vm.Catalogue.AddBook(book2);
+            vm.Catalogue.AddEntry(book2);
             vm.SelectEntry(book1);
             vm.EditSelected();
             book1.Author = "@standupmaths";
@@ -406,7 +458,7 @@ namespace Polsys.Ref.Tests.ViewModels
             var vm = new MainWindowViewModel();
             vm.DisruptingEdit += () => { Assert.Fail(); return MessageBoxResult.No; };
             var book = new BookViewModel(TestUtility.CreateCrackingMathematics());
-            vm.Catalogue.AddBook(book);
+            vm.Catalogue.AddEntry(book);
 
             // Select the book and enter edit mode
             vm.SelectEntry(book);
@@ -422,7 +474,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new MainWindowViewModel();
             var entry = new BookViewModel(new Book() { Title = "Test 1" });
-            vm.Catalogue.AddBook(entry);
+            vm.Catalogue.AddEntry(entry);
 
             // Simultaneously check that SelectEntry succeeds and raises the event
             TestUtility.AssertRaisesPropertyChanged(vm, () => {
@@ -438,7 +490,7 @@ namespace Polsys.Ref.Tests.ViewModels
             var book = new BookViewModel(TestUtility.CreateMakeAndDo());
             var page = new PageViewModel(CreateOnKnotsPage());
             book.AddPage(page);
-            vm.Catalogue.AddBook(book);
+            vm.Catalogue.AddEntry(book);
 
             Assert.That(vm.SelectEntry(page), Is.EqualTo(OperationResult.Succeeded));
             Assert.That(vm.SelectedEntry, Is.SameAs(page));

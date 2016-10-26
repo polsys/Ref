@@ -175,10 +175,10 @@ namespace Polsys.Ref.ViewModels
 
             // If an entry was being added, cancel should result in it getting destroyed
             // This is done by dropping the reference
-            if (SelectedEntry is BookViewModel)
+            if (SelectedEntry is PublicationViewModelBase)
             {
-                var entryAsBook = SelectedEntry as BookViewModel;
-                if (!Catalogue.Entries.Contains(entryAsBook))
+                var entry = SelectedEntry as PublicationViewModelBase;
+                if (!Catalogue.Entries.Contains(entry))
                     SelectEntry(null);
             }
             else if (SelectedEntry is PageViewModel)
@@ -213,14 +213,14 @@ namespace Polsys.Ref.ViewModels
             SelectedEntry.Commit();
             IsModified = true;
 
-            // Adding the book
-            if (SelectedEntry is BookViewModel)
+            // Adding a publication or a page
+            if (SelectedEntry is PublicationViewModelBase)
             {
-                var entryAsBook = SelectedEntry as BookViewModel;
-                if (!Catalogue.Entries.Contains(entryAsBook))
+                var entry = SelectedEntry as PublicationViewModelBase;
+                if (!Catalogue.Entries.Contains(entry))
                 {
-                    Catalogue.AddBook(entryAsBook);
-                    // Change the selection to the new book
+                    Catalogue.AddEntry(entry);
+                    // Change the selection to the new entry
                     // WPF makes sure that the last entry gets deselected
                     // TODO: Do not actually depend on that
                     SelectedEntry.IsSelected = true;
@@ -236,6 +236,19 @@ namespace Polsys.Ref.ViewModels
                     SelectedEntry.IsSelected = true;
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds a new article to the catalogue and selects it.
+        /// </summary>
+        public void CreateArticle()
+        {
+            if (ShouldCancelBecauseOfEdit())
+                return;
+
+            var newArticle = new ArticleViewModel(new Article());
+            SelectEntry(newArticle);
+            newArticle.Edit();
         }
 
         /// <summary>
@@ -344,7 +357,7 @@ namespace Polsys.Ref.ViewModels
                 {
                     var entry = SelectedEntry as BookViewModel;
                     SelectedEntry = null;
-                    Catalogue.RemoveBook(entry);
+                    Catalogue.RemoveEntry(entry);
                 }
                 else if (SelectedEntry is PageViewModel)
                 {

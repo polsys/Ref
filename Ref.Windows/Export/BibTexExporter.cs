@@ -42,7 +42,8 @@ namespace Polsys.Ref.Export
 
                 foreach (var entry in catalogue.Entries)
                 {
-                    WriteBook(writer, entry);
+                    if (entry is Book)
+                        WriteBook(writer, (Book)entry);
                     writer.WriteLine();
                 }
             }

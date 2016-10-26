@@ -143,7 +143,7 @@ namespace Polsys.Ref.Tests.ViewModels
             {
                 var vm = new MainWindowViewModel();
                 var book = new BookViewModel(TestUtility.CreateMakeAndDo());
-                vm.Catalogue.AddBook(book); // This does not set the modified flag
+                vm.Catalogue.AddEntry(book); // This does not set the modified flag
                 vm.SelectEntry(book);
 
                 TestUtility.AssertRaisesPropertyChanged(vm, () => vm.NewProject(), "Catalogue");
@@ -272,7 +272,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 Assert.That(vm.IsModified, Is.False);
 
                 Assert.That(vm.Catalogue.Entries, Has.Exactly(1).InstanceOf<BookViewModel>());
-                Assert.That(vm.Catalogue.Entries[0]._book, Is.Not.Null);
+                Assert.That(((BookViewModel)vm.Catalogue.Entries[0])._book, Is.Not.Null);
                 Assert.That(vm.Catalogue.Entries[0].Title, Is.EqualTo("Letters to a Young Mathematician"));
                 Assert.That(vm.Catalogue.Entries[0].Pages, Has.Exactly(1).InstanceOf<PageViewModel>());
                 Assert.That(vm.Catalogue.Entries[0].Pages[0]._page, Is.Not.Null);
@@ -292,6 +292,34 @@ namespace Polsys.Ref.Tests.ViewModels
 
                 vm.SaveProject(false);
                 vm.OpenProject();
+            }
+
+            [Test]
+            public void RoundTrip_ManyTypes()
+            {
+                // This test should exercise all possible entry types
+
+                var filename = Path.Combine(TempFolder, "RoundTrip_ManyTypes.refproject");
+                var vm = new MainWindowViewModel();
+                vm.SelectingSaveFilename += () => { return filename; };
+                vm.Catalogue.AddEntry(new ArticleViewModel(TestUtility.CreateCounterexample()));
+                vm.Catalogue.AddEntry(new BookViewModel(TestUtility.CreateCrackingMathematics()));
+                
+                AssertRoundTrip(vm);
+                vm.SaveProject(false);
+
+                var newVm = new MainWindowViewModel();
+                newVm.SelectingOpenFilename += () => { return filename; };
+                newVm.OpenProject();
+                AssertRoundTrip(newVm);
+            }
+
+            private static void AssertRoundTrip(MainWindowViewModel vm)
+            {
+                Assert.That(vm.Catalogue.Entries,
+                                    Has.Exactly(1).InstanceOf<ArticleViewModel>().With.Property("Journal").Contains("Bull."));
+                Assert.That(vm.Catalogue.Entries,
+                    Has.Exactly(1).InstanceOf<BookViewModel>().With.Property("Edition").EqualTo("1st"));
             }
 
             [Test]
@@ -408,7 +436,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 };
                 var book = new BookViewModel(TestUtility.CreateMakeAndDo());
                 book.AddPage(new PageViewModel(CreateOnKnotsPage()));
-                vm.Catalogue.AddBook(book);
+                vm.Catalogue.AddEntry(book);
                 vm.CreateBook();
                 vm.CommitEdit(); // Force IsModified to be true
 

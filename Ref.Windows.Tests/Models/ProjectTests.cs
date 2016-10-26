@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 using Polsys.Ref.Models;
@@ -34,6 +33,10 @@ namespace Polsys.Ref.Tests.Models
         {
             // This catalogue should contain all possible types
             var catalogue = new Catalogue();
+
+            var article = new Article();
+            catalogue.Entries.Add(article);
+
             var book = new Book();
             book.Pages.Add(new Page());
             catalogue.Entries.Add(book);

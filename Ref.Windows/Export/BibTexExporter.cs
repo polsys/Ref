@@ -42,7 +42,9 @@ namespace Polsys.Ref.Export
 
                 foreach (var entry in catalogue.Entries)
                 {
-                    if (entry is Book)
+                    if (entry is Article)
+                        WriteArticle(writer, (Article)entry);
+                    else if (entry is Book)
                         WriteBook(writer, (Book)entry);
                     writer.WriteLine();
                 }
@@ -51,39 +53,65 @@ namespace Polsys.Ref.Export
             return true;
         }
 
+        internal void WriteArticle(TextWriter writer, Article article)
+        {
+            if (IsUnkeyed(article.Key, article.Title, writer))
+                return;
+
+            var fields = new List<string>();
+            AddField(fields, article.Author, "author");
+            AddField(fields, article.Doi, "doi");
+            AddField(fields, article.Journal, "journal");
+            AddField(fields, article.Number, "number");
+            AddField(fields, article.PageRange, "pages");
+            AddField(fields, article.Title, "title");
+            AddField(fields, article.Volume, "volume");
+            AddField(fields, article.Year, "year");
+
+            WriteEntry(writer, "@article", article.Key, fields);
+        }
+
         internal void WriteBook(TextWriter writer, Book book)
         {
-            if (string.IsNullOrEmpty(book.Key))
-            {
-                writer.WriteLine("% No key defined for \"" + book.Title + "\", skipping");
+            if (IsUnkeyed(book.Key, book.Title, writer))
                 return;
-            }
 
-            // Skip undefined fields
+            // Only write the fields with a value
             var fields = new List<string>();
-            if (!string.IsNullOrEmpty(book.Address))
-                fields.Add("address = \"" + book.Address + "\"");
-            if (!string.IsNullOrEmpty(book.Author))
-                fields.Add("author = \"" + book.Author + "\"");
-            if (!string.IsNullOrEmpty(book.Edition))
-                fields.Add("edition = \"" + book.Edition + "\"");
-            if (!string.IsNullOrEmpty(book.Editor))
-                fields.Add("editor = \"" + book.Editor + "\"");
-            if (!string.IsNullOrEmpty(book.Number))
-                fields.Add("number = \"" + book.Number + "\"");
-            if (!string.IsNullOrEmpty(book.Publisher))
-                fields.Add("publisher = \"" + book.Publisher + "\"");
-            if (!string.IsNullOrEmpty(book.Series))
-                fields.Add("series = \"" + book.Series + "\"");
-            if (!string.IsNullOrEmpty(book.Title))
-                fields.Add("title = \"" + book.Title + "\"");
-            if (!string.IsNullOrEmpty(book.Volume))
-                fields.Add("volume = \"" + book.Volume + "\"");
-            if (!string.IsNullOrEmpty(book.Year))
-                fields.Add("year = \"" + book.Year + "\"");
+            AddField(fields, book.Address, "address");
+            AddField(fields, book.Author, "author");
+            AddField(fields, book.Edition, "edition");
+            AddField(fields, book.Editor, "editor");
+            AddField(fields, book.Number, "number");
+            AddField(fields, book.Publisher, "publisher");
+            AddField(fields, book.Series, "series");
+            AddField(fields, book.Title, "title");
+            AddField(fields, book.Volume, "volume");
+            AddField(fields, book.Year, "year");
 
             // Write the entry
-            writer.WriteLine("@book{" + book.Key + ",");
+            WriteEntry(writer, "@book", book.Key, fields);
+        }
+
+        private static void AddField(List<string> fields, string value, string fieldName)
+        {
+            if (!string.IsNullOrEmpty(value))
+                fields.Add(fieldName + " = \"" + value + "\"");
+        }
+
+        private static bool IsUnkeyed(string key, string title, TextWriter writer)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                writer.WriteLine("% No key defined for \"" + title + "\", skipping");
+                return true;
+            }
+            return false;
+        }
+
+        private static void WriteEntry(TextWriter writer, string entryType, string key, List<string> fields)
+        {
+            writer.WriteLine(entryType + "{" + key + ",");
             for (int i = 0; i < fields.Count; i++)
             {
                 // Indentation included

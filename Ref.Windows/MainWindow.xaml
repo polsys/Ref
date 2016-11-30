@@ -28,11 +28,27 @@
             <Button Content="Export" Name="exportProjectButton" Click="exportProjectButton_Click" />
         </ToolBar>
 
-        <!-- Button related to the tree view -->
+        <!-- Buttons related to the tree view -->
         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
-            <!-- TODO: Replace with a single dropdown button -->
-            <Button Name="addEntryButton" Content="Add Book" Click="addEntryButton_Click" Margin="4,4,2,4" Padding="6,2" />
-            <Button Name="addArticleButton" Content="Add Article" Margin="4,4,2,4" Padding="6,2" Click="addArticleButton_Click" />
+            <!-- Based on https://dotnetlearning.wordpress.com/2011/02/20/dropdown-menu-in-wpf/
+                 and http://www.bengribaudo.com/blog/2011/01/21/675/combobox-displaying-a-drop-down-menu -->
+            <Button Name="addEntryPopupButton" Margin="4,4,2,4" Padding="6,2"
+                    ContextMenuService.IsEnabled="False" Click="addEntryPopupButton_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>Add</TextBlock>
+                        <Border>
+                            <Path Data="M0,0L3.5,4 7,0z" Fill="#FF000000" Margin="3,2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
+                </Button.Content>
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Name="addBookButton" Header="Book" Click="addBookButton_Click"/>
+                        <MenuItem Name="addArticleButton" Header="Article" Click="addArticleButton_Click"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
             <Button Name="removeEntryButton" Content="Remove" Click="removeEntryButton_Click" Margin="2,4" Padding="6,2">
                 <!-- Disable the Remove button if there is nothing selected -->
                 <Button.Style>

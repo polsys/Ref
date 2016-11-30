@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.Win32;
 using Polsys.Ref.ViewModels;
 
@@ -141,10 +142,18 @@ namespace Polsys.Ref
             titleTextBox.Focus();
         }
 
-        private void addEntryButton_Click(object sender, RoutedEventArgs e)
+        private void addBookButton_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.CreateBook();
             titleTextBox.Focus();
+        }
+
+        private void addEntryPopupButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            button.ContextMenu.PlacementTarget = button;
+            button.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            button.ContextMenu.IsOpen = true;
         }
 
         private void addPageButton_Click(object sender, RoutedEventArgs e)

@@ -105,7 +105,7 @@
                 <HierarchicalDataTemplate DataType="{x:Type vm:PageViewModel}">
                     <StackPanel Orientation="Vertical" Margin="0,4">
                         <TextBlock Text="{Binding PageRange}" FontSize="12" />
-                        <TextBlock Text="{Binding Title}" FontSize="16" />
+                        <TextBlock Text="{Binding Converter={StaticResource EntryTitleConverter}}" FontSize="16" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.Resources>

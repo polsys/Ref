@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Data;
 using Polsys.Ref.ViewModels;
@@ -29,8 +27,8 @@ namespace Polsys.Ref.Xaml
                     }
                 }
 
-                // Else just return the entry title
-                return entry.Title;
+                // Else just return the entry title, unless it is empty/null
+                return string.IsNullOrWhiteSpace(entry.Title) ? "(Untitled)" : entry.Title;
             }
 
             // If the value is not an entry, signal an error

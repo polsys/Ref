@@ -56,7 +56,6 @@ namespace Polsys.Ref.Tests.Xaml
 
             Assert.That(converter.Convert(book, typeof(string), null, CultureInfo.InvariantCulture),
                 Is.EqualTo("Article Title"));
-
         }
 
         [Test]
@@ -68,6 +67,26 @@ namespace Polsys.Ref.Tests.Xaml
 
             Assert.That(converter.Convert(book, typeof(string), null, CultureInfo.InvariantCulture),
                 Is.EqualTo("Page Title"));
+        }
+
+        [Test]
+        public void Convert_ReturnsUntitled_Empty()
+        {
+            var converter = new EntryTitleConverter();
+            var book = new ArticleViewModel(new Article() { Title = "" });
+
+            Assert.That(converter.Convert(book, typeof(string), null, CultureInfo.InvariantCulture),
+                Is.EqualTo("(Untitled)"));
+        }
+
+        [Test]
+        public void Convert_ReturnsUntitled_Null()
+        {
+            var converter = new EntryTitleConverter();
+            var book = new ArticleViewModel(new Article() { Title = null });
+
+            Assert.That(converter.Convert(book, typeof(string), null, CultureInfo.InvariantCulture),
+                Is.EqualTo("(Untitled)"));
         }
     }
 }

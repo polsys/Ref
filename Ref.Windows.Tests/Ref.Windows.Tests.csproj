@@ -48,6 +48,7 @@
     <Compile Include="ViewModels\MainWindowViewModelTests.cs" />
     <Compile Include="ViewModels\CatalogueViewModelTests.cs" />
     <Compile Include="ViewModels\BookViewModelTests.cs" />
+    <Compile Include="Xaml\EntryTitleConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

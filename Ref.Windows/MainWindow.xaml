@@ -93,12 +93,13 @@
                   ItemsSource="{Binding Catalogue.Entries}"
                   SelectedItemChanged="catalogueTreeView_SelectedItemChanged" >
             <TreeView.Resources>
+                <xaml:EntryTitleConverter x:Key="EntryTitleConverter" />
                 <xaml:PageSortConverter x:Key="PageSortConverter" />
                 <HierarchicalDataTemplate DataType="{x:Type vm:PublicationViewModelBase}"
                                           ItemsSource="{Binding Pages, Converter={StaticResource PageSortConverter}}">
                     <StackPanel Orientation="Vertical" Margin="0,4">
                         <TextBlock Text="{Binding Author}" FontSize="12" />
-                        <TextBlock Text="{Binding Title}" FontSize="16" />
+                        <TextBlock Text="{Binding Converter={StaticResource EntryTitleConverter}}" FontSize="16" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type vm:PageViewModel}">

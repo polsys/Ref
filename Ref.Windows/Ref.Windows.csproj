@@ -68,6 +68,7 @@
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\PublicationViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Xaml\EntryTitleConverter.cs" />
     <Compile Include="Xaml\PageSortConverter.cs" />
     <Compile Include="Xaml\AlwaysVisibleConverter.cs" />
     <Page Include="MainWindow.xaml">

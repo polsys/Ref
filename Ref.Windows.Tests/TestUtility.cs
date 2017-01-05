@@ -43,8 +43,10 @@ namespace Polsys.Ref.Tests
             {
                 Author = "Lander, L.J.; Parkin, T.R.",
                 Doi = "10.1090/S0002-9904-1966-11654-3",
+                Issn = "0273-0979",
                 Journal = "Bull. Amer. Math. Soc.",
                 Key = "Lander1966",
+                Notes = "This is maybe the shortest proof ever.",
                 Number = "6",
                 PageRange = "1079",
                 Title = "Counterexample to Euler's conjecture on sums of like powers",
@@ -63,11 +65,14 @@ namespace Polsys.Ref.Tests
                 Author = "Beveridge, Colin",
                 Edition = "1st",
                 Editor = "Poulter, Pollyanna",
+                Isbn = "978-1-84403-862-6",
                 Key = "Beveridge2016",
+                Notes = "Have you ever seen a maths book this pretty?",
                 Number = "1",
                 Publisher = "Octopus Books",
                 Series = "Musings of the Mathematical Ninja", // Not really, at least yet.
                 Title = "Cracking Mathematics",
+                Translator = "(Multiple... for all the other editions)", // Now if there was a Finnish translation...
                 Volume = "1", // No Volume II yet.
                 Year = "2016"
             };

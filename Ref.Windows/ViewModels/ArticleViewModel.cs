@@ -19,6 +19,11 @@ namespace Polsys.Ref.ViewModels
             get { return _doi; }
             set { SetProperty(ref _doi, value, nameof(Doi)); }
         }
+        public string Issn
+        {
+            get { return _issn; }
+            set { SetProperty(ref _issn, value, nameof(Issn)); }
+        }
         public string Journal
         {
             get { return _journal; }
@@ -51,6 +56,7 @@ namespace Polsys.Ref.ViewModels
         }
         private string _author;
         private string _doi;
+        private string _issn;
         private string _journal;
         private string _key;
         private string _number;
@@ -94,8 +100,10 @@ namespace Polsys.Ref.ViewModels
         {
             Author = _article.Author;
             Doi = _article.Doi;
+            Issn = _article.Issn;
             Journal = _article.Journal;
             Key = _article.Key;
+            Notes = _article.Notes;
             Number = _article.Number;
             PageRange = _article.PageRange;
             Title = _article.Title;
@@ -107,8 +115,10 @@ namespace Polsys.Ref.ViewModels
         {
             _article.Author = Author;
             _article.Doi = Doi;
+            _article.Issn = Issn;
             _article.Journal = Journal;
             _article.Key = Key;
+            _article.Notes = Notes;
             _article.Number = Number;
             _article.PageRange = PageRange;
             _article.Title = Title;

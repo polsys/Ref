@@ -14,8 +14,10 @@ namespace Polsys.Ref.Tests.ViewModels
 
             Assert.That(vm.Author, Is.EqualTo(article.Author));
             Assert.That(vm.Doi, Is.EqualTo(article.Doi));
+            Assert.That(vm.Issn, Is.EqualTo(article.Issn));
             Assert.That(vm.Journal, Is.EqualTo(article.Journal));
             Assert.That(vm.Key, Is.EqualTo(article.Key));
+            Assert.That(vm.Notes, Is.EqualTo(article.Notes));
             Assert.That(vm.Number, Is.EqualTo(article.Number));
             Assert.That(vm.PageRange, Is.EqualTo(article.PageRange));
             Assert.That(vm.Title, Is.EqualTo(article.Title));

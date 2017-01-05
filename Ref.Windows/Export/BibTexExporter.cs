@@ -61,6 +61,7 @@ namespace Polsys.Ref.Export
             var fields = new List<string>();
             AddField(fields, ReplaceSemicolonsWithAnd(article.Author), "author");
             AddField(fields, article.Doi, "doi");
+            AddField(fields, article.Issn, "issn");
             AddField(fields, article.Journal, "journal");
             AddField(fields, article.Number, "number");
             AddField(fields, article.PageRange, "pages");
@@ -82,10 +83,12 @@ namespace Polsys.Ref.Export
             AddField(fields, ReplaceSemicolonsWithAnd(book.Author), "author");
             AddField(fields, book.Edition, "edition");
             AddField(fields, book.Editor, "editor");
+            AddField(fields, book.Isbn, "isbn");
             AddField(fields, book.Number, "number");
             AddField(fields, book.Publisher, "publisher");
             AddField(fields, book.Series, "series");
             AddField(fields, EncloseInBraces(book.Title), "title");
+            AddField(fields, book.Translator, "translator");
             AddField(fields, book.Volume, "volume");
             AddField(fields, book.Year, "year");
 

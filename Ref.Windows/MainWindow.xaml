@@ -180,6 +180,9 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.Resources>
                     <xaml:AlwaysVisibleConverter x:Key="MakeVisible" />
@@ -246,38 +249,56 @@
                 <TextBox Visibility="{Binding Number, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Number}" IsReadOnly="{Binding IsReadOnly}"
                          Grid.Row="9" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                <!-- Translator -->
+                <TextBlock Text="Translator" Visibility="{Binding Translator, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                           Grid.Row="10" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Visibility="{Binding Translator, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                         Text="{Binding Translator}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="10" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- Editor -->
                 <TextBlock Text="Editor" Visibility="{Binding Editor, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="10" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="11" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Editor, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Editor}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="10" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="11" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- Address -->
                 <TextBlock Text="Address" Visibility="{Binding Address, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="11" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="12" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Address, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Address}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="11" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="12" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- Pages -->
                 <TextBlock Text="Pages" Visibility="{Binding PageRange, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="12" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="13" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding PageRange, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding PageRange}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="12" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="13" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                <!-- ISBN -->
+                <TextBlock Text="ISBN" Visibility="{Binding Isbn, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                           Grid.Row="14" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Visibility="{Binding Isbn, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                         Text="{Binding Isbn}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="14" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                <!-- ISSN -->
+                <TextBlock Text="ISSN" Visibility="{Binding Issn, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                           Grid.Row="15" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Visibility="{Binding Issn, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                         Text="{Binding Issn}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="15" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- DOI -->
                 <TextBlock Text="DOI" Visibility="{Binding Doi, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="13" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="16" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Doi, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Doi}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="13" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="16" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
 
                 <!-- Notes - this is a multiline box -->
                 <TextBlock Text="Notes" Visibility="{Binding Notes, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="14" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="17" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Notes, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Notes}" IsReadOnly="{Binding IsReadOnly}"
                          AcceptsReturn="True" Height="200" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"
-                         Grid.Row="14" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="17" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
             </Grid>
         </StackPanel>
     </Grid>

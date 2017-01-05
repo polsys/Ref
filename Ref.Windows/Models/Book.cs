@@ -34,10 +34,22 @@ namespace Polsys.Ref.Models
         public string Editor { get; set; }
 
         /// <summary>
+        /// The International Standard Book Number of this book.
+        /// </summary>
+        [DataMember]
+        public string Isbn { get; set; }
+
+        /// <summary>
         /// The unique citation key for this entry.
         /// </summary>
         [DataMember]
         public string Key { get; set; }
+
+        /// <summary>
+        /// Additional notes for this entry.
+        /// </summary>
+        [DataMember]
+        public string Notes { get; set; }
 
         /// <summary>
         /// The number of this book in a series.
@@ -62,6 +74,12 @@ namespace Polsys.Ref.Models
         /// </summary>
         [DataMember]
         public string Title { get; set; }
+
+        /// <summary>
+        /// The translator or translators of this book.
+        /// </summary>
+        [DataMember]
+        public string Translator { get; set; }
 
         /// <summary>
         /// The volume of this book.

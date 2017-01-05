@@ -17,6 +17,11 @@
         string Key { get; set; }
 
         /// <summary>
+        /// Additional notes for this entry.
+        /// </summary>
+        string Notes { get; set; }
+
+        /// <summary>
         /// The title of this entry.
         /// </summary>
         string Title { get; set; }

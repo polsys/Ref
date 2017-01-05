@@ -187,6 +187,7 @@ namespace Polsys.Ref.Tests.Export
                 Assert.That(contents, Does.StartWith("@article{Lander1966,"));
                 Assert.That(contents, Does.Contain("author = \"Lander, L.J. and  Parkin, T.R.\","));
                 Assert.That(contents, Does.Contain("doi = \"10.1090/S0002-9904-1966-11654-3\","));
+                Assert.That(contents, Does.Contain("issn = \"0273-0979\","));
                 Assert.That(contents, Does.Contain("journal = \"Bull. Amer. Math. Soc.\","));
                 Assert.That(contents, Does.Contain("number = \"6\","));
                 Assert.That(contents, Does.Contain("pages = \"1079\","));
@@ -205,6 +206,7 @@ namespace Polsys.Ref.Tests.Export
                 var exporter = new BibTexExporter();
                 var book = TestUtility.CreateCrackingMathematics();
                 book.Publisher = "";
+                book.Translator = null;
                 book.Volume = null;
                 book.Year = null;
                 exporter.WriteBook(writer, book);
@@ -271,10 +273,12 @@ namespace Polsys.Ref.Tests.Export
                 Assert.That(contents, Does.Contain("author = \"Beveridge, Colin\","));
                 Assert.That(contents, Does.Contain("edition = \"1st\","));
                 Assert.That(contents, Does.Contain("editor = \"Poulter, Pollyanna\","));
+                Assert.That(contents, Does.Contain("isbn = \"978-1-84403-862-6\","));
                 Assert.That(contents, Does.Contain("number = \"1\","));
                 Assert.That(contents, Does.Contain("publisher = \"Octopus Books\","));
                 Assert.That(contents, Does.Contain("series = \"Musings of the Mathematical Ninja\","));
                 Assert.That(contents, Does.Contain("title = \"{Cracking Mathematics}\","));
+                Assert.That(contents, Does.Contain("translator = \"(Multiple... for all the other editions)\","));
                 Assert.That(contents, Does.Contain("volume = \"1\","));
                 Assert.That(contents, Does.Contain("year = \"2016\""));
                 Assert.That(contents.TrimEnd(), Does.EndWith("}"));

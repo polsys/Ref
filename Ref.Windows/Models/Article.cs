@@ -22,6 +22,12 @@ namespace Polsys.Ref.Models
         public string Doi { get; set; }
 
         /// <summary>
+        /// The International Standard Serial Number of the journal this article was published in.
+        /// </summary>
+        [DataMember]
+        public string Issn { get; set; }
+
+        /// <summary>
         /// The publication this article was published in.
         /// </summary>
         [DataMember]
@@ -32,6 +38,12 @@ namespace Polsys.Ref.Models
         /// </summary>
         [DataMember]
         public string Key { get; set; }
+
+        /// <summary>
+        /// Additional notes for this entry.
+        /// </summary>
+        [DataMember]
+        public string Notes { get; set; }
 
         /// <summary>
         /// The number of the publication.

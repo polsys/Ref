@@ -7,7 +7,14 @@ namespace Polsys.Ref.ViewModels
     /// </summary>
     internal abstract class EntryViewModelBase : ViewModelBase
     {
-        // This is in the base class since all entries have a name
+        // These are in the base class since all entries have a name and notes
+        public string Notes
+        {
+            get { return _notes; }
+            set { SetProperty(ref _notes, value, nameof(Notes)); }
+        }
+        private string _notes;
+
         public string Title
         {
             get { return _title; }

@@ -36,17 +36,11 @@ namespace Polsys.Ref.ViewModels
                     return Convert.ToInt32(PageRange.Substring(0, i));
             }
         }
-        public string Notes
-        {
-            get { return _notes; }
-            set { SetProperty(ref _notes, value, nameof(Notes)); }
-        }
         public string PageRange
         {
             get { return _pageRange; }
             set { SetProperty(ref _pageRange, value, nameof(PageRange)); }
         }
-        private string _notes;
         private string _pageRange;
 
         internal Page _page;

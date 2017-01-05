@@ -31,6 +31,11 @@ namespace Polsys.Ref.ViewModels
             get { return _editor; }
             set { SetProperty(ref _editor, value, nameof(Editor)); }
         }
+        public string Isbn
+        {
+            get { return _isbn; }
+            set { SetProperty(ref _isbn, value, nameof(Isbn)); }
+        }
         public string Key
         {
             get { return _key; }
@@ -51,6 +56,11 @@ namespace Polsys.Ref.ViewModels
             get { return _series; }
             set { SetProperty(ref _series, value, nameof(Series)); }
         }
+        public string Translator
+        {
+            get { return _translator; }
+            set { SetProperty(ref _translator, value, nameof(Translator)); }
+        }
         public string Volume
         {
             get { return _volume; }
@@ -65,10 +75,12 @@ namespace Polsys.Ref.ViewModels
         private string _author;
         private string _edition;
         private string _editor;
+        private string _isbn;
         private string _key;
         private string _number;
         private string _publisher;
         private string _series;
+        private string _translator;
         private string _volume;
         private string _year;
 
@@ -120,11 +132,14 @@ namespace Polsys.Ref.ViewModels
             Author = _book.Author;
             Edition = _book.Edition;
             Editor = _book.Editor;
+            Isbn = _book.Isbn;
             Key = _book.Key;
+            Notes = _book.Notes;
             Number = _book.Number;
             Publisher = _book.Publisher;
             Series = _book.Series;
             Title = _book.Title;
+            Translator = _book.Translator;
             Volume = _book.Volume;
             Year = _book.Year;
         }
@@ -135,11 +150,14 @@ namespace Polsys.Ref.ViewModels
             _book.Author = Author;
             _book.Edition = Edition;
             _book.Editor = Editor;
+            _book.Isbn = Isbn;
             _book.Key = Key;
+            _book.Notes = Notes;
             _book.Number = Number;
             _book.Publisher = Publisher;
             _book.Series = Series;
             _book.Title = Title;
+            _book.Translator = Translator;
             _book.Volume = Volume;
             _book.Year = Year;
         }

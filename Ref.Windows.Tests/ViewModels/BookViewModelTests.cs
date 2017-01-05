@@ -16,11 +16,14 @@ namespace Polsys.Ref.Tests.ViewModels
             Assert.That(vm.Author, Is.EqualTo(book.Author));
             Assert.That(vm.Edition, Is.EqualTo(book.Edition));
             Assert.That(vm.Editor, Is.EqualTo(book.Editor));
+            Assert.That(vm.Isbn, Is.EqualTo(book.Isbn));
             Assert.That(vm.Key, Is.EqualTo(book.Key));
+            Assert.That(vm.Notes, Is.EqualTo(book.Notes));
             Assert.That(vm.Number, Is.EqualTo(book.Number));
             Assert.That(vm.Publisher, Is.EqualTo(book.Publisher));
             Assert.That(vm.Series, Is.EqualTo(book.Series));
             Assert.That(vm.Title, Is.EqualTo(book.Title));
+            Assert.That(vm.Translator, Is.EqualTo(book.Translator));
             Assert.That(vm.Volume, Is.EqualTo(book.Volume));
             Assert.That(vm.Year, Is.EqualTo(book.Year));
 

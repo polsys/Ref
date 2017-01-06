@@ -1,3 +1,7 @@
+---
+title: Ref
+---
+
 Ref is a simple tool for collecting references and citations. I have created it for my own use, finding the more professional tools way too heavy for my simple maths blogging.
 
 ![Ref screenshot](index_screenshot.png "Screenshot of Ref")
@@ -28,7 +32,7 @@ You add books, articles, etc. and fill out their details. When you export the pr
 You can also add pages to the entries. These are not exported, but rather serve as notes for you.
 
 ### Who and what is this?
-I am Petri Laarne (polsys on GitHub, petrilaarne on Twitter), a maths student-to-be once my gap year is over, and I blog mathematics at [Nollakohta.fi](www.nollakohta.fi). I love sitting in the library, and created Ref as a minimal tool for taking notes for the blog and other things.
+I am Petri Laarne (polsys on GitHub, petrilaarne on Twitter), a maths student-to-be once my gap year is over, and I blog mathematics at [Nollakohta.fi](http://www.nollakohta.fi). I love sitting in the library, and created Ref as a minimal tool for taking notes for the blog and other things.
 
 ### Is this really free?
 Yup. This is a tool I personally wanted to make (making things is fun), and I think sharing it has just advantages. The source code is available under the MIT license.

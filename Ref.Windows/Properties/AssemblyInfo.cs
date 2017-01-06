@@ -7,11 +7,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Ref")]
-[assembly: AssemblyDescription("Ref for Windows Desktop")]
+[assembly: AssemblyDescription("Ref for Windows")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Ref")]
-[assembly: AssemblyCopyright("Copyright © polsys 2016")]
+[assembly: AssemblyCopyright("Copyright © Petri Laarne (polsys) 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

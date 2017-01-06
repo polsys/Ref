@@ -1,0 +1,21 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+/* Ref color scheme */
+.page-header {
+    background-color: #C70B00;
+    background-image: linear-gradient(120deg, #C70B00, #F7931E);
+}
+.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
+    color: #F7931E;
+}
+
+/* Make the buttons suitable for the content area as well */
+.btn {
+    background-color: #F7931E;
+}
+.btn:hover {
+    background-color: #F68F16;
+}

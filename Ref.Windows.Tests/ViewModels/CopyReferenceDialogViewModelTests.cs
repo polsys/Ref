@@ -12,26 +12,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new CopyReferenceDialogViewModel(new BookViewModel(TestUtility.CreateCrackingMathematics()));
 
-            // Doing this manually instead of TestUtility since there are two properties to test
-            // TODO: Refactor into a nicer method there
-            int citationStyleChanged = 0;
-            int citationChanged = 0;
-            vm.PropertyChanged += (object sender, PropertyChangedEventArgs args) =>
-            {
-                if (args.PropertyName == "CitationStyle")
-                {
-                    citationStyleChanged++;
-                }
-                else if (args.PropertyName == "Citation")
-                {
-                    citationChanged++;
-                }
-            };
-
-            vm.CitationStyle = CitationStyle.Ieee;
-
-            Assert.That(citationStyleChanged, Is.EqualTo(1));
-            Assert.That(citationChanged, Is.EqualTo(1));
+            TestUtility.AssertRaisesPropertyChanged(vm, () => { vm.CitationStyle = CitationStyle.Ieee; }, "CitationStyle", "Citation");
         }
 
         [Test]
@@ -39,24 +20,7 @@ namespace Polsys.Ref.Tests.ViewModels
         {
             var vm = new CopyReferenceDialogViewModel(new BookViewModel(TestUtility.CreateCrackingMathematics()));
 
-            int outputTypeChanged = 0;
-            int citationChanged = 0;
-            vm.PropertyChanged += (object sender, PropertyChangedEventArgs args) =>
-            {
-                if (args.PropertyName == "OutputType")
-                {
-                    outputTypeChanged++;
-                }
-                else if (args.PropertyName == "Citation")
-                {
-                    citationChanged++;
-                }
-            };
-
-            vm.OutputType = ReferenceOutputType.Markdown;
-
-            Assert.That(outputTypeChanged, Is.EqualTo(1));
-            Assert.That(citationChanged, Is.EqualTo(1));
+            TestUtility.AssertRaisesPropertyChanged(vm, () => { vm.OutputType = ReferenceOutputType.Markdown; }, "OutputType", "Citation");
         }
 
         // APA

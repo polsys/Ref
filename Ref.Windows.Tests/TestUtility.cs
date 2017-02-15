@@ -35,6 +35,42 @@ namespace Polsys.Ref.Tests
             }
         }
 
+        /// <summary>
+        /// Asserts that calling <paramref name="func"/> raises a <see cref="INotifyPropertyChanged.PropertyChanged"/> event
+        /// with the two specified property names.
+        /// </summary>
+        /// <param name="viewModel">The view model implementing <see cref="INotifyPropertyChanged"/>.</param>
+        /// <param name="func">The test code.</param>
+        /// <param name="property1">An expected property name.</param>
+        /// <param name="property2">An expected property name.</param>
+        public static void AssertRaisesPropertyChanged(INotifyPropertyChanged viewModel, TestDelegate func,
+            string property1, string property2)
+        {
+            int property1ChangedCount = 0;
+            int property2ChangedCount = 0;
+            PropertyChangedEventHandler handler = (object sender, PropertyChangedEventArgs e) =>
+            {
+                if (e.PropertyName == property1)
+                    property1ChangedCount++;
+                else if (e.PropertyName == property2)
+                    property2ChangedCount++;
+            };
+
+            try
+            {
+                viewModel.PropertyChanged += handler;
+                func.Invoke();
+                Assert.That(property1ChangedCount, Is.EqualTo(1),
+                    "The PropertyChanged event for '" + property1 + "' was not fired or was fired more than once.");
+                Assert.That(property2ChangedCount, Is.EqualTo(1),
+                    "The PropertyChanged event for '" + property2 + "' was not fired or was fired more than once.");
+            }
+            finally
+            {
+                viewModel.PropertyChanged -= handler;
+            }
+        }
+
         // Example data
         public static Article CreateCounterexample()
         {

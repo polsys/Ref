@@ -321,6 +321,63 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
+        public void OpenCopyReferenceDialog_CallsCallbackWithEntry()
+        {
+            var vm = new MainWindowViewModel();
+            var bookVM = new BookViewModel(new Book() { Title = "To be copied" });
+            vm.Catalogue.AddEntry(bookVM);
+            vm.SelectEntry(bookVM);
+
+            int timesCalled = 0;
+            vm.OpeningCopyReferenceDialog += (PublicationViewModelBase entry) =>
+            {
+                Assert.That(entry.Title, Is.EqualTo("To be copied"));
+                timesCalled++;
+            };
+            Assert.That(() => vm.OpenCopyReferenceDialog(), Throws.Nothing);
+            Assert.That(timesCalled, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void OpenCopyReferenceDialog_UsesParentEntryFromPage()
+        {
+            var vm = new MainWindowViewModel();
+            var book = new Book() { Title = "To be copied" };
+            book.Pages.Add(new Page() { Title = "Hello" });
+            var bookVM = new BookViewModel(book);
+            vm.Catalogue.AddEntry(bookVM);
+            vm.SelectEntry(bookVM.Pages[0]);
+
+            int timesCalled = 0;
+            vm.OpeningCopyReferenceDialog += (PublicationViewModelBase entry) =>
+            {
+                Assert.That(entry.Title, Is.EqualTo("To be copied"));
+                timesCalled++;
+            };
+            Assert.That(() => vm.OpenCopyReferenceDialog(), Throws.Nothing);
+            Assert.That(timesCalled, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void OpenCopyReferenceDialog_DoesNotThrowIfNoCallback()
+        {
+            var vm = new MainWindowViewModel();
+            var bookVM = new BookViewModel(new Book() { Title = "To be copied" });
+            vm.Catalogue.AddEntry(bookVM);
+            vm.SelectEntry(bookVM);
+
+            Assert.That(() => vm.OpenCopyReferenceDialog(), Throws.Nothing);
+        }
+
+        [Test]
+        public void OpenCopyReferenceDialog_ThrowsIfNoneSelected()
+        {
+            var vm = new MainWindowViewModel();
+
+            Assert.That(() => vm.OpenCopyReferenceDialog(), Throws.InvalidOperationException);
+        }
+
+        [Test]
         public void RemoveSelected_AsksIfEditing()
         {
             var vm = new MainWindowViewModel();

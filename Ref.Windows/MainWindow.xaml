@@ -137,6 +137,7 @@
                     </Style>
                 </StackPanel.Style>
                 <Button Name="editButton" Content="Edit" Click="editButton_Click" Margin="4,4,2,4" Padding="6,2" />
+                <Button Name="copyReferenceButton" Content="Copy reference..." Margin="4,4,2,4" Padding="6,2" Click="copyReferenceButton_Click" />
             </StackPanel>
 
             <!-- This panel is shown in the edit mode -->

@@ -88,7 +88,8 @@ namespace Polsys.Ref.ViewModels
             get;
             set;
         }
-        
+
+        public delegate void PublicationCallback(PublicationViewModelBase entry);
         public delegate string StringCallback();
         // TODO: Replace with platform-neutral enums
         public delegate MessageBoxResult YesNoCallback();
@@ -105,6 +106,12 @@ namespace Polsys.Ref.ViewModels
         /// The callback should ask the user whether to save the project.
         /// </summary>
         public event YesNoCancelCallback DiscardingUnsavedChanges;
+
+        /// <summary>
+        /// Raised when the Copy Reference dialog should be opened.
+        /// The entry to be used is passed as a parameter.
+        /// </summary>
+        public event PublicationCallback OpeningCopyReferenceDialog;
 
         /// <summary>
         /// Raised before removing an entry.
@@ -304,6 +311,24 @@ namespace Polsys.Ref.ViewModels
             SelectedEntry = null;
             Catalogue = new CatalogueViewModel(new Catalogue());
             Filename = string.Empty;
+        }
+
+        /// <summary>
+        /// Opens a dialog that allows copying a plaintext reference to the current entry.
+        /// </summary>
+        public void OpenCopyReferenceDialog()
+        {
+            if (SelectedEntry == null)
+                throw new InvalidOperationException("No entry selected");
+
+            if (SelectedEntry is PublicationViewModelBase)
+            {
+                OpeningCopyReferenceDialog?.Invoke((PublicationViewModelBase)SelectedEntry);
+            }
+            else
+            {
+                OpeningCopyReferenceDialog?.Invoke(((PageViewModel)SelectedEntry)._parent);
+            }
         }
 
         /// <summary>

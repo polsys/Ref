@@ -23,6 +23,7 @@ namespace Polsys.Ref
             _viewModel.PropertyChanged += TitleChangeHandler;
             _viewModel.DisruptingEdit += DisruptingEditHandler;
             _viewModel.DiscardingUnsavedChanges += DiscardingChangesHandler;
+            _viewModel.OpeningCopyReferenceDialog += OpenCopyReferenceDialog;
             _viewModel.RemovingEntry += RemovingEntryHandler;
             _viewModel.SelectingExportFilename += ExportFileHandler;
             _viewModel.SelectingOpenFilename += OpenFileHandler;
@@ -87,6 +88,12 @@ namespace Polsys.Ref
             }
             else
                 return null;
+        }
+
+        private void OpenCopyReferenceDialog(PublicationViewModelBase entry)
+        {
+            var dialog = new CopyReferenceDialog(entry);
+            dialog.ShowDialog();
         }
 
         private string OpenFileHandler()
@@ -170,6 +177,11 @@ namespace Polsys.Ref
         private void commitButton_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.CommitEdit();
+        }
+
+        private void copyReferenceButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.OpenCopyReferenceDialog();
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)

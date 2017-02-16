@@ -1,0 +1,51 @@
+﻿<Window x:Class="Polsys.Ref.CopyReferenceDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Polsys.Ref"
+        xmlns:xaml="clr-namespace:Polsys.Ref.Xaml"
+        mc:Ignorable="d"
+        Title="Copy reference" Height="220" Width="400" ResizeMode="CanMinimize" Icon="Icon.ico">
+    <StackPanel Orientation="Vertical">
+        <!-- The settings grid -->
+        <Grid Margin="4,4">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <xaml:EnumIntConverter x:Key="EnumIntConverter" />
+            </Grid.Resources>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Padding="0,4,8,4">Citation style:</TextBlock>
+            <ComboBox Grid.Row="0" Grid.Column="1" Padding="4,2" Width="200" HorizontalAlignment="Right" 
+                      VerticalContentAlignment="Center" VerticalAlignment="Center"
+                      SelectedIndex="{Binding CitationStyle, Converter={StaticResource EnumIntConverter}}">
+                <ComboBoxItem>APA</ComboBoxItem>
+                <ComboBoxItem>Chicago</ComboBoxItem>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="1" Grid.Column="0" Padding="0,4,8,4">Format:</TextBlock>
+            <ComboBox Grid.Row="1" Grid.Column="1" Padding="4,2" Width="200" HorizontalAlignment="Right" 
+                      VerticalContentAlignment="Center" VerticalAlignment="Center"
+                      SelectedIndex="{Binding OutputType, Converter={StaticResource EnumIntConverter}}">
+                <ComboBoxItem>Plain text</ComboBoxItem>
+                <ComboBoxItem>HTML</ComboBoxItem>
+                <ComboBoxItem>Markdown</ComboBoxItem>
+            </ComboBox>
+        </Grid>
+
+        <TextBlock Margin="4,0" Opacity="0.7">Note: Results are approximate and may require editing.</TextBlock>
+        <TextBox Margin="4,4" Height="70" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Citation, Mode=OneWay}" />
+
+        <StackPanel Orientation="Horizontal" Margin="4,0" HorizontalAlignment="Right">
+            <Button Name="copyButton" Margin="0,4,4,4" Padding="6,2" Click="copyButton_Click">Copy to clipboard</Button>
+            <Button Name="closeButton" Margin="0,4,0,4" Padding="6,2" Click="closeButton_Click">Close</Button>
+        </StackPanel>
+    </StackPanel>
+</Window>

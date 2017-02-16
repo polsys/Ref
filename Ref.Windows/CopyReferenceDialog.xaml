@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Polsys.Ref"
         xmlns:xaml="clr-namespace:Polsys.Ref.Xaml"
         mc:Ignorable="d"
-        Title="Copy reference" Height="204" Width="400" ResizeMode="CanMinimize" Icon="Icon.ico">
+        Title="Copy reference" Height="220" Width="400" ResizeMode="CanMinimize" Icon="Icon.ico">
     <StackPanel Orientation="Vertical">
         <!-- The settings grid -->
         <Grid Margin="4,4">
@@ -39,6 +39,7 @@
             </ComboBox>
         </Grid>
 
+        <TextBlock Margin="4,0" Opacity="0.7">Note: Results are approximate and may require editing.</TextBlock>
         <TextBox Margin="4,4" Height="70" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Citation, Mode=OneWay}" />
 
         <StackPanel Orientation="Horizontal" Margin="4,0" HorizontalAlignment="Right">

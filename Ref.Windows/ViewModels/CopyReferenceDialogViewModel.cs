@@ -69,6 +69,8 @@ namespace Polsys.Ref.ViewModels
             {
                 case CitationStyle.Apa:
                     return GenerateApa();
+                case CitationStyle.Chicago:
+                    return GenerateChicago();
                 default:
                     throw new ArgumentException("Unknown citation style");
 
@@ -84,7 +86,7 @@ namespace Polsys.Ref.ViewModels
             {
                 var article = _entry as ArticleViewModel;
 
-                WriteApaAuthors(result, article.Author);
+                WriteAuthors(result, article.Author);
                 result.Append(" (");
                 result.Append(article.Year);
                 result.Append("). ");
@@ -97,9 +99,14 @@ namespace Polsys.Ref.ViewModels
                 result.Append(BeginItalics());
                 result.Append(article.Volume);
                 result.Append(EndItalics());
-                result.Append("(");
-                result.Append(article.Number);
-                result.Append("), ");
+
+                if (!string.IsNullOrEmpty(article.Number))
+                {
+                    result.Append("(");
+                    result.Append(article.Number);
+                    result.Append(")");
+                }
+                result.Append(", ");
                 result.Append(article.PageRange);
                 result.Append(".");
 
@@ -115,7 +122,7 @@ namespace Polsys.Ref.ViewModels
             {
                 var book = _entry as BookViewModel;
 
-                WriteApaAuthors(result, book.Author);
+                WriteAuthors(result, book.Author);
                 result.Append(" (");
                 result.Append(book.Year);
                 result.Append("). ");
@@ -137,10 +144,79 @@ namespace Polsys.Ref.ViewModels
             return result.ToString();
         }
 
-        private static void WriteApaAuthors(StringBuilder sb, string author)
+        private string GenerateChicago()
+        {
+            var result = new StringBuilder(128);
+
+            if (_entry is ArticleViewModel)
+            {
+                var article = _entry as ArticleViewModel;
+
+                WriteAuthors(result, article.Author);
+                result.Append(" \"");
+                result.Append(article.Title);
+                result.Append(".\" ");
+                result.Append(BeginItalics());
+                result.Append(article.Journal);
+                result.Append(EndItalics());
+                result.Append(" ");
+                result.Append(article.Volume);
+
+                if (!string.IsNullOrEmpty(article.Number))
+                {
+                    result.Append(", no. ");
+                    result.Append(article.Number);
+                    result.Append(" ");
+                }
+                else
+                {
+                    result.Append(" ");
+                }
+
+                result.Append("(");
+                result.Append(article.Year);
+                result.Append("): ");
+                result.Append(article.PageRange);
+                result.Append(".");
+
+                if (!string.IsNullOrEmpty(article.Doi))
+                {
+                    result.Append(" doi:");
+                    if (_outputType == ReferenceOutputType.Markdown)
+                        result.Append(" "); // Some parsers seem to parse doi: as part of the link
+                    result.Append(MakeLink(article.Doi, "https://dx.doi.org/" + article.Doi));
+                }
+            }
+            else if (_entry is BookViewModel)
+            {
+                var book = _entry as BookViewModel;
+
+                WriteAuthors(result, book.Author);
+                result.Append(" ");
+                result.Append(BeginItalics());
+                result.Append(book.Title);
+                result.Append(EndItalics());
+                result.Append(". ");
+
+                if (!string.IsNullOrEmpty(book.Address))
+                {
+                    result.Append(book.Address);
+                    result.Append(": ");
+                }
+
+                result.Append(book.Publisher);
+                result.Append(", ");
+                result.Append(book.Year);
+                result.Append(".");
+            }
+
+            return result.ToString();
+        }
+
+        private static void WriteAuthors(StringBuilder sb, string author)
         {
             // Authors are separated by commas and the final . is omitted if the forename is abbreviated.
-            // Actually all forenames should be abbreviated, but don't try messing with that.
+            // Actually each style manipulates the names in some way, but don't try messing with that.
             sb.Append(author.Replace(';', ','));
             if (!author.EndsWith("."))
                 sb.Append(".");

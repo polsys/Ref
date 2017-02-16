@@ -25,19 +25,23 @@ namespace Polsys.Ref.Tests.ViewModels
 
         // APA
         // Should actually be Cohen, H.
-        [TestCase("Cohen, Henri. (1970). On amicable and sociable numbers. Mathematics of Computation, 24(110), 423-429.",
+        [TestCase("Cohen, Henri. (1970). On amicable and sociable numbers. Mathematics of Computation, 24, 423-429.",
             CitationStyle.Apa, ReferenceOutputType.Plaintext)]
-        [TestCase("Cohen, Henri. (1970). On amicable and sociable numbers. <i>Mathematics of Computation</i>, <i>24</i>(110), 423-429.",
+        [TestCase("Cohen, Henri. (1970). On amicable and sociable numbers. <i>Mathematics of Computation</i>, <i>24</i>, 423-429.",
             CitationStyle.Apa, ReferenceOutputType.Html)]
-        [TestCase("Cohen, Henri. (1970). On amicable and sociable numbers. *Mathematics of Computation*, *24*(110), 423-429.",
+        [TestCase("Cohen, Henri. (1970). On amicable and sociable numbers. *Mathematics of Computation*, *24*, 423-429.",
             CitationStyle.Apa, ReferenceOutputType.Markdown)]
+        // Chicago
+        [TestCase("Cohen, Henri. \"On amicable and sociable numbers.\" Mathematics of Computation 24 (1970): 423-429.",
+            CitationStyle.Chicago, ReferenceOutputType.Plaintext)]
+        [TestCase("Cohen, Henri. \"On amicable and sociable numbers.\" *Mathematics of Computation* 24 (1970): 423-429.",
+            CitationStyle.Chicago, ReferenceOutputType.Markdown)]
         public void VerifyMinimalArticle(string expected, CitationStyle style, ReferenceOutputType type)
         {
             var article = new Article()
             {
                 Author = "Cohen, Henri",
                 Journal = "Mathematics of Computation",
-                Number = "110",
                 Volume = "24",
                 PageRange = "423-429",
                 Title = "On amicable and sociable numbers",
@@ -50,6 +54,7 @@ namespace Polsys.Ref.Tests.ViewModels
             Assert.That(vm.Citation, Is.EqualTo(expected));
         }
 
+        // APA
         [TestCase("Lander, L.J., Parkin, T.R. (1966). Counterexample to Euler's conjecture on sums of like powers. " +
             "Bull. Amer. Math. Soc., 72(6), 1079. doi:10.1090/S0002-9904-1966-11654-3",
             CitationStyle.Apa, ReferenceOutputType.Plaintext)]
@@ -59,6 +64,13 @@ namespace Polsys.Ref.Tests.ViewModels
         [TestCase("Lander, L.J., Parkin, T.R. (1966). Counterexample to Euler's conjecture on sums of like powers. " +
             "*Bull. Amer. Math. Soc.*, *72*(6), 1079. doi: [10.1090/S0002-9904-1966-11654-3](https://dx.doi.org/10.1090/S0002-9904-1966-11654-3)",
             CitationStyle.Apa, ReferenceOutputType.Markdown)]
+        // Chicago
+        [TestCase("Lander, L.J., Parkin, T.R. \"Counterexample to Euler's conjecture on sums of like powers.\" " +
+            "Bull. Amer. Math. Soc. 72, no. 6 (1966): 1079. doi:10.1090/S0002-9904-1966-11654-3",
+            CitationStyle.Chicago, ReferenceOutputType.Plaintext)]
+        [TestCase("Lander, L.J., Parkin, T.R. \"Counterexample to Euler's conjecture on sums of like powers.\" " +
+            "*Bull. Amer. Math. Soc.* 72, no. 6 (1966): 1079. doi: [10.1090/S0002-9904-1966-11654-3](https://dx.doi.org/10.1090/S0002-9904-1966-11654-3)",
+            CitationStyle.Chicago, ReferenceOutputType.Markdown)]
         public void VerifyCompleteArticle(string expected, CitationStyle style, ReferenceOutputType type)
         {
             var vm = new CopyReferenceDialogViewModel(new ArticleViewModel(TestUtility.CreateCounterexample()));
@@ -73,6 +85,9 @@ namespace Polsys.Ref.Tests.ViewModels
         [TestCase("Silver, Nate. (2012). The Signal and the Noise. Penguin Books.", CitationStyle.Apa, ReferenceOutputType.Plaintext)]
         [TestCase("Silver, Nate. (2012). <i>The Signal and the Noise</i>. Penguin Books.", CitationStyle.Apa, ReferenceOutputType.Html)]
         [TestCase("Silver, Nate. (2012). *The Signal and the Noise*. Penguin Books.", CitationStyle.Apa, ReferenceOutputType.Markdown)]
+        // Chicago
+        [TestCase("Silver, Nate. The Signal and the Noise. Penguin Books, 2012.", CitationStyle.Chicago, ReferenceOutputType.Plaintext)]
+        [TestCase("Silver, Nate. *The Signal and the Noise*. Penguin Books, 2012.", CitationStyle.Chicago, ReferenceOutputType.Markdown)]
         public void VerifyMinimalBook(string expected, CitationStyle style, ReferenceOutputType type)
         {
             var book = new Book()
@@ -89,12 +104,19 @@ namespace Polsys.Ref.Tests.ViewModels
             Assert.That(vm.Citation, Is.EqualTo(expected));
         }
 
+        // APA
         [TestCase("Johnsonbaugh, R., Kalin, M. (1989). Applications Programming in C. New York, NY: Macmillan.",
             CitationStyle.Apa, ReferenceOutputType.Plaintext)]
         [TestCase("Johnsonbaugh, R., Kalin, M. (1989). <i>Applications Programming in C</i>. New York, NY: Macmillan.",
             CitationStyle.Apa, ReferenceOutputType.Html)]
         [TestCase("Johnsonbaugh, R., Kalin, M. (1989). *Applications Programming in C*. New York, NY: Macmillan.",
             CitationStyle.Apa, ReferenceOutputType.Markdown)]
+        // Chicago
+        // Should actually be "Johnsonbaugh, R., and M. Kalin"
+        [TestCase("Johnsonbaugh, R., Kalin, M. Applications Programming in C. New York, NY: Macmillan, 1989.",
+            CitationStyle.Chicago, ReferenceOutputType.Plaintext)]
+        [TestCase("Johnsonbaugh, R., Kalin, M. *Applications Programming in C*. New York, NY: Macmillan, 1989.",
+            CitationStyle.Chicago, ReferenceOutputType.Markdown)]
         public void VerifyCompleteBook(string expected, CitationStyle style, ReferenceOutputType type)
         {
             var book = new Book()

@@ -27,6 +27,7 @@
                       VerticalContentAlignment="Center" VerticalAlignment="Center"
                       SelectedIndex="{Binding CitationStyle, Converter={StaticResource EnumIntConverter}}">
                 <ComboBoxItem>APA</ComboBoxItem>
+                <ComboBoxItem>Chicago</ComboBoxItem>
             </ComboBox>
             
             <TextBlock Grid.Row="1" Grid.Column="0" Padding="0,4,8,4">Format:</TextBlock>

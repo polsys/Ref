@@ -46,6 +46,7 @@
                     <ContextMenu>
                         <MenuItem Name="addBookButton" Header="Book" Click="addBookButton_Click"/>
                         <MenuItem Name="addArticleButton" Header="Article" Click="addArticleButton_Click"/>
+                        <MenuItem Name="addThesisButton" Header="Thesis" Click="addThesisButton_Click"/>
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
@@ -184,9 +185,12 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.Resources>
                     <xaml:AlwaysVisibleConverter x:Key="MakeVisible" />
+                    <xaml:EnumIntConverter x:Key="EnumIntConverter" />
                 </Grid.Resources>
 
                 <!-- Only some of these are visible, depending on whether the property is available. -->
@@ -274,32 +278,48 @@
                 <TextBox Visibility="{Binding PageRange, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding PageRange}" IsReadOnly="{Binding IsReadOnly}"
                          Grid.Row="13" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                <!-- Thesis Kind -->
+                <TextBlock Text="Thesis kind" Visibility="{Binding Kind, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                           Grid.Row="14" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <ComboBox Visibility="{Binding Kind, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                         SelectedIndex="{Binding Kind, Converter={StaticResource EnumIntConverter}}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="14" Grid.Column="2" FontSize="14" Margin="4,0,0,4">
+                    <ComboBoxItem>PhD Thesis</ComboBoxItem>
+                    <ComboBoxItem>Licentiate Thesis</ComboBoxItem>
+                    <ComboBoxItem>Master's Thesis</ComboBoxItem>
+                </ComboBox>
+                <!-- Thesis School -->
+                <TextBlock Text="School" Visibility="{Binding School, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                           Grid.Row="15" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Visibility="{Binding School, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                         Text="{Binding School}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="15" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- ISBN -->
                 <TextBlock Text="ISBN" Visibility="{Binding Isbn, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="14" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="16" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Isbn, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Isbn}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="14" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="16" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- ISSN -->
                 <TextBlock Text="ISSN" Visibility="{Binding Issn, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="15" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="17" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Issn, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Issn}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="15" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="17" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
                 <!-- DOI -->
                 <TextBlock Text="DOI" Visibility="{Binding Doi, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="16" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="18" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Doi, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Doi}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="16" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="18" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
 
                 <!-- Notes - this is a multiline box -->
                 <TextBlock Text="Notes" Visibility="{Binding Notes, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="17" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="19" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Notes, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Notes}" IsReadOnly="{Binding IsReadOnly}"
                          AcceptsReturn="True" Height="200" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"
-                         Grid.Row="17" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="19" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
             </Grid>
         </StackPanel>
     </Grid>

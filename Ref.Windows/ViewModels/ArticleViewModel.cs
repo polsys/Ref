@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using Polsys.Ref.Models;
+﻿using Polsys.Ref.Models;
 
 namespace Polsys.Ref.ViewModels
 {
@@ -64,66 +62,47 @@ namespace Polsys.Ref.ViewModels
         private string _volume;
         private string _year;
 
-        internal Article _article;
-
         /// <summary>
         /// Constructs a new Article from the specified <see cref="Article"/>.
         /// </summary>
         /// <param name="article">The Article this ViewModel refers to.</param>
-        public ArticleViewModel(Article article)
+        public ArticleViewModel(Article article) :
+            base(article)
         {
-            _article = article;
-
-            CopyPropertiesFromModel();
-            Pages = new ObservableCollection<PageViewModel>();
-            foreach (var page in _article.Pages)
-                Pages.Add(new PageViewModel(page, this));
-            IsReadOnly = true;
-        }
-
-        public override void AddPage(PageViewModel pageViewModel)
-        {
-            if (pageViewModel == null)
-                throw new ArgumentNullException(nameof(pageViewModel));
-
-            Pages.Add(pageViewModel);
-            _article.Pages.Add(pageViewModel._page);
-        }
-
-        public override void RemovePage(PageViewModel pageViewModel)
-        {
-            Pages.Remove(pageViewModel);
-            _article.Pages.Remove(pageViewModel._page);
         }
 
         protected override void CopyPropertiesFromModel()
         {
-            Author = _article.Author;
-            Doi = _article.Doi;
-            Issn = _article.Issn;
-            Journal = _article.Journal;
-            Key = _article.Key;
-            Notes = _article.Notes;
-            Number = _article.Number;
-            PageRange = _article.PageRange;
-            Title = _article.Title;
-            Volume = _article.Volume;
-            Year = _article.Year;
+            var article = (Article)_model;
+
+            Author = article.Author;
+            Doi = article.Doi;
+            Issn = article.Issn;
+            Journal = article.Journal;
+            Key = article.Key;
+            Notes = article.Notes;
+            Number = article.Number;
+            PageRange = article.PageRange;
+            Title = article.Title;
+            Volume = article.Volume;
+            Year = article.Year;
         }
 
         protected override void CopyPropertiesToModel()
         {
-            _article.Author = Author;
-            _article.Doi = Doi;
-            _article.Issn = Issn;
-            _article.Journal = Journal;
-            _article.Key = Key;
-            _article.Notes = Notes;
-            _article.Number = Number;
-            _article.PageRange = PageRange;
-            _article.Title = Title;
-            _article.Volume = Volume;
-            _article.Year = Year;
+            var article = (Article)_model;
+
+            article.Author = Author;
+            article.Doi = Doi;
+            article.Issn = Issn;
+            article.Journal = Journal;
+            article.Key = Key;
+            article.Notes = Notes;
+            article.Number = Number;
+            article.PageRange = PageRange;
+            article.Title = Title;
+            article.Volume = Volume;
+            article.Year = Year;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using Polsys.Ref.Models;
 
 namespace Polsys.Ref.ViewModels
 {
@@ -10,12 +11,35 @@ namespace Polsys.Ref.ViewModels
     {
         public ObservableCollection<PageViewModel> Pages { get; protected set; }
 
+        internal ICatalogueEntry _model;
+
+        /// <summary>
+        /// Initializes the base class fields from the model.
+        /// </summary>
+        protected PublicationViewModelBase(ICatalogueEntry model)
+        {
+            _model = model;
+
+            CopyPropertiesFromModel();
+            Pages = new ObservableCollection<PageViewModel>();
+            foreach (var page in _model.Pages)
+                Pages.Add(new PageViewModel(page, this));
+            IsReadOnly = true;
+        }
+
         /// <summary>
         /// Adds the specified page to this entry.
         /// </summary>
         /// <param name="pageViewModel">The view model of the page to add.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="pageViewModel"/> is null.</exception>
-        public abstract void AddPage(PageViewModel pageViewModel);
+        public void AddPage(PageViewModel pageViewModel)
+        {
+            if (pageViewModel == null)
+                throw new ArgumentNullException(nameof(pageViewModel));
+
+            _model.Pages.Add(pageViewModel._page);
+            Pages.Add(pageViewModel);
+        }
 
         public override void Cancel()
         {
@@ -49,6 +73,10 @@ namespace Polsys.Ref.ViewModels
         /// Removes the specified page from this entry.
         /// </summary>
         /// <param name="pageViewModel">The view model of the page to remove.</param>
-        public abstract void RemovePage(PageViewModel pageViewModel);
+        public void RemovePage(PageViewModel pageViewModel)
+        {
+            Pages.Remove(pageViewModel);
+            _model.Pages.Remove(pageViewModel._page);
+        }
     }
 }

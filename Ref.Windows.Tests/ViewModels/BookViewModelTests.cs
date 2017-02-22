@@ -175,7 +175,7 @@ namespace Polsys.Ref.Tests.ViewModels
 
             Assert.That(() => vm.RemovePage(page), Throws.Nothing);
             Assert.That(vm.Pages, Is.Empty);
-            Assert.That(vm._book.Pages, Is.Empty);
+            Assert.That(vm._model.Pages, Is.Empty);
         }
 
         private static Page CreateHilbertQuote()

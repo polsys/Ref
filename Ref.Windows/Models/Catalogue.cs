@@ -9,6 +9,7 @@ namespace Polsys.Ref.Models
     [DataContract]
     [KnownType(typeof(Article))]
     [KnownType(typeof(Book))]
+    [KnownType(typeof(Thesis))]
     internal class Catalogue
     {
         /// <summary>

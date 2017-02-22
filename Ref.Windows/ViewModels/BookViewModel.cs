@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using Polsys.Ref.Models;
+﻿using Polsys.Ref.Models;
 
 namespace Polsys.Ref.ViewModels
 {
@@ -84,82 +82,53 @@ namespace Polsys.Ref.ViewModels
         private string _volume;
         private string _year;
 
-        internal Book _book;
-
         /// <summary>
         /// Constructs a new BookViewModel from the specified <see cref="Book"/>.
         /// </summary>
         /// <param name="book">The Book this ViewModel refers to.</param>
-        public BookViewModel(Book book)
+        public BookViewModel(Book book):
+            base(book)
         {
-            _book = book;
-
-            // Copy the properties and pages
-            CopyPropertiesFromModel();
-            Pages = new ObservableCollection<PageViewModel>();
-            foreach (var page in _book.Pages)
-                Pages.Add(new PageViewModel(page, this));
-            IsReadOnly = true;
-        }
-
-        /// <summary>
-        /// Adds the specified page to the book.
-        /// </summary>
-        /// <param name="pageViewModel">The view model of the page to add.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="pageViewModel"/> is null.</exception>
-        public override void AddPage(PageViewModel pageViewModel)
-        {
-            if (pageViewModel == null)
-                throw new ArgumentNullException(nameof(pageViewModel));
-
-            _book.Pages.Add(pageViewModel._page);
-            Pages.Add(pageViewModel);
-        }
-
-        /// <summary>
-        /// Removes the specified page from the book.
-        /// </summary>
-        /// <param name="pageViewModel">The view model of the page to remove.</param>
-        public override void RemovePage(PageViewModel pageViewModel)
-        {
-            Pages.Remove(pageViewModel);
-            _book.Pages.Remove(pageViewModel._page);
         }
 
         protected override void CopyPropertiesFromModel()
         {
-            Address = _book.Address;
-            Author = _book.Author;
-            Edition = _book.Edition;
-            Editor = _book.Editor;
-            Isbn = _book.Isbn;
-            Key = _book.Key;
-            Notes = _book.Notes;
-            Number = _book.Number;
-            Publisher = _book.Publisher;
-            Series = _book.Series;
-            Title = _book.Title;
-            Translator = _book.Translator;
-            Volume = _book.Volume;
-            Year = _book.Year;
+            var book = (Book)_model;
+
+            Address = book.Address;
+            Author = book.Author;
+            Edition = book.Edition;
+            Editor = book.Editor;
+            Isbn = book.Isbn;
+            Key = book.Key;
+            Notes = book.Notes;
+            Number = book.Number;
+            Publisher = book.Publisher;
+            Series = book.Series;
+            Title = book.Title;
+            Translator = book.Translator;
+            Volume = book.Volume;
+            Year = book.Year;
         }
 
         protected override void CopyPropertiesToModel()
         {
-            _book.Address = Address;
-            _book.Author = Author;
-            _book.Edition = Edition;
-            _book.Editor = Editor;
-            _book.Isbn = Isbn;
-            _book.Key = Key;
-            _book.Notes = Notes;
-            _book.Number = Number;
-            _book.Publisher = Publisher;
-            _book.Series = Series;
-            _book.Title = Title;
-            _book.Translator = Translator;
-            _book.Volume = Volume;
-            _book.Year = Year;
+            var book = (Book)_model;
+
+            book.Address = Address;
+            book.Author = Author;
+            book.Edition = Edition;
+            book.Editor = Editor;
+            book.Isbn = Isbn;
+            book.Key = Key;
+            book.Notes = Notes;
+            book.Number = Number;
+            book.Publisher = Publisher;
+            book.Series = Series;
+            book.Title = Title;
+            book.Translator = Translator;
+            book.Volume = Volume;
+            book.Year = Year;
         }
     }
 }

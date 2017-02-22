@@ -451,6 +451,21 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
+        public void RemoveSelected_RemovesBookFromCatalogue()
+        {
+            var vm = new MainWindowViewModel();
+            var thesisVM = new ThesisViewModel(TestUtility.CreateShannonThesis());
+            vm.Catalogue.AddEntry(thesisVM);
+            vm.SelectEntry(thesisVM);
+
+            vm.RemovingEntry += () => { return MessageBoxResult.Yes; };
+            vm.RemoveSelected();
+            Assert.That(vm.Catalogue.Entries, Is.Empty);
+            Assert.That(vm.SelectedEntry, Is.Null);
+            Assert.That(vm.IsModified, Is.True);
+        }
+
+        [Test]
         public void RemoveSelected_RemovesPage()
         {
             var vm = new MainWindowViewModel();

@@ -390,10 +390,10 @@ namespace Polsys.Ref.ViewModels
             // This crashes if there is no handler associated
             if (RemovingEntry() == MessageBoxResult.Yes)
             {
-                // Null out SelectedEntry first since WPF will react instantly to RemoveBook
-                if (SelectedEntry is BookViewModel)
+                // Null out SelectedEntry first since WPF will react instantly to the removal operation
+                if (SelectedEntry is PublicationViewModelBase)
                 {
-                    var entry = SelectedEntry as BookViewModel;
+                    var entry = SelectedEntry as PublicationViewModelBase;
                     SelectedEntry = null;
                     Catalogue.RemoveEntry(entry);
                 }

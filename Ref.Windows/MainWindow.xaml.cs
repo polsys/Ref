@@ -155,6 +155,12 @@ namespace Polsys.Ref
             titleTextBox.Focus();
         }
 
+        private void addThesisButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.CreateThesis();
+            titleTextBox.Focus();
+        }
+
         private void addEntryPopupButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;

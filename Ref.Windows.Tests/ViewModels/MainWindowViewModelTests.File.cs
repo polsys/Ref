@@ -272,7 +272,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 Assert.That(vm.IsModified, Is.False);
 
                 Assert.That(vm.Catalogue.Entries, Has.Exactly(1).InstanceOf<BookViewModel>());
-                Assert.That(((BookViewModel)vm.Catalogue.Entries[0])._book, Is.Not.Null);
+                Assert.That(((BookViewModel)vm.Catalogue.Entries[0])._model, Is.Not.Null);
                 Assert.That(vm.Catalogue.Entries[0].Title, Is.EqualTo("Letters to a Young Mathematician"));
                 Assert.That(vm.Catalogue.Entries[0].Pages, Has.Exactly(1).InstanceOf<PageViewModel>());
                 Assert.That(vm.Catalogue.Entries[0].Pages[0]._page, Is.Not.Null);
@@ -304,7 +304,8 @@ namespace Polsys.Ref.Tests.ViewModels
                 vm.SelectingSaveFilename += () => { return filename; };
                 vm.Catalogue.AddEntry(new ArticleViewModel(TestUtility.CreateCounterexample()));
                 vm.Catalogue.AddEntry(new BookViewModel(TestUtility.CreateCrackingMathematics()));
-                
+                vm.Catalogue.AddEntry(new ThesisViewModel(TestUtility.CreateShannonThesis()));
+
                 AssertRoundTrip(vm);
                 vm.SaveProject(false);
 
@@ -320,6 +321,8 @@ namespace Polsys.Ref.Tests.ViewModels
                                     Has.Exactly(1).InstanceOf<ArticleViewModel>().With.Property("Journal").Contains("Bull."));
                 Assert.That(vm.Catalogue.Entries,
                     Has.Exactly(1).InstanceOf<BookViewModel>().With.Property("Edition").EqualTo("1st"));
+                Assert.That(vm.Catalogue.Entries,
+                    Has.Exactly(1).InstanceOf<ThesisViewModel>().With.Property("Kind").EqualTo(ThesisKind.Masters));
             }
 
             [Test]

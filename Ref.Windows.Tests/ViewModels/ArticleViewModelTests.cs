@@ -72,7 +72,7 @@ namespace Polsys.Ref.Tests.ViewModels
 
             Assert.That(() => vm.Cancel(), Throws.Nothing);
             Assert.That(vm.Doi, Is.EqualTo(originalDoi));
-            Assert.That(vm._article.Doi, Is.EqualTo(originalDoi));
+            Assert.That(((Article)vm._model).Doi, Is.EqualTo(originalDoi));
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace Polsys.Ref.Tests.ViewModels
 
             Assert.That(() => vm.Commit(), Throws.Nothing);
             Assert.That(vm.Doi, Is.EqualTo("10.404"));
-            Assert.That(vm._article.Doi, Is.EqualTo("10.404"));
+            Assert.That(((Article)vm._model).Doi, Is.EqualTo("10.404"));
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace Polsys.Ref.Tests.ViewModels
 
             Assert.That(() => vm.RemovePage(page), Throws.Nothing);
             Assert.That(vm.Pages, Is.Empty);
-            Assert.That(vm._article.Pages, Is.Empty);
+            Assert.That(vm._model.Pages, Is.Empty);
         }
 
         private static Page CreateExampleQuote()

@@ -1,4 +1,6 @@
-﻿namespace Polsys.Ref.Models
+﻿using System.Collections.Generic;
+
+namespace Polsys.Ref.Models
 {
     /// <summary>
     /// Interface for all catalogue entries, such as <see cref="Book"/>, but not subentries like <see cref="Page"/>.
@@ -30,5 +32,10 @@
         /// The year this entry was published in.
         /// </summary>
         string Year { get; set; }
+
+        /// <summary>
+        /// The subentries of this entry.
+        /// </summary>
+        List<Page> Pages { get; }
     }
 }

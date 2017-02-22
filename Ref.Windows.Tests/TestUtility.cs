@@ -129,5 +129,22 @@ namespace Polsys.Ref.Tests
                 Year = "2014"
             };
         }
+
+        public static Thesis CreateShannonThesis()
+        {
+            // This Master's thesis was quite influential, which might set a worrying precedent for later students...
+            return new Thesis()
+            {
+                Author = "Shannon, Claude",
+                Doi = "1721.1/11173",
+                Isbn = "111111111X", // Not really
+                Key = "Shannon1937",
+                Kind = ThesisKind.Masters,
+                Notes = "Boolean algebra and circuits",
+                School = "Massachusetts Institute of Technology",
+                Title = "A symbolic analysis of relay and switching circuits",
+                Year = "1937"
+            };
+        }
     }
 }

@@ -28,6 +28,8 @@ namespace Polsys.Ref.ViewModels
                     Entries.Add(new ArticleViewModel((Article)entry));
                 else if (entry is Book)
                     Entries.Add(new BookViewModel((Book)entry));
+                else if (entry is Thesis)
+                    Entries.Add(new ThesisViewModel((Thesis)entry));
                 else
                     throw new NotImplementedException("The specified entry type is not implemented.");
             }
@@ -38,12 +40,7 @@ namespace Polsys.Ref.ViewModels
         /// </summary>
         public void AddEntry(PublicationViewModelBase entry)
         {
-            if (entry is ArticleViewModel)
-                _catalogue.Entries.Add(((ArticleViewModel)entry)._article);
-            else if (entry is BookViewModel)
-                _catalogue.Entries.Add(((BookViewModel)entry)._book);
-            else
-                throw new NotImplementedException("The specified entry type is not implemented.");
+            _catalogue.Entries.Add(entry._model);
             Entries.Add(entry);
         }
 
@@ -53,12 +50,7 @@ namespace Polsys.Ref.ViewModels
         /// <param name="book">The book to remove.</param>
         public void RemoveEntry(PublicationViewModelBase entry)
         {
-            if (entry is ArticleViewModel)
-                _catalogue.Entries.Remove(((ArticleViewModel)entry)._article);
-            else if (entry is BookViewModel)
-                _catalogue.Entries.Remove(((BookViewModel)entry)._book);
-            else
-                throw new NotImplementedException("The specified entry type is not implemented.");
+            _catalogue.Entries.Remove(entry._model);
             Entries.Remove(entry);
         }
     }

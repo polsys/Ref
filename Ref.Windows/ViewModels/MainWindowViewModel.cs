@@ -246,7 +246,7 @@ namespace Polsys.Ref.ViewModels
         }
 
         /// <summary>
-        /// Adds a new article to the catalogue and selects it.
+        /// Adds a new article to the catalogue and selects it for editing.
         /// </summary>
         public void CreateArticle()
         {
@@ -259,7 +259,7 @@ namespace Polsys.Ref.ViewModels
         }
 
         /// <summary>
-        /// Adds a new book to the catalogue and selects it.
+        /// Adds a new book to the catalogue and selects it for editing.
         /// </summary>
         public void CreateBook()
         {
@@ -269,6 +269,19 @@ namespace Polsys.Ref.ViewModels
             var newBook = new BookViewModel(new Book());
             SelectEntry(newBook);
             newBook.Edit();
+        }
+
+        /// <summary>
+        /// Adds a new thesis to the catalogue and selects it for editing.
+        /// </summary>
+        public void CreateThesis()
+        {
+            if (ShouldCancelBecauseOfEdit())
+                return;
+
+            var newThesis = new ThesisViewModel(new Thesis());
+            SelectEntry(newThesis);
+            newThesis.Edit();
         }
 
         /// <summary>

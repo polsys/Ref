@@ -133,5 +133,48 @@ namespace Polsys.Ref.Tests.ViewModels
 
             Assert.That(vm.Citation, Is.EqualTo(expected));
         }
+
+        // APA
+        [TestCase("Shannon, Claude. (1937). *A symbolic analysis of relay and switching circuits* (Master's thesis). Massachusetts Institute of Technology.",
+            CitationStyle.Apa, ReferenceOutputType.Markdown)]
+        // Chicago
+        [TestCase("Shannon, Claude. \"A symbolic analysis of relay and switching circuits.\" Master's thesis, Massachusetts Institute of Technology, 1937.",
+            CitationStyle.Chicago, ReferenceOutputType.Markdown)]
+        public void VerifyCompleteThesis(string expected, CitationStyle style, ReferenceOutputType type)
+        {
+            var vm = new CopyReferenceDialogViewModel(new ThesisViewModel(TestUtility.CreateShannonThesis()));
+            vm.CitationStyle = style;
+            vm.OutputType = type;
+
+            Assert.That(vm.Citation, Is.EqualTo(expected));
+        }
+
+        [TestCase(CitationStyle.Apa)]
+        [TestCase(CitationStyle.Chicago)]
+        public void VerifyDoctoralThesis(CitationStyle style)
+        {
+            var thesis = TestUtility.CreateShannonThesis();
+            thesis.Kind = ThesisKind.Doctoral;
+
+            var vm = new CopyReferenceDialogViewModel(new ThesisViewModel(thesis));
+            vm.CitationStyle = style;
+            vm.OutputType = ReferenceOutputType.Plaintext;
+
+            Assert.That(vm.Citation, Does.Contain("PhD thesis"));
+        }
+
+        [TestCase(CitationStyle.Apa)]
+        [TestCase(CitationStyle.Chicago)]
+        public void VerifyLicentiateThesis(CitationStyle style)
+        {
+            var thesis = TestUtility.CreateShannonThesis();
+            thesis.Kind = ThesisKind.Licentiate;
+
+            var vm = new CopyReferenceDialogViewModel(new ThesisViewModel(thesis));
+            vm.CitationStyle = style;
+            vm.OutputType = ReferenceOutputType.Plaintext;
+
+            Assert.That(vm.Citation, Does.Contain("Licentiate thesis"));
+        }
     }
 }

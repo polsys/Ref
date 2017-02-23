@@ -46,6 +46,8 @@ namespace Polsys.Ref.Export
                         WriteArticle(writer, (Article)entry);
                     else if (entry is Book)
                         WriteBook(writer, (Book)entry);
+                    else if (entry is Thesis)
+                        WriteThesis(writer, (Thesis)entry);
                     writer.WriteLine();
                 }
             }
@@ -94,6 +96,29 @@ namespace Polsys.Ref.Export
 
             // Write the entry
             WriteEntry(writer, "@book", book.Key, fields);
+        }
+
+        internal void WriteThesis(TextWriter writer, Thesis thesis)
+        {
+            if (IsUnkeyed(thesis.Key, thesis.Title, writer))
+                return;
+
+            var fields = new List<string>();
+            AddField(fields, ReplaceSemicolonsWithAnd(thesis.Author), "author");
+            AddField(fields, thesis.Doi, "doi");
+            AddField(fields, thesis.Isbn, "isbn");
+
+            // Licentiate thesis is a special case of PhD
+            // TODO: Hardcoded string
+            if (thesis.Kind == ThesisKind.Licentiate)
+                AddField(fields, "Licentiate thesis", "type");
+
+            AddField(fields, thesis.School, "school");
+            AddField(fields, EncloseInBraces(thesis.Title), "title");
+            AddField(fields, thesis.Year, "year");
+
+            var entryType = thesis.Kind == ThesisKind.Masters ? "@mastersthesis" : "@phdthesis";
+            WriteEntry(writer, entryType, thesis.Key, fields);
         }
 
         private static void AddField(List<string> fields, string value, string fieldName)

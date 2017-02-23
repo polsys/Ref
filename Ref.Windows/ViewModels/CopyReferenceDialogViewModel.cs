@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Polsys.Ref.Models;
 
 namespace Polsys.Ref.ViewModels
 {
@@ -140,6 +141,23 @@ namespace Polsys.Ref.ViewModels
                 result.Append(book.Publisher);
                 result.Append(".");
             }
+            else if (_entry is ThesisViewModel)
+            {
+                var thesis = _entry as ThesisViewModel;
+
+                WriteAuthors(result, thesis.Author);
+                result.Append(" (");
+                result.Append(thesis.Year);
+                result.Append("). ");
+                result.Append(BeginItalics());
+                result.Append(thesis.Title);
+                result.Append(EndItalics());
+                result.Append(" (");
+                result.Append(GetThesisString(thesis.Kind));
+                result.Append("). ");
+                result.Append(thesis.School);
+                result.Append(".");
+            }
 
             return result.ToString();
         }
@@ -209,6 +227,21 @@ namespace Polsys.Ref.ViewModels
                 result.Append(book.Year);
                 result.Append(".");
             }
+            else if (_entry is ThesisViewModel)
+            {
+                var thesis = _entry as ThesisViewModel;
+
+                WriteAuthors(result, thesis.Author);
+                result.Append(" \"");
+                result.Append(thesis.Title);
+                result.Append(".\" ");
+                result.Append(GetThesisString(thesis.Kind));
+                result.Append(", ");
+                result.Append(thesis.School);
+                result.Append(", ");
+                result.Append(thesis.Year);
+                result.Append(".");
+            }
 
             return result.ToString();
         }
@@ -240,6 +273,18 @@ namespace Polsys.Ref.ViewModels
                 return "*";
             else
                 return "";
+        }
+
+        private string GetThesisString(ThesisKind kind)
+        {
+            switch (kind)
+            {
+                case ThesisKind.Doctoral: return "PhD thesis";
+                case ThesisKind.Licentiate: return "Licentiate thesis";
+                case ThesisKind.Masters: return "Master's thesis";
+                default:
+                    return "Thesis"; // A somewhat sane way to fail
+            }
         }
 
         private string MakeLink(string text, string target)

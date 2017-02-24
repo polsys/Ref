@@ -75,7 +75,7 @@ namespace Polsys.Ref
             var filter = "";
             foreach (var exporter in _viewModel.Exporters)
             {
-                filter += $"{exporter.Name}|*.{exporter.FileExtension}|";
+                filter += $"{exporter.Name} (.{exporter.FileExtension})|*.{exporter.FileExtension}|";
             }
             dialog.Filter = filter.Substring(0, filter.Length - 1); // Remove trailing |
             dialog.FilterIndex = _viewModel.Exporters.IndexOf(_viewModel.SelectedExporter);

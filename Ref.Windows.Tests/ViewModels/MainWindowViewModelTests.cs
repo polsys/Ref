@@ -436,7 +436,7 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
-        public void RemoveSelected_RemovesFromCatalogue()
+        public void RemoveSelected_RemovesBookFromCatalogue()
         {
             var vm = new MainWindowViewModel();
             var bookVM = new BookViewModel(TestUtility.CreateMakeAndDo());
@@ -451,7 +451,7 @@ namespace Polsys.Ref.Tests.ViewModels
         }
 
         [Test]
-        public void RemoveSelected_RemovesBookFromCatalogue()
+        public void RemoveSelected_RemovesThesisFromCatalogue()
         {
             var vm = new MainWindowViewModel();
             var thesisVM = new ThesisViewModel(TestUtility.CreateShannonThesis());

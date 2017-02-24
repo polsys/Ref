@@ -109,6 +109,7 @@ namespace Polsys.Ref.Export
             AddField(fields, thesis.Isbn, "isbn");
 
             // Licentiate thesis is a special case of PhD
+            // This must be updated if more cases are added - there is no hard fail for an unknown type
             // TODO: Hardcoded string
             if (thesis.Kind == ThesisKind.Licentiate)
                 AddField(fields, "Licentiate thesis", "type");

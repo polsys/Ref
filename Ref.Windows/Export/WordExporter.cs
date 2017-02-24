@@ -39,8 +39,7 @@ namespace Polsys.Ref.Export
                 // Write each entry
                 foreach (var entry in catalogue.Entries)
                 {
-                    if (entry is Article)
-                        WriteArticle((Article)entry, writer);
+                    WriteEntry(entry, writer);
                 }
 
                 // End the collection
@@ -50,11 +49,24 @@ namespace Polsys.Ref.Export
             return true;
         }
 
-        internal void WriteArticle(Article article, TextWriter writer)
+        internal void WriteEntry(ICatalogueEntry entry, TextWriter writer)
         {
             writer.Write("<b:Source>");
-            writer.Write("<b:SourceType>JournalArticle</b:SourceType>");
             WriteRandomGuid(writer);
+
+            if (entry is Article)
+                WriteArticle((Article)entry, writer);
+            else if (entry is Book)
+                WriteBook((Book)entry, writer);
+            else if (entry is Thesis)
+                WriteThesis((Thesis)entry, writer);
+
+            writer.Write("</b:Source>");
+        }
+
+        internal void WriteArticle(Article article, TextWriter writer)
+        {
+            writer.Write("<b:SourceType>JournalArticle</b:SourceType>");
 
             WriteNonEmptyElement("b:Tag", article.Key, writer);
             WriteNonEmptyElement("b:DOI", article.Doi, writer);
@@ -72,8 +84,70 @@ namespace Polsys.Ref.Export
                 WriteNameList(article.Author, writer);
                 writer.Write("</b:Author></b:Author>");
             }
+        }
 
-            writer.Write("</b:Source>");
+        internal void WriteBook(Book book, TextWriter writer)
+        {
+            writer.Write("<b:SourceType>Book</b:SourceType>");
+
+            WriteNonEmptyElement("b:Tag", book.Key, writer);
+            WriteNonEmptyElement("b:City", book.Address, writer);
+            WriteNonEmptyElement("b:Edition", book.Edition, writer);
+            WriteNonEmptyElement("b:StandardNumber", book.Isbn, writer);
+            WriteNonEmptyElement("b:Publisher", book.Publisher, writer);
+            WriteNonEmptyElement("b:Title", book.Title, writer);
+            WriteNonEmptyElement("b:Volume", book.Volume, writer);
+            WriteNonEmptyElement("b:Year", book.Year, writer);
+
+            // The first b:Author is the parent element for all kinds of people involved
+            writer.Write("<b:Author>");
+            if (!string.IsNullOrEmpty(book.Author))
+            {
+                writer.Write("<b:Author>");
+                WriteNameList(book.Author, writer);
+                writer.Write("</b:Author>");
+            }
+            if (!string.IsNullOrEmpty(book.Editor))
+            {
+                writer.Write("<b:Editor>");
+                WriteNameList(book.Editor, writer);
+                writer.Write("</b:Editor>");
+            }
+            if (!string.IsNullOrEmpty(book.Translator))
+            {
+                writer.Write("<b:Translator>");
+                WriteNameList(book.Translator, writer);
+                writer.Write("</b:Translator>");
+            }
+            writer.Write("</b:Author>");
+        }
+
+        internal void WriteThesis(Thesis thesis, TextWriter writer)
+        {
+            writer.Write("<b:SourceType>Report</b:SourceType>");
+            switch (thesis.Kind)
+            {
+                case ThesisKind.Masters:
+                    writer.Write("<b:ThesisType>Master's thesis</b:ThesisType>"); break;
+                case ThesisKind.Licentiate:
+                    writer.Write("<b:ThesisType>Licentiate thesis</b:ThesisType>"); break;
+                default:
+                    writer.Write("<b:ThesisType>PhD thesis</b:ThesisType>"); break;
+            }
+
+            WriteNonEmptyElement("b:Tag", thesis.Key, writer);
+            WriteNonEmptyElement("b:DOI", thesis.Doi, writer);
+            WriteNonEmptyElement("b:StandardNumber", thesis.Isbn, writer);
+            WriteNonEmptyElement("b:Institution", thesis.School, writer);
+            WriteNonEmptyElement("b:Title", thesis.Title, writer);
+            WriteNonEmptyElement("b:Year", thesis.Year, writer);
+
+            if (!string.IsNullOrEmpty(thesis.Author))
+            {
+                writer.Write("<b:Author><b:Author>");
+                WriteNameList(thesis.Author, writer);
+                writer.Write("</b:Author></b:Author>");
+            }
         }
 
         internal static void WriteNameList(string authorString, TextWriter writer)

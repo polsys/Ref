@@ -24,6 +24,7 @@ namespace Polsys.Ref.Tests.ViewModels
             var vm = new MainWindowViewModel();
 
             Assert.That(vm.Exporters, Has.Exactly(1).InstanceOf<BibTexExporter>());
+            Assert.That(vm.Exporters, Has.Exactly(1).InstanceOf<WordExporter>());
             Assert.That(vm.SelectedExporter, Is.InstanceOf<BibTexExporter>());
         }
 

@@ -12,7 +12,7 @@ namespace Polsys.Ref.Export
         /// <summary>
         /// The default file extension used by this exporter.
         /// </summary>
-        public virtual string FileExtension
+        public abstract string FileExtension
         {
             get;
         }
@@ -20,7 +20,7 @@ namespace Polsys.Ref.Export
         /// <summary>
         /// The name of this exporter.
         /// </summary>
-        public virtual string Name
+        public abstract string Name
         {
             get;
         }
@@ -51,9 +51,11 @@ namespace Polsys.Ref.Export
         /// <param name="stream">The stream to write the catalogue to.</param>
         /// <param name="catalogue">The catalogue to export.</param>
         /// <returns>True if successful, false otherwise.</returns>
-        public virtual bool Export(Stream stream, Catalogue catalogue)
+        public abstract bool Export(Stream stream, Catalogue catalogue);
+        
+        protected static string GetVersionString()
         {
-            throw new NotImplementedException();
+            return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
     }
 }

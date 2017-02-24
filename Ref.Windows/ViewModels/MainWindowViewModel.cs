@@ -153,6 +153,7 @@ namespace Polsys.Ref.ViewModels
             // Initialize the exporters
             Exporters = new List<CatalogueExporter>();
             Exporters.Add(new BibTexExporter());
+            Exporters.Add(new WordExporter());
             SelectedExporter = Exporters[0];
         }
 

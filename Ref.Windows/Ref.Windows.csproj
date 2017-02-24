@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Export\BibTexExporter.cs" />
     <Compile Include="Export\CatalogueExporter.cs" />
+    <Compile Include="Export\WordExporter.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Thesis.cs" />
     <Compile Include="Models\Page.cs" />

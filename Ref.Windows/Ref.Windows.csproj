@@ -74,6 +74,7 @@
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\PublicationViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Xaml\FlipBoolConverter.cs" />
     <Compile Include="Xaml\EnumIntConverter.cs" />
     <Compile Include="Xaml\EntryTitleConverter.cs" />
     <Compile Include="Xaml\PageSortConverter.cs" />

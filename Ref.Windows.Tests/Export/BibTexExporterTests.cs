@@ -299,7 +299,7 @@ namespace Polsys.Ref.Tests.Export
                 Assert.That(contents, Does.Contain("publisher = \"Octopus Books\","));
                 Assert.That(contents, Does.Contain("series = \"Musings of the Mathematical Ninja\","));
                 Assert.That(contents, Does.Contain("title = \"{Cracking Mathematics}\","));
-                Assert.That(contents, Does.Contain("translator = \"(Multiple... for all the other editions)\","));
+                Assert.That(contents, Does.Contain("translator = \"Ninja, Mathematical\","));
                 Assert.That(contents, Does.Contain("volume = \"1\","));
                 Assert.That(contents, Does.Contain("year = \"2016\""));
                 Assert.That(contents.TrimEnd(), Does.EndWith("}"));

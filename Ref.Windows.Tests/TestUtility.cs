@@ -108,7 +108,7 @@ namespace Polsys.Ref.Tests
                 Publisher = "Octopus Books",
                 Series = "Musings of the Mathematical Ninja", // Not really, at least yet.
                 Title = "Cracking Mathematics",
-                Translator = "(Multiple... for all the other editions)", // Now if there was a Finnish translation...
+                Translator = "Ninja, Mathematical", // A well-formed if not well-attributed name
                 Volume = "1", // No Volume II yet.
                 Year = "2016"
             };

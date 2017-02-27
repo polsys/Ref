@@ -146,5 +146,20 @@ namespace Polsys.Ref.Tests
                 Year = "1937"
             };
         }
+
+        public static WebSite CreateMersenneWebSite()
+        {
+            // Hopefully Mersenne primes turn out to be infinite in number so they don't run out
+            return new WebSite()
+            {
+                AccessDate = "twenty-seventh.2.2017", // A pseudo-format for testing
+                Author = "GIMPS", // TODO: Organizational authors (Github #26)
+                Key = "Gimps",
+                Notes = "49 and counting",
+                Title = "Great Internet Mersenne Prime Search",
+                Url = "https://www.mersenne.org/",
+                Year = "2017"
+            };
+        }
     }
 }

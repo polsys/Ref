@@ -47,6 +47,7 @@
                         <MenuItem Name="addBookButton" Header="Book" Click="addBookButton_Click"/>
                         <MenuItem Name="addArticleButton" Header="Article" Click="addArticleButton_Click"/>
                         <MenuItem Name="addThesisButton" Header="Thesis" Click="addThesisButton_Click"/>
+                        <MenuItem Name="addWebSiteButton" Header="Web site" Click="addWebSiteButton_Click"/>
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
@@ -167,6 +168,8 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -314,14 +317,26 @@
                 <TextBox Visibility="{Binding Doi, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Doi}" IsReadOnly="{Binding IsReadOnly}"
                          Grid.Row="18" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                <!-- URL -->
+                <TextBlock Text="URL" Visibility="{Binding Url, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                           Grid.Row="19" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Visibility="{Binding Url, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                         Text="{Binding Url}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="19" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                <!-- URL accessed -->
+                <TextBlock Text="Accessed" Visibility="{Binding AccessDate, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                           Grid.Row="20" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                <TextBox Visibility="{Binding AccessDate, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
+                         Text="{Binding AccessDate}" IsReadOnly="{Binding IsReadOnly}"
+                         Grid.Row="20" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
 
                 <!-- Notes - this is a multiline box -->
                 <TextBlock Text="Notes" Visibility="{Binding Notes, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                           Grid.Row="19" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
+                           Grid.Row="21" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <TextBox Visibility="{Binding Notes, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                          Text="{Binding Notes}" IsReadOnly="{Binding IsReadOnly}"
                          AcceptsReturn="True" Height="200" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"
-                         Grid.Row="19" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
+                         Grid.Row="21" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />
             </Grid>
         </StackPanel>
     </Grid>

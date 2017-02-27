@@ -10,6 +10,7 @@ namespace Polsys.Ref.Models
     [KnownType(typeof(Article))]
     [KnownType(typeof(Book))]
     [KnownType(typeof(Thesis))]
+    [KnownType(typeof(WebSite))]
     internal class Catalogue
     {
         /// <summary>

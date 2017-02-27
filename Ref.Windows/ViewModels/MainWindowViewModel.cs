@@ -286,6 +286,19 @@ namespace Polsys.Ref.ViewModels
         }
 
         /// <summary>
+        /// Adds a new web site to the catalogue and selects it for editing.
+        /// </summary>
+        public void CreateWebSite()
+        {
+            if (ShouldCancelBecauseOfEdit())
+                return;
+
+            var newSite = new WebSiteViewModel(new WebSite());
+            SelectEntry(newSite);
+            newSite.Edit();
+        }
+
+        /// <summary>
         /// Starts editing the selected entry.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if already editing.</exception>

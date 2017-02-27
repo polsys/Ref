@@ -30,6 +30,8 @@ namespace Polsys.Ref.ViewModels
                     Entries.Add(new BookViewModel((Book)entry));
                 else if (entry is Thesis)
                     Entries.Add(new ThesisViewModel((Thesis)entry));
+                else if (entry is WebSite)
+                    Entries.Add(new WebSiteViewModel((WebSite)entry));
                 else
                     throw new NotImplementedException("The specified entry type is not implemented.");
             }

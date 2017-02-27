@@ -161,6 +161,12 @@ namespace Polsys.Ref
             titleTextBox.Focus();
         }
 
+        private void addWebSiteButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.CreateWebSite();
+            titleTextBox.Focus();
+        }
+
         private void addEntryPopupButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;

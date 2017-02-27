@@ -321,7 +321,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 return MessageBoxResult.Cancel;
             };
 
-            // Since the handler returned Cancel, the article must not be created
+            // Since the handler returned Cancel, the thesis must not be created
             vm.CreateThesis();
             Assert.That(wasAsked, Is.True);
             Assert.That(vm.SelectedEntry, Is.InstanceOf<BookViewModel>());
@@ -334,6 +334,35 @@ namespace Polsys.Ref.Tests.ViewModels
             vm.CreateThesis();
 
             Assert.That(vm.SelectedEntry, Is.InstanceOf<ThesisViewModel>());
+            Assert.That(vm.SelectedEntry.IsReadOnly, Is.False);
+        }
+
+        [Test]
+        public void CreateWebSite_AsksIfEditing()
+        {
+            var vm = new MainWindowViewModel();
+            vm.CreateBook(); // Starts editing a book
+
+            bool wasAsked = false;
+            vm.DisruptingEdit += () =>
+            {
+                wasAsked = true;
+                return MessageBoxResult.Cancel;
+            };
+
+            // Since the handler returned Cancel, the site must not be created
+            vm.CreateWebSite();
+            Assert.That(wasAsked, Is.True);
+            Assert.That(vm.SelectedEntry, Is.InstanceOf<BookViewModel>());
+        }
+
+        [Test]
+        public void CreateWebSite_CreatesAndEditsSite()
+        {
+            var vm = new MainWindowViewModel();
+            vm.CreateWebSite();
+
+            Assert.That(vm.SelectedEntry, Is.InstanceOf<WebSiteViewModel>());
             Assert.That(vm.SelectedEntry.IsReadOnly, Is.False);
         }
 

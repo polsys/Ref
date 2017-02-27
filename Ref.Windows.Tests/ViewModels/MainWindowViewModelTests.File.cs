@@ -305,6 +305,7 @@ namespace Polsys.Ref.Tests.ViewModels
                 vm.Catalogue.AddEntry(new ArticleViewModel(TestUtility.CreateCounterexample()));
                 vm.Catalogue.AddEntry(new BookViewModel(TestUtility.CreateCrackingMathematics()));
                 vm.Catalogue.AddEntry(new ThesisViewModel(TestUtility.CreateShannonThesis()));
+                vm.Catalogue.AddEntry(new WebSiteViewModel(TestUtility.CreateMersenneWebSite()));
 
                 AssertRoundTrip(vm);
                 vm.SaveProject(false);

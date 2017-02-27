@@ -23,6 +23,26 @@ namespace Polsys.Ref.Tests.Export
             Directory.Delete(TempFolder, true);
         }
 
+        // LaTeX special characters that should be escaped in text mode
+        [TestCase("example.com/~me", "example.com/\\~{}me")]
+        [TestCase("Test#case", "Test\\#case")]
+        [TestCase("Test&case", "Test\\&case")]
+        [TestCase("Test_case", "Test\\_case")]
+        [TestCase("Test^case", "Test\\^{}case")]
+        [TestCase("100 % right", "100 \\% right")]
+        // Do not escape {} or backslash, their user probably knows what they're doing
+        [TestCase("{Test}", "{Test}")]
+        [TestCase("\\LaTeX", "\\LaTeX")]
+        // Do not escape manually escaped characters
+        [TestCase("Some \\_ text", "Some \\_ text")]
+        // In math mode, do not escape characters
+        [TestCase("$A_n$", "$A_n$")]
+        [TestCase("A_n $B^n$ C%", "A\\_n $B^n$ C\\%")]
+        public void EscapeSpecialCharacters(string input, string expected)
+        {
+            Assert.That(BibTexExporter.EscapeSpecialCharacters(input), Is.EqualTo(expected));
+        }
+
         [Test]
         public void ExportFile_HandlesInvalidFileName()
         {
@@ -163,6 +183,24 @@ namespace Polsys.Ref.Tests.Export
         }
 
         [Test]
+        public void WriteArticle_EscapesSpecialCharacters()
+        {
+            using (var writer = new StringWriter())
+            {
+                var exporter = new BibTexExporter();
+                var article = new Article()
+                {
+                    Key = "key",
+                    Title = "Special_Char"
+                };
+                exporter.WriteArticle(writer, article);
+                
+                var contents = writer.ToString();
+                Assert.That(contents, Does.Contain("\\_"));
+            }
+        }
+
+        [Test]
         public void WriteArticle_ReplacesSemicolonsInAuthors()
         {
             // Since it is just a naïve replacement, the double space is expected
@@ -246,6 +284,24 @@ namespace Polsys.Ref.Tests.Export
         }
 
         [Test]
+        public void WriteBook_EscapesSpecialCharacters()
+        {
+            using (var writer = new StringWriter())
+            {
+                var exporter = new BibTexExporter();
+                var book = new Book()
+                {
+                    Key = "key",
+                    Title = "Special_Char"
+                };
+                exporter.WriteBook(writer, book);
+
+                var contents = writer.ToString();
+                Assert.That(contents, Does.Contain("\\_"));
+            }
+        }
+
+        [Test]
         public void WriteBook_ReplacesSemicolonsInAuthors()
         {
             // Since it is just a naïve replacement, the double space is expected
@@ -324,6 +380,24 @@ namespace Polsys.Ref.Tests.Export
                 Assert.That(contents, Does.Contain("title = \"{A symbolic analysis of relay and switching circuits}\","));
                 Assert.That(contents, Does.Contain("year = \"1937\""));
                 Assert.That(contents.TrimEnd(), Does.EndWith("}"));
+            }
+        }
+
+        [Test]
+        public void WriteThesis_EscapesSpecialCharacters()
+        {
+            using (var writer = new StringWriter())
+            {
+                var exporter = new BibTexExporter();
+                var thesis = new Thesis()
+                {
+                    Key = "key",
+                    Title = "Special_Char"
+                };
+                exporter.WriteThesis(writer, thesis);
+
+                var contents = writer.ToString();
+                Assert.That(contents, Does.Contain("\\_"));
             }
         }
 

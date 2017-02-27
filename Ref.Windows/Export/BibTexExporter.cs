@@ -67,7 +67,7 @@ namespace Polsys.Ref.Export
             AddField(fields, article.Journal, "journal");
             AddField(fields, article.Number, "number");
             AddField(fields, article.PageRange, "pages");
-            AddField(fields, EncloseInBraces(article.Title), "title");
+            AddField(fields, EncloseInBraces(EscapeSpecialCharacters(article.Title)), "title");
             AddField(fields, article.Volume, "volume");
             AddField(fields, article.Year, "year");
 
@@ -89,7 +89,7 @@ namespace Polsys.Ref.Export
             AddField(fields, book.Number, "number");
             AddField(fields, book.Publisher, "publisher");
             AddField(fields, book.Series, "series");
-            AddField(fields, EncloseInBraces(book.Title), "title");
+            AddField(fields, EncloseInBraces(EscapeSpecialCharacters(book.Title)), "title");
             AddField(fields, book.Translator, "translator");
             AddField(fields, book.Volume, "volume");
             AddField(fields, book.Year, "year");
@@ -115,7 +115,7 @@ namespace Polsys.Ref.Export
                 AddField(fields, "Licentiate thesis", "type");
 
             AddField(fields, thesis.School, "school");
-            AddField(fields, EncloseInBraces(thesis.Title), "title");
+            AddField(fields, EncloseInBraces(EscapeSpecialCharacters(thesis.Title)), "title");
             AddField(fields, thesis.Year, "year");
 
             var entryType = thesis.Kind == ThesisKind.Masters ? "@mastersthesis" : "@phdthesis";
@@ -131,6 +131,53 @@ namespace Polsys.Ref.Export
         private static string EncloseInBraces(string value)
         {
             return "{" + value + "}";
+        }
+
+        internal static string EscapeSpecialCharacters(string input)
+        {
+            // Escape LaTeX special characters # % & ^ _ ~
+            // Do not escape the following characters:
+            //   $  Inline math mode
+            //   \  Required for commands and manually escaping $
+            //   {} Required for commands, uncommon in text
+            //   Anything within math mode
+            //   Any character following \, since they are manually escaped
+
+            if (input == null)
+                return null;
+
+            // This is quite inefficient, but not on the hottest path (I hope)
+            bool inMathMode = false;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '$')
+                {
+                    inMathMode = !inMathMode;
+                    continue;
+                }
+                else if (inMathMode || (i > 0 && input[i - 1] == '\\'))
+                {
+                    // Do not perform escapes within math mode or if the character is already escaped
+                    continue;
+                }
+
+                if (input[i] == '#' || input[i] == '%' || input[i] == '&' || input[i] == '_')
+                {
+                    // Simply escape X with \X
+
+                    input = input.Substring(0, i) + "\\" + input[i] + input.Substring(i + 1);
+                    i++; // Skip the new character
+                }
+                else if (input[i] == '^' || input[i] == '~')
+                {
+                    // Escape accent with \X{}
+
+                    input = input.Substring(0, i) + "\\" + input[i] + "{}" + input.Substring(i + 1);
+                    i += 3; // Skip the new characters
+                }
+            }
+
+            return input;
         }
 
         private static bool IsUnkeyed(string key, string title, TextWriter writer)

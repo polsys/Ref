@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Polsys.Ref.Models
@@ -12,11 +13,8 @@ namespace Polsys.Ref.Models
         /// <summary>
         /// The latest date this site was accessed.
         /// </summary>
-        /// <remarks>
-        /// This is stored as a string to allow the user to have their own style.
-        /// </remarks>
         [DataMember]
-        public string AccessDate { get; set; }
+        public DateTime AccessDate { get; set; }
 
         /// <summary>
         /// The author or authors of this site.
@@ -69,5 +67,11 @@ namespace Polsys.Ref.Models
             }
         }
         private List<Page> _pages;
+
+        public WebSite()
+        {
+            // Default initialize the date
+            AccessDate = DateTime.Today;
+        }
     }
 }

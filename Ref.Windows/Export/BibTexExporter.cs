@@ -48,6 +48,8 @@ namespace Polsys.Ref.Export
                         WriteBook(writer, (Book)entry);
                     else if (entry is Thesis)
                         WriteThesis(writer, (Thesis)entry);
+                    else if (entry is WebSite)
+                        WriteWebSite(writer, (WebSite)entry);
                     writer.WriteLine();
                 }
             }
@@ -120,6 +122,25 @@ namespace Polsys.Ref.Export
 
             var entryType = thesis.Kind == ThesisKind.Masters ? "@mastersthesis" : "@phdthesis";
             WriteEntry(writer, entryType, thesis.Key, fields);
+        }
+
+        internal void WriteWebSite(TextWriter writer, WebSite site)
+        {
+            if (IsUnkeyed(site.Key, site.Title, writer))
+                return;
+
+            var fields = new List<string>();
+            AddField(fields, ReplaceSemicolonsWithAnd(site.Author), "author");
+            AddField(fields, EncloseInBraces(EscapeSpecialCharacters(site.Title)), "title");
+            // BibLaTeX does not like escaped special characters, whereas BibTeX requires them.
+            // Using the 'url' field instead of 'howpublished'.
+            AddField(fields, EscapeSpecialCharacters(site.Url), "url");
+            // BibLaTeX date format
+            AddField(fields, site.AccessDate.ToString("yyyy'/'MM'/'dd"), "urldate");
+            AddField(fields, site.Year, "year");
+
+            // @electronic is supported by BibTeX and aliased to @online in BibLaTeX
+            WriteEntry(writer, "@electronic", site.Key, fields);
         }
 
         private static void AddField(List<string> fields, string value, string fieldName)

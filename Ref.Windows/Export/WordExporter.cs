@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using Polsys.Ref.Models;
+using System.Globalization;
 
 namespace Polsys.Ref.Export
 {
@@ -60,6 +61,8 @@ namespace Polsys.Ref.Export
                 WriteBook((Book)entry, writer);
             else if (entry is Thesis)
                 WriteThesis((Thesis)entry, writer);
+            else if (entry is WebSite)
+                WriteWebSite((WebSite)entry, writer);
 
             writer.Write("</b:Source>");
         }
@@ -150,6 +153,33 @@ namespace Polsys.Ref.Export
             }
         }
 
+        internal void WriteWebSite(WebSite site, TextWriter writer)
+        {
+            writer.Write("<b:SourceType>InternetSite</b:SourceType>");
+
+            WriteNonEmptyElement("b:Tag", site.Key, writer);
+            WriteNonEmptyElement("b:YearAccessed", site.AccessDate.Year.ToString(), writer);
+            // TODO: Localization - using invariant culture for now for consistency
+            // For some reason Word uses just plain textual replacement and leaves the month to the user...
+            WriteNonEmptyElement("b:MonthAccessed", site.AccessDate.ToString("MMMM", CultureInfo.InvariantCulture), writer);
+            WriteNonEmptyElement("b:DayAccessed", site.AccessDate.Day.ToString(), writer);
+            WriteNonEmptyElement("b:Title", site.Title, writer);
+            WriteNonEmptyElement("b:URL", site.Url, writer);
+            WriteNonEmptyElement("b:Year", site.Year, writer);
+
+            if (!string.IsNullOrEmpty(site.Author))
+            {
+                writer.Write("<b:Author><b:Author>");
+                WriteNameList(site.Author, writer);
+                writer.Write("</b:Author></b:Author>");
+            }
+        }
+
+        internal static string EscapeSpecialCharacters(string input)
+        {
+            return input.Replace("<", "&lt;").Replace(">", "&gt;");
+        }
+
         internal static void WriteNameList(string authorString, TextWriter writer)
         {
             // TODO: Middle names are not used, but Word supports them.
@@ -210,7 +240,7 @@ namespace Polsys.Ref.Export
                 return;
 
             writer.Write("<" + name + ">");
-            writer.Write(value);
+            writer.Write(EscapeSpecialCharacters(value));
             writer.Write("</" + name + ">");
         }
 

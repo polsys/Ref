@@ -7,6 +7,15 @@ namespace Polsys.Ref.Tests.Export
 {
     class WordExporterTests
     {
+        // Must escape < >
+        [TestCase("<>", "&lt;&gt;")]
+        // No need to escape quotes
+        [TestCase("My \"true\" story", "My \"true\" story")]
+        public void EscapeSpecialCharacters(string input, string expected)
+        {
+            Assert.That(WordExporter.EscapeSpecialCharacters(input), Is.EqualTo(expected));
+        }
+
         [Test]
         public void ExportStream_Empty()
         {
@@ -43,6 +52,7 @@ namespace Polsys.Ref.Tests.Export
                 catalogue.Entries.Add(TestUtility.CreateCounterexample());
                 catalogue.Entries.Add(TestUtility.CreateCrackingMathematics());
                 catalogue.Entries.Add(TestUtility.CreateShannonThesis());
+                catalogue.Entries.Add(TestUtility.CreateMersenneWebSite());
                 Assert.That(exporter.Export(stream, catalogue), Is.True);
 
                 // Verify the contents
@@ -55,6 +65,7 @@ namespace Polsys.Ref.Tests.Export
                     Assert.That(contents, Does.Contain("<b:SourceType>JournalArticle</b:SourceType>"));
                     Assert.That(contents, Does.Contain("<b:SourceType>Book</b:SourceType>"));
                     Assert.That(contents, Does.Contain("<b:SourceType>Report</b:SourceType>"));
+                    Assert.That(contents, Does.Contain("<b:SourceType>InternetSite</b:SourceType>"));
                 }
             }
         }
@@ -170,6 +181,20 @@ namespace Polsys.Ref.Tests.Export
         }
 
         [Test]
+        public void WriteBook_EscapesSpecialChar()
+        {
+            // Word does just fine without a tag
+            using (var writer = new StringWriter())
+            {
+                var exporter = new WordExporter();
+                exporter.WriteBook(new Book() { Title = "1 < 2" }, writer);
+
+                var result = writer.ToString();
+                Assert.That(result, Does.Contain("1 &lt; 2"));
+            }
+        }
+
+        [Test]
         public void WriteBook_WritesAllFields()
         {
             using (var writer = new StringWriter())
@@ -231,6 +256,27 @@ namespace Polsys.Ref.Tests.Export
                 Assert.That(result, Does.Contain("<b:Institution>Massachusetts Institute of Technology</b:Institution>"));
                 Assert.That(result, Does.Contain("<b:StandardNumber>111111111X</b:StandardNumber>"));
                 Assert.That(result, Does.Contain("<b:DOI>1721.1/11173</b:DOI>"));
+            }
+        }
+
+        [Test]
+        public void WriteWebSite_WritesAllFields()
+        {
+            using (var writer = new StringWriter())
+            {
+                var exporter = new WordExporter();
+                exporter.WriteWebSite(TestUtility.CreateMersenneWebSite(), writer);
+
+                var result = writer.ToString();
+                Assert.That(result, Does.Contain("<b:Tag>Gimps</b:Tag>"));
+                Assert.That(result, Does.Contain("<b:SourceType>InternetSite</b:SourceType>"));
+                Assert.That(result, Does.Contain("<b:Title>Great Internet Mersenne Prime Search</b:Title>"));
+                Assert.That(result, Does.Contain("<b:Year>2017</b:Year>"));
+                Assert.That(result, Does.Contain("<b:Author><b:Author><b:NameList><b:Person><b:Last>GIMPS</b:Last></b:Person></b:NameList></b:Author></b:Author>"));
+                Assert.That(result, Does.Contain("<b:URL>https://www.mersenne.org/</b:URL>"));
+                Assert.That(result, Does.Contain("<b:YearAccessed>2017</b:YearAccessed>"));
+                Assert.That(result, Does.Contain("<b:MonthAccessed>February</b:MonthAccessed>"));
+                Assert.That(result, Does.Contain("<b:DayAccessed>27</b:DayAccessed>"));
             }
         }
 

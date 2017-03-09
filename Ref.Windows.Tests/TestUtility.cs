@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using NUnit.Framework;
 using Polsys.Ref.Models;
 
@@ -152,7 +153,7 @@ namespace Polsys.Ref.Tests
             // Hopefully Mersenne primes turn out to be infinite in number so they don't run out
             return new WebSite()
             {
-                AccessDate = "twenty-seventh.2.2017", // A pseudo-format for testing
+                AccessDate = new DateTime(2017, 2, 27),
                 Author = "GIMPS", // TODO: Organizational authors (Github #26)
                 Key = "Gimps",
                 Notes = "49 and counting",

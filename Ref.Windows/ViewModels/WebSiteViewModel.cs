@@ -10,10 +10,20 @@ namespace Polsys.Ref.ViewModels
     {
         // When adding properties, remember to add them to
         // the reset and commit routines as well!
-        public string AccessDate
+        public DateTime AccessDate
         {
             get { return _accessDate; }
-            set { SetProperty(ref _accessDate, value, nameof(AccessDate)); }
+            set
+            {
+                if (_accessDate != value)
+                {
+                    if (IsReadOnly)
+                        throw new InvalidOperationException("Not in edit mode.");
+
+                    _accessDate = value;
+                    NotifyPropertyChanged(nameof(AccessDate));
+                }
+            }
         }
         public string Author
         {
@@ -35,7 +45,7 @@ namespace Polsys.Ref.ViewModels
             get { return _year; }
             set { SetProperty(ref _year, value, nameof(Year)); }
         }
-        private string _accessDate;
+        private DateTime _accessDate;
         private string _author;
         private string _key;
         private string _url;

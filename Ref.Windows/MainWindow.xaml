@@ -64,7 +64,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Name="addPageButton" Content="Add page" Click="addPageButton_Click" Margin="2,4" Padding="6,2">
+            <Button Name="addPageButton" Content="Add note" Click="addPageButton_Click" Margin="2,4" Padding="6,2">
                 <!-- Disable the Add Page button if there is nothing selected -->
                 <Button.Style>
                     <Style TargetType="Button">

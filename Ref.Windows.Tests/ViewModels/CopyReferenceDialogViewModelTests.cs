@@ -176,5 +176,36 @@ namespace Polsys.Ref.Tests.ViewModels
 
             Assert.That(vm.Citation, Does.Contain("Licentiate thesis"));
         }
+
+        [TestCase("GIMPS. (2017). *Great Internet Mersenne Prime Search*. Retrieved February 27, 2017, from https://www.mersenne.org/",
+            CitationStyle.Apa, ReferenceOutputType.Markdown)]
+        [TestCase("GIMPS. 2017. \"Great Internet Mersenne Prime Search.\" Accessed February 27, 2017. https://www.mersenne.org/.",
+            CitationStyle.Chicago, ReferenceOutputType.Markdown)]
+        public void VerifyCompleteWebSite(string expected, CitationStyle style, ReferenceOutputType type)
+        {
+            var site = TestUtility.CreateMersenneWebSite();
+
+            var vm = new CopyReferenceDialogViewModel(new WebSiteViewModel(site));
+            vm.CitationStyle = style;
+            vm.OutputType = type;
+
+            Assert.That(vm.Citation, Is.EqualTo(expected));
+        }
+
+        [TestCase("GIMPS. *Great Internet Mersenne Prime Search*. Retrieved February 27, 2017, from https://www.mersenne.org/",
+            CitationStyle.Apa, ReferenceOutputType.Markdown)]
+        [TestCase("GIMPS. \"Great Internet Mersenne Prime Search.\" Accessed February 27, 2017. https://www.mersenne.org/.",
+            CitationStyle.Chicago, ReferenceOutputType.Markdown)]
+        public void VerifyUndatedWebSite(string expected, CitationStyle style, ReferenceOutputType type)
+        {
+            var site = TestUtility.CreateMersenneWebSite();
+            site.Year = "";
+
+            var vm = new CopyReferenceDialogViewModel(new WebSiteViewModel(site));
+            vm.CitationStyle = style;
+            vm.OutputType = type;
+
+            Assert.That(vm.Citation, Is.EqualTo(expected));
+        }
     }
 }

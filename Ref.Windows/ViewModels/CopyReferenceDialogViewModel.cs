@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Polsys.Ref.Models;
+using System.Globalization;
 
 namespace Polsys.Ref.ViewModels
 {
@@ -158,6 +159,27 @@ namespace Polsys.Ref.ViewModels
                 result.Append(thesis.School);
                 result.Append(".");
             }
+            else if (_entry is WebSiteViewModel)
+            {
+                var site = _entry as WebSiteViewModel;
+
+                WriteAuthors(result, site.Author);
+                if (!string.IsNullOrEmpty(site.Year))
+                {
+                    result.Append(" (");
+                    result.Append(site.Year);
+                    result.Append(").");
+                }
+                result.Append(" ");
+                result.Append(BeginItalics());
+                result.Append(site.Title);
+                result.Append(EndItalics());
+                // TODO: Localization
+                result.Append(". Retrieved ");
+                result.Append(site.AccessDate.ToString("MMMM dd, yyyy", CultureInfo.InvariantCulture));
+                result.Append(", from ");
+                result.Append(site.Url);
+            }
 
             return result.ToString();
         }
@@ -240,6 +262,27 @@ namespace Polsys.Ref.ViewModels
                 result.Append(thesis.School);
                 result.Append(", ");
                 result.Append(thesis.Year);
+                result.Append(".");
+            }
+            else if (_entry is WebSiteViewModel)
+            {
+                var site = _entry as WebSiteViewModel;
+
+                WriteAuthors(result, site.Author);
+                result.Append(" ");
+                if (!string.IsNullOrEmpty(site.Year))
+                {
+                    result.Append(site.Year);
+                    result.Append(". ");
+                }
+                result.Append("\"");
+                result.Append(site.Title);
+                result.Append(".\"");
+                // TODO: Localization
+                result.Append(" Accessed ");
+                result.Append(site.AccessDate.ToString("MMMM dd, yyyy", CultureInfo.InvariantCulture));
+                result.Append(". ");
+                result.Append(site.Url);
                 result.Append(".");
             }
 

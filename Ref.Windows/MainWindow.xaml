@@ -328,10 +328,7 @@
                            Grid.Row="20" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,4" />
                 <DatePicker Visibility="{Binding AccessDate, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
                             SelectedDate="{Binding AccessDate}" IsEnabled="{Binding IsReadOnly, Converter={StaticResource FlipConverter}}"
-                            Grid.Row="20" Grid.Column="1" FontSize="14" Margin="4,0,0,4" />
-                <!--<TextBox Visibility="{Binding AccessDate, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"
-                         Text="{Binding AccessDate}" IsReadOnly="{Binding IsReadOnly}"
-                         Grid.Row="20" Grid.Column="2" FontSize="14" Margin="4,0,0,4" />-->
+                            Grid.Row="20" Grid.Column="1" FontSize="14" Margin="4,0,0,4" Width="200" HorizontalAlignment="Left" />
 
                 <!-- Notes - this is a multiline box -->
                 <TextBlock Text="Notes" Visibility="{Binding Notes, Converter={StaticResource MakeVisible}, FallbackValue=Collapsed}"

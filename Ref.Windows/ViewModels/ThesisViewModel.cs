@@ -33,17 +33,7 @@ namespace Polsys.Ref.ViewModels
         public ThesisKind Kind
         {
             get { return _kind; }
-            set
-            {
-                if (_kind != value)
-                {
-                    if (IsReadOnly)
-                        throw new InvalidOperationException("Not in edit mode.");
-
-                    _kind = value;
-                    NotifyPropertyChanged(nameof(Kind));
-                }
-            }
+            set { SetProperty(ref _kind, value, nameof(Kind)); }
         }
         public string School
         {

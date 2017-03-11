@@ -13,17 +13,7 @@ namespace Polsys.Ref.ViewModels
         public DateTime AccessDate
         {
             get { return _accessDate; }
-            set
-            {
-                if (_accessDate != value)
-                {
-                    if (IsReadOnly)
-                        throw new InvalidOperationException("Not in edit mode.");
-
-                    _accessDate = value;
-                    NotifyPropertyChanged(nameof(AccessDate));
-                }
-            }
+            set { SetProperty(ref _accessDate, value, nameof(AccessDate)); }
         }
         public string Author
         {

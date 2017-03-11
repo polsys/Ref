@@ -86,9 +86,9 @@ namespace Polsys.Ref.ViewModels
         /// <param name="property">A reference to the property.</param>
         /// <param name="value">The new value for the property.</param>
         /// <param name="propertyName">The property name that will be passed to the event.</param>
-        protected void SetProperty(ref string property, string value, string propertyName)
+        protected void SetProperty<T>(ref T property, T value, string propertyName)
         {
-            if (property != value)
+            if (property == null || !property.Equals(value))
             {
                 if (IsReadOnly)
                     throw new InvalidOperationException("Not in edit mode.");

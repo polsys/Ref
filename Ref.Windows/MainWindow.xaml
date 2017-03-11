@@ -101,13 +101,26 @@
                                           ItemsSource="{Binding Pages, Converter={StaticResource PageSortConverter}}">
                     <StackPanel Orientation="Vertical" Margin="0,4">
                         <TextBlock Text="{Binding Author}" FontSize="12" />
-                        <TextBlock Text="{Binding Converter={StaticResource EntryTitleConverter}}" FontSize="16" />
+                        <TextBlock FontSize="16">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource EntryTitleConverter}">
+                                    <Binding Path="Title" />
+                                    <Binding Path="Volume" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type vm:PageViewModel}">
                     <StackPanel Orientation="Vertical" Margin="0,4">
                         <TextBlock Text="{Binding PageRange}" FontSize="12" />
-                        <TextBlock Text="{Binding Converter={StaticResource EntryTitleConverter}}" FontSize="16" />
+                        <TextBlock FontSize="16">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource EntryTitleConverter}">
+                                    <Binding Path="Title" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.Resources>

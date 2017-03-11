@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using Polsys.Ref.ViewModels;
 
 namespace Polsys.Ref.Xaml
 {
@@ -9,33 +8,33 @@ namespace Polsys.Ref.Xaml
     /// A value converter that returns either the title, augmented with possible volume information,
     /// or an "Untitled" value.
     /// </summary>
-    public class EntryTitleConverter : IValueConverter
+    public class EntryTitleConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is EntryViewModelBase)
+            if (values.Length >= 1 && values[0] is string)
             {
-                var entry = value as EntryViewModelBase;
+                var title = (string)values[0];
 
                 // If the entry is a book with a specified volume
-                if (entry is BookViewModel)
+                if (values.Length >= 2 && values[1] is string)
                 {
-                    var book = entry as BookViewModel;
-                    if (!string.IsNullOrWhiteSpace(book.Volume))
+                    var volume = (string)values[1];
+                    if (!string.IsNullOrWhiteSpace(volume))
                     {
-                        return book.Title + " (" + book.Volume + ")";
+                        return title + " (" + volume + ")";
                     }
                 }
 
                 // Else just return the entry title, unless it is empty/null
-                return string.IsNullOrWhiteSpace(entry.Title) ? "(Untitled)" : entry.Title;
+                return string.IsNullOrWhiteSpace(title) ? "(Untitled)" : title;
             }
 
             // If the value is not an entry, signal an error
             return "???";
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

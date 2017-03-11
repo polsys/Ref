@@ -154,6 +154,22 @@ namespace Polsys.Ref.Tests.ViewModels
             }
 
             [Test]
+            public void NewProject_ResetsEverything2()
+            {
+                var vm = new MainWindowViewModel();
+                vm.DiscardingUnsavedChanges += () => { return MessageBoxResult.No; };
+                vm.CreateBook();
+                vm.CommitEdit(); // This sets the modified flag
+                Assert.That(vm.IsModified, Is.True);
+
+                TestUtility.AssertRaisesPropertyChanged(vm, () => vm.NewProject(), "IsModified");
+                Assert.That(vm.Catalogue.Entries, Is.Empty);
+                Assert.That(vm.IsModified, Is.False);
+                Assert.That(vm.ProjectName, Is.Empty);
+                Assert.That(vm.SelectedEntry, Is.Null);
+            }
+
+            [Test]
             public void OpenProject_AsksWhenEditing()
             {
                 var vm = new MainWindowViewModel();

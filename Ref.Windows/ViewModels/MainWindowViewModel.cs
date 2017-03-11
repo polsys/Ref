@@ -338,6 +338,7 @@ namespace Polsys.Ref.ViewModels
             SelectedEntry = null;
             Catalogue = new CatalogueViewModel(new Catalogue());
             Filename = string.Empty;
+            IsModified = false;
         }
 
         /// <summary>

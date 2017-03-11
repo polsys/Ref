@@ -26,5 +26,17 @@ namespace Polsys.Ref.Tests.ViewModels
             Assert.That(vm.IsReadOnly, Is.True);
             Assert.That(vm.Pages, Has.Exactly(1).Items);
         }
+
+        [Test]
+        public void PropertyChanged_RaisesEvent()
+        {
+            // This tests the generic property change handler in EntryViewModelBase
+
+            var thesis = new ThesisViewModel(new Thesis());
+            thesis.Edit();
+
+            TestUtility.AssertRaisesPropertyChanged(thesis,
+                () => { thesis.Kind = ThesisKind.Licentiate; }, "Kind");
+        }
     }
 }

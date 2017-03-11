@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Polsys.Ref.Models;
 using Polsys.Ref.ViewModels;
 
@@ -23,6 +24,18 @@ namespace Polsys.Ref.Tests.ViewModels
 
             Assert.That(vm.IsReadOnly, Is.True);
             Assert.That(vm.Pages, Has.Exactly(1).Items);
+        }
+
+        [Test]
+        public void PropertyChanged_RaisesEvent()
+        {
+            // This tests the generic property change handler in EntryViewModelBase
+
+            var site = new WebSiteViewModel(new WebSite());
+            site.Edit();
+
+            TestUtility.AssertRaisesPropertyChanged(site,
+                () => { site.AccessDate = DateTime.MaxValue; }, "AccessDate");
         }
     }
 }

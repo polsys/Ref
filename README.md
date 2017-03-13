@@ -7,15 +7,14 @@ Ref is a simple reference and citation manager.
 Ref is under occasional development mostly based on user (read: my) needs.
 
 ## Features
-* Collect book and article references
+* Collect references (books, articles, etc.)
 * Store page notes
-* Export the reference list to BibTeX
+* Export the reference list to BibTeX or Word - or copy it directly from the app
 
 ## Planned features
 * Search the references and notes
-* Export to Word
 * Import references from existing sources
 * Lots of polish and improvements
 
 ## Background
-Ref is developed by @polsys, for fun and not profit. Feel free to join the fun! :books: :memo:
+Ref is developed by @polsys, for fun and no profit. Feel free to join the fun! :books: :memo:
